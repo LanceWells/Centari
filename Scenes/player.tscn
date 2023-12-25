@@ -1,0 +1,109 @@
+[gd_scene load_steps=14 format=3 uid="uid://wqedugwtysf6"]
+
+[ext_resource type="Script" path="res://Scripts/Player/Player.cs" id="1_fl6u2"]
+[ext_resource type="Texture2D" uid="uid://cj8v77i8kl4g8" path="res://Sprites/Albedo/Player.png" id="1_ph3i2"]
+[ext_resource type="Script" path="res://Scripts/Entity/StateMachine.cs" id="3_8yttb"]
+[ext_resource type="Script" path="res://Scripts/Player/IdleState.cs" id="4_arglt"]
+[ext_resource type="Script" path="res://Scripts/Player/WalkingState.cs" id="5_ieboc"]
+[ext_resource type="Texture2D" uid="uid://cb3230dsistwy" path="res://Sprites/NormalMaps/Stolen_n.png" id="7_y5o1w"]
+[ext_resource type="Shader" path="res://player.gdshader" id="20_ypkah"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5rf4e"]
+size = Vector3(0.483729, 0.70082, 0.317884)
+
+[sub_resource type="Animation" id="Animation_krh1t"]
+resource_name = "Idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [38]
+}
+
+[sub_resource type="Animation" id="Animation_eknky"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [38]
+}
+
+[sub_resource type="Animation" id="Animation_8trye"]
+resource_name = "Walk"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player/Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mxkkk"]
+_data = {
+"Idle": SubResource("Animation_krh1t"),
+"RESET": SubResource("Animation_eknky"),
+"Walk": SubResource("Animation_8trye")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rjx4d"]
+render_priority = 0
+shader = ExtResource("20_ypkah")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("1_ph3i2")
+shader_parameter/texture_normal = ExtResource("7_y5o1w")
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_fl6u2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(10, 0, 0, 0, 10, 2.08616e-06, 0, -2.08616e-06, 10, 0, -0.432881, 0)
+shape = SubResource("BoxShape3D_5rf4e")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_mxkkk")
+}
+autoplay = "Idle"
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_8yttb")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("4_arglt")
+
+[node name="WalkingState" type="Node" parent="StateMachine"]
+script = ExtResource("5_ieboc")
+
+[node name="Sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_rjx4d")
+pixel_size = 0.1
+texture = ExtResource("1_ph3i2")
+hframes = 6
+vframes = 9
+
+[node name="Camera3D" type="Camera3D" parent="Sprite"]
+transform = Transform3D(1, 0, 0, 0, 1, 2.38419e-07, 0, -2.38419e-07, 1, 0, 3.32909, 25.19)
+projection = 1
+size = 40.0

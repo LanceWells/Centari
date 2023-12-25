@@ -1,0 +1,45 @@
+[gd_scene load_steps=9 format=3 uid="uid://bvlb2466o870x"]
+
+[ext_resource type="Script" path="res://Scripts/Player/Player.cs" id="1_op0ep"]
+[ext_resource type="Script" path="res://Scripts/Entity/StateMachine.cs" id="2_sx1gs"]
+[ext_resource type="Script" path="res://Scripts/Player/IdleState.cs" id="3_pe5fx"]
+[ext_resource type="Script" path="res://Scripts/Player/WalkingState.cs" id="4_383qc"]
+[ext_resource type="PackedScene" uid="uid://cdx1fqqxndri" path="res://Sprites/Albedo/Player.aseprite" id="5_hejwn"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aluac"]
+radius = 1.6
+height = 6.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cc4dy"]
+load_path = "res://.godot/imported/Player.aseprite.png-50be86146882b4020beba75c99b7ff97.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n5nem"]
+resource_local_to_scene = true
+atlas = SubResource("CompressedTexture2D_cc4dy")
+region = Rect2(0, 0, 1, 1)
+margin = Rect2(2, 2, 0, 0)
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+scale = Vector2(10, 10)
+motion_mode = 1
+script = ExtResource("1_op0ep")
+MaxSpeed = 250.0
+Acceleration = 0.3
+Friction = 0.25
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_aluac")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("2_sx1gs")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("3_pe5fx")
+
+[node name="WalkingState" type="Node" parent="StateMachine"]
+script = ExtResource("4_383qc")
+
+[node name="Sprite" parent="." instance=ExtResource("5_hejwn")]
+scale = Vector2(0.25, 0.25)
+texture = SubResource("AtlasTexture_n5nem")
+centered = true
