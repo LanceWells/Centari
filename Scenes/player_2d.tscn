@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cdx1fqqxndri" path="res://Sprites/Albedo/Player.aseprite" id="5_hejwn"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aluac"]
-radius = 1.6
-height = 6.0
+radius = 1.2
+height = 5.2
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cc4dy"]
 load_path = "res://.godot/imported/Player.aseprite.png-50be86146882b4020beba75c99b7ff97.ctex"
@@ -16,10 +16,10 @@ load_path = "res://.godot/imported/Player.aseprite.png-50be86146882b4020beba75c9
 [sub_resource type="AtlasTexture" id="AtlasTexture_n5nem"]
 resource_local_to_scene = true
 atlas = SubResource("CompressedTexture2D_cc4dy")
-region = Rect2(0, 0, 1, 1)
+region = Rect2(0, 0, 27, 33)
 margin = Rect2(2, 2, 0, 0)
 
-[node name="CharacterBody2D" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D"]
 scale = Vector2(10, 10)
 motion_mode = 1
 script = ExtResource("1_op0ep")
@@ -42,4 +42,3 @@ script = ExtResource("4_383qc")
 [node name="Sprite" parent="." instance=ExtResource("5_hejwn")]
 scale = Vector2(0.25, 0.25)
 texture = SubResource("AtlasTexture_n5nem")
-centered = true

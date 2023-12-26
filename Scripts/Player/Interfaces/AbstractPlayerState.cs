@@ -10,6 +10,8 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// </summary>
   protected Player _player;
 
+  protected PackedScene _activeProjectile;
+
   protected Vector2 _handleMovement(double delta)
   {
     float d = (float)delta;
@@ -35,6 +37,12 @@ public abstract partial class AbstractPlayerState : AbstractState
     if (direction != Vector2.Zero)
     {
       direction = direction.Normalized() * _player.MaxSpeed;
+    }
+
+    if (Input.IsActionJustPressed("fire_projectile"))
+    {
+      PackedScene projectile = GD.Load<PackedScene>("res://Scenes/Projectiles/Firebolt.tscn");
+      _player.HandleFireProjectile(projectile);
     }
 
     return direction;
