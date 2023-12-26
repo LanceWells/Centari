@@ -14,6 +14,9 @@ public partial class Player : CharacterBody2D
   [Export]
   public float Friction = 0.75f;
 
+  [Export]
+  public Vector2 ProjectileOrigin = Vector2.Zero;
+
   public Sprite2D _sprite;
 
   [Signal]

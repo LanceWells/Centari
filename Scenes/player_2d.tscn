@@ -16,8 +16,8 @@ load_path = "res://.godot/imported/Player.aseprite.png-50be86146882b4020beba75c9
 [sub_resource type="AtlasTexture" id="AtlasTexture_n5nem"]
 resource_local_to_scene = true
 atlas = SubResource("CompressedTexture2D_cc4dy")
-region = Rect2(0, 0, 27, 33)
-margin = Rect2(2, 2, 0, 0)
+region = Rect2(52, 0, 19, 27)
+margin = Rect2(14, 13, 29, 21)
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(10, 10)
@@ -42,3 +42,5 @@ script = ExtResource("4_383qc")
 [node name="Sprite" parent="." instance=ExtResource("5_hejwn")]
 scale = Vector2(0.25, 0.25)
 texture = SubResource("AtlasTexture_n5nem")
+
+[editable path="Sprite"]

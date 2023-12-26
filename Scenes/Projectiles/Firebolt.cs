@@ -1,15 +1,6 @@
-using Godot;
-
-public partial class Firebolt : Area2D, IProjectile
+public partial class Firebolt : AbstractProjectile
 {
-  public float Damage => 1.0f;
+  public override float Damage => 1.0f;
 
-  public bool Friendly => true;
-
-  public Vector2 Velocity { get; set; } = Vector2.Right;
-
-  public override void _PhysicsProcess(double delta)
-  {
-    Position += Velocity * (float)delta * 1000;
-  }
+  public override bool Friendly => true;
 }
