@@ -41,7 +41,7 @@ public abstract partial class AbstractPlayerState : AbstractState
 
     if (Input.IsActionJustPressed("fire_projectile"))
     {
-      PackedScene projectile = GD.Load<PackedScene>("res://Scenes/Projectiles/Firebolt.tscn");
+      PackedScene projectile = GD.Load<PackedScene>("res://Scenes/Projectiles/Fireball.tscn");
       _player.HandleFireProjectile(projectile);
     }
 

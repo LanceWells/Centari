@@ -23,7 +23,7 @@ public partial class StateMachine : Node
 	/// </summary>
 	public override void _Ready()
 	{
-		_animationPlayer = GetNode<AnimationPlayer>("../Sprite/AnimationPlayer");
+		_animationPlayer = GetNode<AnimationPlayer>("../AnimationPlayer");
 		_owner = Owner;
 
 		_activeState = new StateNode(GetNode(DEFAULT_STATE));

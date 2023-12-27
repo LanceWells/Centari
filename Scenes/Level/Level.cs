@@ -27,7 +27,7 @@ public partial class Level : Node2D
     // Replace with function body.
     Console.WriteLine("Fire");
 
-    Firebolt projectileInstance = projectile.Instantiate<Firebolt>();
+    Fireball projectileInstance = projectile.Instantiate<Fireball>();
     AddChild(projectileInstance);
 
     projectileInstance.Position = origin;
