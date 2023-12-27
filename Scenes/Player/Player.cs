@@ -14,9 +14,13 @@ public partial class Player : CharacterBody2D
 
   private Sprite2D ArmSprite;
 
-  private Sprite2D AimSprite;
+  public Sprite2D AimSprite;
 
   private Timer AimArmTimer;
+
+  private AnimationPlayer AimAnimation;
+
+  private Timer AimFadeTimer;
 
   [Signal]
   public delegate void FireProjectileEventHandler(
@@ -30,14 +34,24 @@ public partial class Player : CharacterBody2D
     isAiming = true;
     ArmSprite.Visible = false;
     AimSprite.Visible = true;
+
     AimArmTimer.Start();
+    AimFadeTimer.Start(AimArmTimer.WaitTime - 0.5);
+
+    AimAnimation.Play("FadeIn");
 
     Vector2 mouse = GetViewport().GetMousePosition();
+    Vector2 projectileOrigin = Vector2.Zero;
+
+    projectileOrigin += new Vector2(24, -1);
+    projectileOrigin = projectileOrigin.Rotated(Position.AngleToPoint(mouse));
+    projectileOrigin += AimSprite.Position;
+    projectileOrigin += Position;
 
     EmitSignal(
       SignalName.FireProjectile,
       projectile,
-      Position,
+      projectileOrigin,
       mouse
     );
   }
@@ -55,15 +69,23 @@ public partial class Player : CharacterBody2D
     AimSprite.Visible = false;
   }
 
+  public void OnAimArmTimerFadeTimeout()
+  {
+    AimAnimation.Play("FadeOut");
+  }
+
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
     BodySprite = GetNode<Sprite2D>("BodySprite");
     ArmSprite = GetNode<Sprite2D>("ArmSprite");
     AimSprite = GetNode<Sprite2D>("AimSprite");
-    AimArmTimer = GetNode<Timer>("AimArmTimer");
 
+    AimAnimation = GetNode<AnimationPlayer>("AimSprite/AimAnimation");
+    AimArmTimer = GetNode<Timer>("AimArmTimer");
+    AimFadeTimer = GetNode<Timer>("AimSprite/FadeTimer");
     AimArmTimer.Timeout += OnAimArmTimerTimeout;
+    AimFadeTimer.Timeout += OnAimArmTimerFadeTimeout;
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.

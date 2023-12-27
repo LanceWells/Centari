@@ -23,10 +23,6 @@ public partial class IdleState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Process(double delta)
-  { }
-
-  /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
     Vector2 direction = _handleMovement(delta);
