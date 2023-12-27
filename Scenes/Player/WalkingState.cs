@@ -24,15 +24,18 @@ public partial class WalkingState : AbstractPlayerState
   {
     Vector2 direction = _handleMovement(delta);
 
+    _handleFireProjectile();
+
     if (direction == Vector2.Zero)
     {
       _stateMachine.TransitionState("IdleState");
     }
     else
     {
-      _player.Velocity = _player.Velocity.Lerp(direction, _player.Acceleration);
+      _player.Velocity = direction * _player.MaxSpeed;
     }
 
-    _player._sprite.FlipH = _shouldFlip();
+    bool shouldFlip = _shouldFlip();
+    _player.HandleFlip(shouldFlip);
   }
 }

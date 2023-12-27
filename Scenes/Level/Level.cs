@@ -22,7 +22,7 @@ public partial class Level : Node2D
   {
   }
 
-  private void OnPlayerFireProjectile(PackedScene projectile, Vector2 origin, Vector2 target, float velocity)
+  private void OnPlayerFireProjectile(PackedScene projectile, Vector2 origin, Vector2 target)
   {
     // Replace with function body.
     Console.WriteLine("Fire");

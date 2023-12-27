@@ -6,65 +6,80 @@ public partial class Player : CharacterBody2D
   public float MaxSpeed = 14.0f;
 
   [Export]
-  public float FallAcceleration = 75f;
-
-  [Export]
-  public float Acceleration = 0.15f;
-
-  [Export]
   public float Friction = 0.75f;
 
-  [Export]
-  public Vector2 ProjectileOrigin = Vector2.Zero;
+  public bool isAiming = false;
 
-  public Sprite2D _sprite;
+  public Sprite2D BodySprite;
+
+  private Sprite2D ArmSprite;
+
+  private Sprite2D AimSprite;
+
+  private Timer AimArmTimer;
 
   [Signal]
   public delegate void FireProjectileEventHandler(
   PackedScene projectile,
   Vector2 origin,
-  Vector2 target,
-  float velocity
+  Vector2 target
   );
 
   public void HandleFireProjectile(PackedScene projectile)
   {
+    isAiming = true;
+    ArmSprite.Visible = false;
+    AimSprite.Visible = true;
+    AimArmTimer.Start();
+
     Vector2 mouse = GetViewport().GetMousePosition();
 
     EmitSignal(
       SignalName.FireProjectile,
       projectile,
       Position,
-      mouse,
-      40.0f
+      mouse
     );
+  }
+
+  public void HandleFlip(bool isFlipped)
+  {
+    ArmSprite.FlipH = isFlipped;
+    BodySprite.FlipH = isFlipped;
+  }
+
+  public void OnAimArmTimerTimeout()
+  {
+    isAiming = false;
+    ArmSprite.Visible = true;
+    AimSprite.Visible = false;
   }
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-    _sprite = GetNode<Sprite2D>("Sprite");
+    BodySprite = GetNode<Sprite2D>("BodySprite");
+    ArmSprite = GetNode<Sprite2D>("ArmSprite");
+    AimSprite = GetNode<Sprite2D>("AimSprite");
+    AimArmTimer = GetNode<Timer>("AimArmTimer");
+
+    AimArmTimer.Timeout += OnAimArmTimerTimeout;
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta)
   {
+    if (isAiming)
+    {
+      Vector2 mousePos = GetViewport().GetMousePosition();
+      AimSprite.LookAt(mousePos);
+    }
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _PhysicsProcess(double delta)
   {
-    // // https://godotengine.org/qa/48404/make-character-face-cursors-direction-even-when-moving-around
-    // Vector2 charPos = GetViewport().GetCamera3D().UnprojectPosition(this.GlobalTransform.Origin);
-    // Vector2 mousePos = GetViewport().GetMousePosition();
-    // // float angle = charPos.AngleToPoint(mousePos);
-
-    // if (!this._sprite.FlipH && mousePos.X > charPos.X) {
-    // 	this._sprite.FlipH = true;
-    // } else if (this._sprite.FlipH && mousePos.X < charPos.X) {
-    // 	this._sprite.FlipH = false;
-    // }
-
+    // https://godotengine.org/qa/48404/make-character-face-cursors-direction-even-when-moving-around
     MoveAndSlide();
   }
 }

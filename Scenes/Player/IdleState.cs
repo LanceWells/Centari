@@ -31,13 +31,15 @@ public partial class IdleState : AbstractPlayerState
   {
     Vector2 direction = _handleMovement(delta);
 
+    _handleFireProjectile();
+
     if (direction.Length() > 0.0f)
     {
       _stateMachine.TransitionState("WalkingState");
     }
     else
     {
-      _player.Velocity = _player.Velocity.Lerp(Vector2.Zero, _player.Friction);
+      _player.Velocity = Vector2.Zero;
     }
   }
 }

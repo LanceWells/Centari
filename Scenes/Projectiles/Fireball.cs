@@ -1,6 +1,10 @@
+using Godot;
+
 public partial class Fireball : AbstractProjectile
 {
-  public override float Damage => 1.0f;
+  [Export]
+  public override float Damage { get; set; } = 1.0f;
 
-  public override bool Friendly => true;
+  [Export]
+  public override float Speed { get; set; } = 1000f;
 }

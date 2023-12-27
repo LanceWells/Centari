@@ -39,18 +39,21 @@ public abstract partial class AbstractPlayerState : AbstractState
       direction = direction.Normalized() * _player.MaxSpeed;
     }
 
+    return direction;
+  }
+
+  protected void _handleFireProjectile()
+  {
     if (Input.IsActionJustPressed("fire_projectile"))
     {
       PackedScene projectile = GD.Load<PackedScene>("res://Scenes/Projectiles/Fireball.tscn");
       _player.HandleFireProjectile(projectile);
     }
-
-    return direction;
   }
 
   protected bool _shouldFlip()
   {
-    bool doFlip = _player._sprite.FlipH;
+    bool doFlip = _player.BodySprite.FlipH;
 
     if (Input.IsActionPressed("move_left"))
     {
