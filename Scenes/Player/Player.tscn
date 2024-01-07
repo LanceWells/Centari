@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_slvam"]
-[ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
-[ext_resource type="Texture2D" uid="uid://b4jtcf36kkaia" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
+[ext_resource type="Texture2D" uid="uid://qr8tq7gt5wp4" path="res://Assets/Player/Player.png" id="2_w4w4p"]
+[ext_resource type="Texture2D" uid="uid://c3dlf5orl82p3" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
 [ext_resource type="Script" path="res://Scenes/Common/Entity/StateMachine.cs" id="3_ufn54"]
 [ext_resource type="PackedScene" uid="uid://c6q6nnxeomf7i" path="res://Scenes/Player/AimArm/aim_arm.tscn" id="4_0ihbt"]
 [ext_resource type="Script" path="res://Scenes/Player/IdleState.cs" id="4_ljqr1"]

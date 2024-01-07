@@ -19,5 +19,20 @@
       "console": "internalConsole",
       "stopAtEntry": false,
     },
+    {
+      "name": "Debug (Linux)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "/usr/lib/Godot/Godot",
+      "args": [
+        "--rendering-driver",
+        "opengl3",
+        "--path",
+        "${workspaceFolder}",
+      ],
+      "preLaunchTask": "build",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+    },
   ]
 }
