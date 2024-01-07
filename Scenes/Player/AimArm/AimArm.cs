@@ -12,6 +12,8 @@ public partial class AimArm : Node2D
 
   private Timer FadeTimer;
 
+  private GpuParticles2D _smokeParticles;
+
   [Signal]
   public delegate void OnAimTimerTimeoutEventHandler();
 
@@ -27,6 +29,7 @@ public partial class AimArm : Node2D
 
     Animation.Stop();
     Animation.Play("Fire");
+    _smokeParticles.Emitting = true;
   }
 
   private void _onFadeTimerTimeout()
@@ -43,6 +46,8 @@ public partial class AimArm : Node2D
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
+    _smokeParticles = GetNode<GpuParticles2D>("SmokeParticles");
+
     ArmSprite = GetNode<Sprite2D>("ArmSprite");
     Animation = GetNode<AnimationPlayer>("Animation");
 
