@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 public partial class Level : Node2D
 {
@@ -22,18 +24,24 @@ public partial class Level : Node2D
   {
   }
 
-  private void OnPlayerFireProjectile(PackedScene projectile, Vector2 origin, Vector2 target)
+  private async void OnPlayerFireProjectile(PackedScene projectile, Vector2 origin, Vector2 target)
   {
-    // Replace with function body.
-    Console.WriteLine("Fire");
-
     Fireball projectileInstance = projectile.Instantiate<Fireball>();
     AddChild(projectileInstance);
 
     projectileInstance.Position = origin;
-    projectileInstance.Rotation = origin.AngleToPoint(target);
-    projectileInstance.Velocity = projectileInstance.Velocity.Rotated(projectileInstance.Rotation);
+    // projectileInstance.Rotation = origin.AngleToPoint(target);
+    projectileInstance.Velocity = projectileInstance.Velocity.Normalized() * projectileInstance.Speed;
+    projectileInstance.Velocity = projectileInstance.Velocity.Rotated(origin.AngleToPoint(target));
 
     _projectileManager.ManageProjectile(projectileInstance);
+
+    // await Task.Run(async () =>
+    // {
+    //   // await Task.Delay(50);
+    //   // Vector2 mouse = GetViewport().GetMousePosition();
+    //   // Vector2 vChange = projectileInstance.Velocity.Lerp(mouse, 0.5f);
+    //   // projectileInstance.Velocity += vChange;
+    // });
   }
 }

@@ -1,22 +1,54 @@
 using Godot;
 
+/// <summary>
+/// This refers to the AimArm node. This node is visible only when the player is aiming. It also
+/// determines the visual point from which a projectile should emerge, so we use this node to
+/// determine projectile origin points as well.
+/// </summary>
 public partial class AimArm : Node2D
 {
-  public bool IsAiming = false;
+  /// <summary>
+  /// If true, we are currently aiming.
+  /// </summary>
+  private bool IsAiming = false;
 
-  public Sprite2D ArmSprite;
+  /// <summary>
+  /// A reference to the Arm sprite that we use instead of the regularly animated arm.
+  /// </summary>
+  private Sprite2D ArmSprite;
 
+  /// <summary>
+  /// A reference to the magic circle that is rendered at the end of the arm.
+  /// </summary>
+  private AnimatedSprite2D MagicCircleSprite;
+
+  /// <summary>
+  /// A reference to the aiming timer. This is used to determine when the player is no longer
+  /// aiming.
+  /// </summary>
   private Timer AimTimer;
 
+  /// <summary>
+  /// A reference to the animation player for the arm.
+  /// </summary>
   private AnimationPlayer Animation;
 
+  /// <summary>
+  /// A reference to when the timer for when the magic circle should begin to fade before the arm
+  /// is "put away" and we stop aiming.
+  /// </summary>
   private Timer FadeTimer;
 
-  private GpuParticles2D _smokeParticles;
-
+  /// <summary>
+  /// A signal that is emitted when the aim arm is no longer aiming. This should be consumed by the
+  /// player node in particular to indicate that it should render the regular arm instead.
+  /// </summary>
   [Signal]
   public delegate void OnAimTimerTimeoutEventHandler();
 
+  /// <summary>
+  /// Called when the arm is newly visible. This is the means by which to start "aiming".
+  /// </summary>
   public void StartAimStance()
   {
     IsAiming = true;
@@ -29,14 +61,28 @@ public partial class AimArm : Node2D
 
     Animation.Stop();
     Animation.Play("Fire");
-    _smokeParticles.Emitting = true;
   }
 
+  /// <summary>
+  /// Used to get the point at which projectiles created by the arm should originate.
+  /// </summary>
+  /// <returns></returns>
+  public Vector2 GetProjectileOrigin()
+  {
+    return MagicCircleSprite.GlobalPosition;
+  }
+
+  /// <summary>
+  /// Called when the <see cref="FadeTimer"=> expires.
+  /// </summary>
   private void _onFadeTimerTimeout()
   {
     Animation.Play("FadeOut");
   }
 
+  /// <summary>
+  /// Called when the <see cref="AimTimer"/> expires.
+  /// </summary>
   private void _onAimTimerTimeout()
   {
     IsAiming = false;
@@ -46,9 +92,8 @@ public partial class AimArm : Node2D
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-    _smokeParticles = GetNode<GpuParticles2D>("SmokeParticles");
-
     ArmSprite = GetNode<Sprite2D>("ArmSprite");
+    MagicCircleSprite = GetNode<AnimatedSprite2D>("ArmSprite/MagicCircleSprite");
     Animation = GetNode<AnimationPlayer>("Animation");
 
     AimTimer = GetNode<Timer>("AimTimer");

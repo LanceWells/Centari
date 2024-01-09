@@ -1,6 +1,7 @@
+using System;
 using Godot;
 
-public abstract partial class AbstractProjectile : Area2D, IProjectile
+public abstract partial class AbstractProjectile : RigidBody2D, IProjectile
 {
   public bool Friendly { get; set; } = true;
 
@@ -10,8 +11,29 @@ public abstract partial class AbstractProjectile : Area2D, IProjectile
 
   public Vector2 Velocity { get; set; } = Vector2.Right;
 
+  protected float? BendRotation = null;
+
+  // public override void _Ready()
+  // {
+  //   Velocity = new Vector2(Speed, 0);
+  //   base._Ready();
+  // }
+
   public override void _PhysicsProcess(double delta)
   {
-    Position += Velocity * (float)delta * Speed;
+    if (BendRotation != null)
+    {
+      // float rotationDelta = BendRotation.Value * (float)delta;
+      // float normalRotation = rotationDelta % (float)Math.PI * 2;
+      // Rotation += normalRotation;
+
+      // Rotation += BendRotation.Value * (float)delta;
+      // Rotate(0.01f);
+      // Velocity = Velocity.Rotated(Rotation);
+    }
+
+    Velocity = Velocity.Rotated(Rotation);
+
+    MoveAndCollide(Velocity);
   }
 }

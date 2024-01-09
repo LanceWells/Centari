@@ -12,9 +12,14 @@ public abstract partial class AbstractPlayerState : AbstractState
 
   protected PackedScene _activeProjectile;
 
+  /// <summary>
+  /// Handler for movement. This can be called in the process frame for those states that allow for
+  /// the player to fire.
+  /// </summary>
+  /// <param name="delta">The delta since the last process was called.</param>
+  /// <returns>The adjustment to the current direction.</returns>
   protected Vector2 _handleMovement(double delta)
   {
-    float d = (float)delta;
     Vector2 direction = Vector2.Zero;
 
     if (Input.IsActionPressed("move_up"))
@@ -42,6 +47,10 @@ public abstract partial class AbstractPlayerState : AbstractState
     return direction;
   }
 
+  /// <summary>
+  /// Handler for projectile fire input. This can be called in the process frame for those states
+  /// that allow the player to fire.
+  /// </summary>
   protected void _handleFireProjectile()
   {
     if (Input.IsActionJustPressed("fire_projectile"))
@@ -51,6 +60,11 @@ public abstract partial class AbstractPlayerState : AbstractState
     }
   }
 
+  /// <summary>
+  /// Base handler for determining if some movement should cause the player sprite to flip in a
+  /// given direction.
+  /// </summary>
+  /// <returns>True if the player should be flipped from its original position.</returns>
   protected bool _shouldFlip()
   {
     bool doFlip = _player.BodySprite.FlipH;

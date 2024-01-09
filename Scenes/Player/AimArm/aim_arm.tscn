@@ -1,11 +1,11 @@
 [gd_scene load_steps=79 format=3 uid="uid://c6q6nnxeomf7i"]
 
 [ext_resource type="Script" path="res://Scenes/Player/AimArm/AimArm.cs" id="1_aryim"]
-[ext_resource type="Texture2D" uid="uid://c8uun04vbttlm" path="res://Assets/Projectiles/MagicCircle.png" id="1_gasat"]
-[ext_resource type="Texture2D" uid="uid://dtxe6fqyfei3p" path="res://Assets/Player/FA-Aim1H.png" id="1_t1etj"]
+[ext_resource type="Texture2D" uid="uid://c8gwn2175k8fy" path="res://Assets/Projectiles/MagicCircle.png" id="1_gasat"]
+[ext_resource type="Texture2D" uid="uid://cxlqt2pq5g60p" path="res://Assets/Player/FA-Aim1H.png" id="1_t1etj"]
 [ext_resource type="Shader" path="res://Scenes/Player/AimArm/MagicCircle.gdshader" id="3_pybmk"]
-[ext_resource type="Texture2D" uid="uid://bvh6xphcy4gjp" path="res://Assets/Projectiles/MagicMuzzle.png" id="5_fweyj"]
-[ext_resource type="Texture2D" uid="uid://bbi83lo5h5krm" path="res://Assets/Projectiles/Smoke_13x14.png" id="6_87gtt"]
+[ext_resource type="Texture2D" uid="uid://cuw47kq2k0myc" path="res://Assets/Projectiles/MagicMuzzle.png" id="5_fweyj"]
+[ext_resource type="Texture2D" uid="uid://xihbowrfkjgn" path="res://Assets/Projectiles/Smoke_13x14.png" id="6_87gtt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qgjvo"]
 shader = ExtResource("3_pybmk")
@@ -775,7 +775,7 @@ material = SubResource("ShaderMaterial_qgjvo")
 position = Vector2(10, -2)
 sprite_frames = SubResource("SpriteFrames_kimjs")
 autoplay = "default"
-frame_progress = 0.778083
+frame_progress = 0.148529
 metadata/_aseprite_wizard_config_ = {
 "layer": "",
 "o_ex_p": "",
@@ -819,6 +819,7 @@ wait_time = 3.0
 one_shot = true
 
 [node name="SmokeParticles" type="GPUParticles2D" parent="."]
+visible = false
 material = SubResource("CanvasItemMaterial_uxv11")
 position = Vector2(15, -2)
 emitting = false

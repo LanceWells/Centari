@@ -1,8 +1,28 @@
 [gd_scene load_steps=68 format=3 uid="uid://413iceuajbn3"]
 
 [ext_resource type="Script" path="res://Scenes/Projectiles/Fireball.cs" id="1_ljbex"]
-[ext_resource type="Texture2D" uid="uid://djywvdfrn18n8" path="res://Scenes/Projectiles/energy_smol_12x12.png" id="2_n6ptn"]
-[ext_resource type="Texture2D" uid="uid://bbi83lo5h5krm" path="res://Assets/Projectiles/Smoke_13x14.png" id="3_m4jg7"]
+[ext_resource type="Texture2D" uid="uid://bfh2ewnllo7p0" path="res://Assets/Projectiles/energyfade_12x11.png" id="2_8y4e2"]
+[ext_resource type="Texture2D" uid="uid://db2qtuo1pqcka" path="res://Scenes/Projectiles/energy_smol_12x12.png" id="2_n6ptn"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_svumt"]
+particles_animation = true
+particles_anim_h_frames = 60
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mvpep"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(0, 0, 0)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+angle_min = -180.0
+angle_max = 180.0
+gravity = Vector3(0, 0, 0)
+scale_min = 4.0
+scale_max = 4.0
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+anim_offset_max = 0.1
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_woxql"]
 atlas = ExtResource("2_n6ptn")
@@ -435,22 +455,17 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_es2u5"]
 radius = 11.4018
 
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_svumt"]
-particles_animation = true
-particles_anim_h_frames = 12
-particles_anim_v_frames = 1
-particles_anim_loop = true
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mvpep"]
-particle_flag_disable_z = true
-angle_min = -180.0
-angle_max = 180.0
-gravity = Vector3(0, 0, 0)
-anim_speed_min = 0.1
-anim_speed_max = 0.3
-
-[node name="Fireball" type="Area2D"]
+[node name="Fireball" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 5
 script = ExtResource("1_ljbex")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_svumt")
+amount = 64
+process_material = SubResource("ParticleProcessMaterial_mvpep")
+texture = ExtResource("2_8y4e2")
+fixed_fps = 60
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 texture_filter = 1
@@ -471,10 +486,7 @@ metadata/_aseprite_wizard_config_ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_es2u5")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-material = SubResource("CanvasItemMaterial_svumt")
-position = Vector2(-29, -5)
-amount = 64
-process_material = SubResource("ParticleProcessMaterial_mvpep")
-texture = ExtResource("3_m4jg7")
-fixed_fps = 60
+[node name="BulletBendTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+autostart = true

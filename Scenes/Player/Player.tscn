@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_slvam"]
-[ext_resource type="Texture2D" uid="uid://qr8tq7gt5wp4" path="res://Assets/Player/Player.png" id="2_w4w4p"]
-[ext_resource type="Texture2D" uid="uid://c3dlf5orl82p3" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
+[ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
+[ext_resource type="Texture2D" uid="uid://b4jtcf36kkaia" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
 [ext_resource type="Script" path="res://Scenes/Common/Entity/StateMachine.cs" id="3_ufn54"]
 [ext_resource type="PackedScene" uid="uid://c6q6nnxeomf7i" path="res://Scenes/Player/AimArm/aim_arm.tscn" id="4_0ihbt"]
 [ext_resource type="Script" path="res://Scenes/Player/IdleState.cs" id="4_ljqr1"]
@@ -112,30 +112,18 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("AimArm:position")
+tracks/8/path = NodePath("AimArm:position:y")
 tracks/8/interp = 0
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.6, 0.7),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.6, 0.7001),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
-"values": [Vector2(-4, -2), Vector2(-4, -1), Vector2(-4, 0), Vector2(-4, -2), Vector2(-4, -3)]
+"values": [-2.0, -1.0, 0.0, -2.0, -3.0]
 }
 
 [sub_resource type="Animation" id="Animation_jxguu"]
 length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AimArm:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-4, -2)]
-}
 
 [sub_resource type="Animation" id="Animation_ifq1k"]
 resource_name = "Run"
@@ -259,6 +247,8 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(4, 4)
+collision_layer = 2
+collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_slvam")
 MaxSpeed = 22.0
@@ -312,7 +302,7 @@ libraries = {
 
 [node name="AimArm" parent="." instance=ExtResource("4_0ihbt")]
 visible = false
-position = Vector2(-4, -2)
+position = Vector2(-3, -3)
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("3_ufn54")

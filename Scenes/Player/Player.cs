@@ -1,19 +1,48 @@
 using Godot;
 
+/// <summary>
+/// This class is used to refer to the player scene itself.
+/// </summary>
 public partial class Player : CharacterBody2D
 {
+  /// <summary>
+  /// A configurable walking speed for the player.
+  /// </summary>
   [Export]
   public float MaxSpeed = 14.0f;
 
+  /// <summary>
+  /// Not really used, but this can be used for damping effects during movement.
+  /// </summary>
   [Export]
   public float Friction = 0.75f;
 
+  [Export]
+  public int AimPartAnchorX = -4;
+
+  /// <summary>
+  /// A reference to the BodySprite node for the player.
+  /// </summary>
   public Sprite2D BodySprite;
 
+  /// <summary>
+  /// A reference to the ArmSprite node for the player.
+  /// </summary>
   private Sprite2D ArmSprite;
 
+  /// <summary>
+  /// A reference to the <see cref="AimArm" /> node for the player.
+  /// </summary>
   private AimArm AimArm;
 
+  /// <summary>
+  /// A signal used to indicate that the player wants to fire a projectile. This informs the
+  /// projectile manager in the level that it needs to create the projectile and to add it to the
+  /// current scene.
+  /// </summary>
+  /// <param name="projectile">The projectile to add to the scene.</param>
+  /// <param name="origin">The origin point for the projectile.</param>
+  /// <param name="target">The point at which to fire the projectile</param>
   [Signal]
   public delegate void FireProjectileEventHandler(
     PackedScene projectile,
@@ -21,6 +50,11 @@ public partial class Player : CharacterBody2D
     Vector2 target
   );
 
+  /// <summary>
+  /// This should be called when the player indicates that they want to fire a projectile at the
+  /// standard targeting point.
+  /// </summary>
+  /// <param name="projectile">The projectile to fire.</param>
   public void HandleFireProjectile(PackedScene projectile)
   {
     AimArm.Visible = true;
@@ -28,12 +62,7 @@ public partial class Player : CharacterBody2D
     AimArm.StartAimStance();
 
     Vector2 mouse = GetViewport().GetMousePosition();
-    Vector2 projectileOrigin = Vector2.Zero;
-
-    projectileOrigin += new Vector2(24, -1);
-    projectileOrigin = projectileOrigin.Rotated(Position.AngleToPoint(mouse));
-    projectileOrigin += AimArm.Position;
-    projectileOrigin += Position;
+    Vector2 projectileOrigin = AimArm.GetProjectileOrigin();
 
     EmitSignal(
       SignalName.FireProjectile,
@@ -43,19 +72,38 @@ public partial class Player : CharacterBody2D
     );
   }
 
+  /// <summary>
+  /// This should be called when the player sprite should be flipped in a given direction.
+  /// </summary>
+  /// <param name="isFlipped">
+  /// If true, flip the default direction for the sprite. Otherwise, make the sprite face the
+  /// default direction.
+  /// </param>
   public void HandleFlip(bool isFlipped)
   {
     ArmSprite.FlipH = isFlipped;
     BodySprite.FlipH = isFlipped;
+    if (isFlipped)
+    {
+      AimArm.Position = new Vector2(-AimPartAnchorX, AimArm.Position.Y);
+    }
+    else
+    {
+      AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
+    }
   }
 
+  /// <summary>
+  /// This is called when the aim arm has "timed out". In this scenario, it means that the player is
+  /// no longer aiming for any given reason. This should be largely a visual change.
+  /// </summary>
   public void OnAimArmTimerTimeout()
   {
     AimArm.Visible = false;
     ArmSprite.Visible = true;
   }
 
-  // Called when the node enters the scene tree for the first time.
+  /// <inheritdoc/>
   public override void _Ready()
   {
     BodySprite = GetNode<Sprite2D>("BodySprite");
@@ -63,9 +111,10 @@ public partial class Player : CharacterBody2D
 
     AimArm = GetNode<AimArm>("AimArm");
     AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
+    AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
   }
 
-  // Called every frame. 'delta' is the elapsed time since the previous frame.
+  /// <inheritdoc/>
   public override void _PhysicsProcess(double delta)
   {
     MoveAndSlide();
