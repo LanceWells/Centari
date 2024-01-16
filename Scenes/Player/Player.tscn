@@ -249,7 +249,6 @@ _data = {
 scale = Vector2(4, 4)
 collision_layer = 2
 collision_mask = 5
-motion_mode = 1
 script = ExtResource("1_slvam")
 MaxSpeed = 22.0
 Friction = 0.4
