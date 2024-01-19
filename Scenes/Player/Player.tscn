@@ -246,12 +246,9 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
-scale = Vector2(4, 4)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_slvam")
-MaxSpeed = 22.0
-Friction = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_7igll")

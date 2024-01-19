@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 /// <summary>
@@ -18,31 +19,41 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// </summary>
   /// <param name="delta">The delta since the last process was called.</param>
   /// <returns>The adjustment to the current direction.</returns>
-  protected Vector2 _handleMovement(double delta)
+  protected Vector2 _getMovementInput(double delta)
   {
     Vector2 direction = Vector2.Zero;
-
-    if (Input.IsActionPressed("move_up"))
-    {
-      direction.Y -= 1;
-    }
-    if (Input.IsActionPressed("move_down"))
-    {
-      direction.Y += 1;
-    }
     if (Input.IsActionPressed("move_left"))
     {
-      direction.X -= 1;
+      direction.X = -1;
     }
     if (Input.IsActionPressed("move_right"))
     {
-      direction.X += 1;
+      direction.X = 1;
     }
 
-    if (direction != Vector2.Zero)
+    direction = direction.Normalized() * _player.MaxSpeed;
+
+    return direction;
+  }
+
+  protected Vector2 _getJumpInput(double delta)
+  {
+    Vector2 direction = Vector2.Zero;
+    if (Input.IsActionJustPressed("jump"))
     {
-      direction = direction.Normalized() * _player.MaxSpeed;
+      direction.Y -= 1;
+      Console.WriteLine("jump");
     }
+
+    direction = direction.Normalized() * _player.JumpStrength;
+
+    return direction;
+  }
+
+  protected Vector2 _getGravity(double delta)
+  {
+    Vector2 direction = Vector2.Zero;
+    direction.Y += (float)delta * _player.Gravity;
 
     return direction;
   }
@@ -122,4 +133,9 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   { }
+
+  public float Lerp(float firstFloat, float secondFloat, float by)
+  {
+    return firstFloat * (1 - by) + secondFloat * by;
+  }
 }

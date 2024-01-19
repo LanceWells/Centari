@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 /// <summary>
@@ -26,20 +27,34 @@ public partial class WalkingState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
-    Vector2 direction = _handleMovement(delta);
+    Vector2 inputDir = _getMovementInput(delta);
+    Vector2 gravityDir = _getGravity(delta);
+    Vector2 jumpDir = _getJumpInput(delta);
 
-    _handleFireProjectile();
+    Vector2 velocity = _player.Velocity;
+    velocity.X = inputDir.X;
+    velocity.Y += gravityDir.Y;
+    velocity.Y += jumpDir.Y;
 
-    if (direction == Vector2.Zero)
+    _player.Velocity = velocity;
+
+    if (_player.IsOnFloor())
     {
-      _stateMachine.TransitionState("IdleState");
+      _player.Velocity += jumpDir;
     }
-    else
-    {
-      _player.Velocity = direction * _player.MaxSpeed;
-    }
+
 
     bool shouldFlip = _shouldFlip();
     _player.HandleFlip(shouldFlip);
+    _player.MoveAndSlide();
+
+    _handleFireProjectile();
+
+    if (inputDir == Vector2.Zero)
+    {
+      _stateMachine.TransitionState("IdleState");
+    }
+
+    Console.WriteLine(_player.Velocity);
   }
 }

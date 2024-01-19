@@ -9,16 +9,16 @@ public partial class Player : CharacterBody2D
   /// A configurable walking speed for the player.
   /// </summary>
   [Export]
-  public float MaxSpeed = 14.0f;
+  public float MaxSpeed = 200.0f;
 
-  /// <summary>
-  /// Not really used, but this can be used for damping effects during movement.
-  /// </summary>
   [Export]
-  public float Friction = 0.75f;
+  public float JumpStrength = 150.0f;
 
   [Export]
   public int AimPartAnchorX = -4;
+
+  [Export]
+  public float Gravity = 500.0f;
 
   /// <summary>
   /// A reference to the BodySprite node for the player.
@@ -117,6 +117,5 @@ public partial class Player : CharacterBody2D
   /// <inheritdoc/>
   public override void _PhysicsProcess(double delta)
   {
-    MoveAndSlide();
   }
 }
