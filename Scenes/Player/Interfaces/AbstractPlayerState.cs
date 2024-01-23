@@ -13,47 +13,52 @@ public abstract partial class AbstractPlayerState : AbstractState
 
   protected PackedScene _activeProjectile;
 
-  /// <summary>
-  /// Handler for movement. This can be called in the process frame for those states that allow for
-  /// the player to fire.
-  /// </summary>
-  /// <param name="delta">The delta since the last process was called.</param>
-  /// <returns>The adjustment to the current direction.</returns>
-  protected Vector2 _getMovementInput(double delta)
+  abstract protected bool CanWalk { get; }
+
+  abstract protected bool CanJump { get; }
+
+  abstract protected bool GravityAffected { get; }
+
+  virtual protected Vector2 GetWalking(Vector2 direction, double delta)
   {
-    Vector2 direction = Vector2.Zero;
+    Vector2 walkDirection = Vector2.Zero;
     if (Input.IsActionPressed("move_left"))
     {
-      direction.X = -1;
+      walkDirection.X -= _player.MaxSpeed;
     }
     if (Input.IsActionPressed("move_right"))
     {
-      direction.X = 1;
+      walkDirection.X += _player.MaxSpeed;
     }
 
-    direction = direction.Normalized() * _player.MaxSpeed;
+    Vector2 lerpedDir = direction.Lerp(
+      walkDirection,
+      (float)delta * _player.Friction
+    );
 
+    return lerpedDir;
+  }
+
+  virtual protected Vector2 GetGravity(Vector2 direction, double delta)
+  {
+    Vector2 gravity = new Vector2(0, _player.Gravity);
+    direction = direction.Lerp(gravity, (float)delta);
     return direction;
   }
 
-  protected Vector2 _getJumpInput(double delta)
+  protected Vector2 CalculateDirection(double delta)
   {
-    Vector2 direction = Vector2.Zero;
-    if (Input.IsActionJustPressed("jump"))
+    Vector2 direction = _player.Velocity;
+
+    if (GravityAffected)
     {
-      direction.Y -= 1;
-      Console.WriteLine("jump");
+      direction = GetGravity(direction, delta);
     }
 
-    direction = direction.Normalized() * _player.JumpStrength;
-
-    return direction;
-  }
-
-  protected Vector2 _getGravity(double delta)
-  {
-    Vector2 direction = Vector2.Zero;
-    direction.Y += (float)delta * _player.Gravity;
+    if (CanWalk)
+    {
+      direction = GetWalking(direction, delta);
+    }
 
     return direction;
   }
@@ -134,8 +139,17 @@ public abstract partial class AbstractPlayerState : AbstractState
   public override void PhysicsProcess(double delta)
   { }
 
-  public float Lerp(float firstFloat, float secondFloat, float by)
+  public static float Lerp(float firstFloat, float secondFloat, float by)
   {
     return firstFloat * (1 - by) + secondFloat * by;
+  }
+
+  public static Vector2 QuadraticBezier(Vector2 p0, Vector2 p1, Vector2 p2, double delta)
+  {
+    Vector2 q0 = p0.Lerp(p1, (float)delta);
+    Vector2 q1 = p1.Lerp(p2, (float)delta);
+
+    Vector2 r = q0.Lerp(q1, (float)delta);
+    return r;
   }
 }

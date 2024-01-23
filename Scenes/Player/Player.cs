@@ -12,13 +12,16 @@ public partial class Player : CharacterBody2D
   public float MaxSpeed = 200.0f;
 
   [Export]
-  public float JumpStrength = 150.0f;
+  public float JumpStrength = 1000.0f;
 
   [Export]
   public int AimPartAnchorX = -4;
 
   [Export]
-  public float Gravity = 500.0f;
+  public float Gravity = 4500.0f;
+
+  [Export]
+  public float Friction = 8.0f;
 
   /// <summary>
   /// A reference to the BodySprite node for the player.

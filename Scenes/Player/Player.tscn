@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://06ruk4bqpmsf"]
+[gd_scene load_steps=14 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_slvam"]
 [ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c6q6nnxeomf7i" path="res://Scenes/Player/AimArm/aim_arm.tscn" id="4_0ihbt"]
 [ext_resource type="Script" path="res://Scenes/Player/IdleState.cs" id="4_ljqr1"]
 [ext_resource type="Script" path="res://Scenes/Player/WalkingState.cs" id="5_k4cly"]
+[ext_resource type="Script" path="res://Scenes/Player/MidairState.cs" id="8_sm2ba"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7igll"]
 
@@ -246,9 +247,14 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+scale = Vector2(2, 2)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_slvam")
+MaxSpeed = 500.0
+JumpStrength = 1500.0
+Gravity = 2000.0
+Friction = 12.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_7igll")
@@ -308,3 +314,6 @@ script = ExtResource("4_ljqr1")
 
 [node name="WalkingState" type="Node" parent="StateMachine"]
 script = ExtResource("5_k4cly")
+
+[node name="MidairState" type="Node" parent="StateMachine"]
+script = ExtResource("8_sm2ba")

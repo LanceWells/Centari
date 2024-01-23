@@ -6,6 +6,10 @@ using Godot;
 /// </summary>
 public partial class IdleState : AbstractPlayerState
 {
+  protected override bool CanWalk => true;
+  protected override bool CanJump => true;
+  protected override bool GravityAffected => true;
+
   /// <inheritdoc/>
   public override void Transition(
   StateMachine stateMachine,
@@ -26,27 +30,19 @@ public partial class IdleState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
-    Vector2 inputDir = _getMovementInput(delta);
-    Vector2 gravityDir = _getGravity(delta);
-    Vector2 jumpDir = _getJumpInput(delta);
+    Vector2 inputDir = CalculateDirection(delta);
+    _player.Velocity = inputDir;
 
-    Vector2 velocity = _player.Velocity;
-    velocity.X = inputDir.X;
-    velocity.Y += gravityDir.Y;
-    velocity.Y += jumpDir.Y;
-
-    _player.Velocity = velocity;
-
-    if (_player.IsOnFloor())
-    {
-      _player.Velocity += jumpDir;
-    }
-
+    _player.HandleFlip(_shouldFlip());
     _player.MoveAndSlide();
 
     _handleFireProjectile();
 
-    if (inputDir != Vector2.Zero)
+    if (Input.IsActionPressed("jump"))
+    {
+      _stateMachine.TransitionState("MidairState");
+    }
+    else if (Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right"))
     {
       _stateMachine.TransitionState("WalkingState");
     }

@@ -3,16 +3,59 @@ using Godot;
 
 public partial class ProjectileManager : Node
 {
-  private Pool<Node> _projectilePool;
+  private Pool<AbstractProjectile> _projectilePool;
 
   public override void _Ready()
   {
-    _projectilePool = new Pool<Node>(200);
+    _projectilePool = new Pool<AbstractProjectile>(200);
     base._Ready();
   }
 
-  public void ManageProjectile(Node projectile)
+  public void ManageProjectile(AbstractProjectile projectile)
   {
+    projectile.Collide += OnCollide;
+    // projectile.BodyEntered += OnBodyEntered;
+    // projectile.BodyShapeEntered += OnBodyShapeEntered;
     _projectilePool.AddResource(projectile);
   }
+
+  private void OnCollide(KinematicCollision2D collision, AbstractProjectile projectile)
+  {
+    Console.WriteLine("collision", collision);
+    GodotObject collilder = collision.GetCollider();
+
+    if (((Node)collilder).IsInGroup("Surfaces"))
+    {
+      Vector2 collisionPosition = collision.GetPosition();
+      Vector2 colliderVelocity = collision.GetColliderVelocity();
+      Console.WriteLine(collisionPosition);
+      Console.WriteLine(colliderVelocity);
+
+      // asplode
+      Console.WriteLine(collilder);
+      Vector2 velocityAtImpact = collision.GetRemainder();
+      Vector2 normalFromImpact = collision.GetNormal();
+      float angleAtImpact = collision.GetAngle();
+
+      Console.WriteLine(normalFromImpact.ToString());
+      Console.WriteLine(velocityAtImpact.ToString());
+      Console.WriteLine(angleAtImpact);
+    }
+
+    projectile.Collide -= OnCollide;
+
+    projectile.QueueFree();
+    // projectile.Free();
+    // projectile.Dispose();
+  }
+
+  // private void OnBodyEntered(Node node)
+  // {
+  //   Console.WriteLine("collision");
+  // }
+
+  // private void OnBodyShapeEntered(Rid bodyRid, Node body, long bodyShapeIndex, long localShapeIndex)
+  // {
+  //   Console.WriteLine("collision");
+  // }
 }

@@ -31,7 +31,7 @@ position = Vector2(191, 554)
 
 [node name="ProjectileManager" parent="." instance=ExtResource("3_5rcgh")]
 
-[node name="TileMap" type="TileMap" parent="."]
+[node name="TileMap" type="TileMap" parent="." groups=["Surfaces"]]
 tile_set = SubResource("TileSet_fy5xr")
 rendering_quadrant_size = 32
 format = 2

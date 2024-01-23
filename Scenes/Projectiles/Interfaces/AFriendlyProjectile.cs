@@ -13,27 +13,21 @@ public abstract partial class AbstractProjectile : RigidBody2D, IProjectile
 
   protected float? BendRotation = null;
 
-  // public override void _Ready()
-  // {
-  //   Velocity = new Vector2(Speed, 0);
-  //   base._Ready();
-  // }
+  [Signal]
+  public delegate void CollideEventHandler(
+    KinematicCollision2D collision,
+    AbstractProjectile projectile
+  );
 
   public override void _PhysicsProcess(double delta)
   {
-    if (BendRotation != null)
-    {
-      // float rotationDelta = BendRotation.Value * (float)delta;
-      // float normalRotation = rotationDelta % (float)Math.PI * 2;
-      // Rotation += normalRotation;
-
-      // Rotation += BendRotation.Value * (float)delta;
-      // Rotate(0.01f);
-      // Velocity = Velocity.Rotated(Rotation);
-    }
-
     Velocity = Velocity.Rotated(Rotation);
 
-    MoveAndCollide(Velocity);
+    KinematicCollision2D collision = MoveAndCollide(Velocity);
+
+    if (collision != null)
+    {
+      EmitSignal(SignalName.Collide, collision, this);
+    }
   }
 }

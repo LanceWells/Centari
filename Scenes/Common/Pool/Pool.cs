@@ -21,7 +21,11 @@ public class Pool<T> where T : Node
     if (_resources.Count > _limit)
     {
       T oldResource = _resources.Dequeue();
-      oldResource.Dispose();
+      if (oldResource != null)
+      {
+        // oldResource.Dispose();
+        oldResource.QueueFree();
+      }
     }
   }
 }
