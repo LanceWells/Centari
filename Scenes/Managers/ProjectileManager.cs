@@ -14,8 +14,6 @@ public partial class ProjectileManager : Node
   public void ManageProjectile(AbstractProjectile projectile)
   {
     projectile.Collide += OnCollide;
-    // projectile.BodyEntered += OnBodyEntered;
-    // projectile.BodyShapeEntered += OnBodyShapeEntered;
     _projectilePool.AddResource(projectile);
   }
 
@@ -44,18 +42,38 @@ public partial class ProjectileManager : Node
 
     projectile.Collide -= OnCollide;
 
-    projectile.QueueFree();
-    // projectile.Free();
-    // projectile.Dispose();
+    // If the projectile had any particles, ensure that they finish particle-ing before we delete
+    // them. If we get rid of them outright, it makes any particle trains disappear in a jarring
+    // fashion.
+    GpuParticles2D particles = projectile.GetNodeOrNull<GpuParticles2D>("GPUParticles2D");
+    if (particles != null)
+    {
+      projectile.RemoveChild(particles);
+      Vector2 p = particles.GlobalPosition;
+
+      AddChild(particles);
+      particles.Position = p;
+
+      particles.OneShot = true;
+      particles.Emitting = false;
+
+      // There are a few issues with the "Finished" signal for GPU particles. Instead, perform a
+      // cleanup some time after we've moved the particles to the level's tree.
+      Timer t = new Timer();
+      AddChild(t);
+      t.OneShot = true;
+      t.Timeout += () =>
+      {
+        RemoveChild(particles);
+        particles.QueueFree();
+
+        RemoveChild(t);
+        t.QueueFree();
+      };
+
+      t.Start(0.5);
+    }
+
+    projectile.CallDeferred(Node.MethodName.QueueFree);
   }
-
-  // private void OnBodyEntered(Node node)
-  // {
-  //   Console.WriteLine("collision");
-  // }
-
-  // private void OnBodyShapeEntered(Rid bodyRid, Node body, long bodyShapeIndex, long localShapeIndex)
-  // {
-  //   Console.WriteLine("collision");
-  // }
 }
