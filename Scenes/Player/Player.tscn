@@ -251,8 +251,8 @@ scale = Vector2(2, 2)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_slvam")
-MaxSpeed = 500.0
-JumpStrength = 1500.0
+MaxSpeed = 350.0
+JumpStrength = 750.0
 Gravity = 2000.0
 Friction = 12.0
 

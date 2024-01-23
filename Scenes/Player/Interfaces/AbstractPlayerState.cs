@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 /// <summary>
@@ -15,18 +14,23 @@ public abstract partial class AbstractPlayerState : AbstractState
 
   abstract protected bool CanWalk { get; }
 
-  abstract protected bool CanJump { get; }
 
   abstract protected bool GravityAffected { get; }
 
+  abstract protected bool CanAttack { get; }
+
+  abstract protected bool CanFlip { get; }
+
   virtual protected Vector2 GetWalking(Vector2 direction, double delta)
   {
+    PlayerInputs p = GetPlayerInputs();
+
     Vector2 walkDirection = Vector2.Zero;
-    if (Input.IsActionPressed("move_left"))
+    if (p.MoveLeft)
     {
       walkDirection.X -= _player.MaxSpeed;
     }
-    if (Input.IsActionPressed("move_right"))
+    if (p.MoveRight)
     {
       walkDirection.X += _player.MaxSpeed;
     }
@@ -83,13 +87,15 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// <returns>True if the player should be flipped from its original position.</returns>
   protected bool _shouldFlip()
   {
+    PlayerInputs p = GetPlayerInputs();
+
     bool doFlip = _player.BodySprite.FlipH;
 
-    if (Input.IsActionPressed("move_left"))
+    if (p.MoveLeft)
     {
       doFlip = true;
     }
-    if (Input.IsActionPressed("move_right"))
+    if (p.MoveRight)
     {
       doFlip = false;
     }
@@ -139,17 +145,24 @@ public abstract partial class AbstractPlayerState : AbstractState
   public override void PhysicsProcess(double delta)
   { }
 
-  public static float Lerp(float firstFloat, float secondFloat, float by)
+  public struct PlayerInputs
   {
-    return firstFloat * (1 - by) + secondFloat * by;
+    public bool MoveLeft;
+
+    public bool MoveRight;
+
+    public bool Jump;
   }
 
-  public static Vector2 QuadraticBezier(Vector2 p0, Vector2 p1, Vector2 p2, double delta)
+  protected PlayerInputs GetPlayerInputs()
   {
-    Vector2 q0 = p0.Lerp(p1, (float)delta);
-    Vector2 q1 = p1.Lerp(p2, (float)delta);
+    PlayerInputs p = new PlayerInputs
+    {
+      MoveLeft = Input.IsActionPressed("move_left"),
+      MoveRight = Input.IsActionPressed("move_right"),
+      Jump = Input.IsActionPressed("jump")
+    };
 
-    Vector2 r = q0.Lerp(q1, (float)delta);
-    return r;
+    return p;
   }
 }

@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 /// <summary>
@@ -6,9 +5,17 @@ using Godot;
 /// </summary>
 public partial class IdleState : AbstractPlayerState
 {
+  /// <inheritdoc/>
   protected override bool CanWalk => true;
-  protected override bool CanJump => true;
+
+  /// <inheritdoc/>
   protected override bool GravityAffected => true;
+
+  /// <inheritdoc/>
+  protected override bool CanAttack => true;
+
+  /// <inheritdoc/>
+  protected override bool CanFlip => true;
 
   /// <inheritdoc/>
   public override void Transition(
@@ -30,23 +37,21 @@ public partial class IdleState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
+    PlayerInputs p = GetPlayerInputs();
     Vector2 inputDir = CalculateDirection(delta);
     _player.Velocity = inputDir;
 
     _player.HandleFlip(_shouldFlip());
     _player.MoveAndSlide();
-
     _handleFireProjectile();
 
-    if (Input.IsActionPressed("jump"))
+    if (p.Jump)
     {
       _stateMachine.TransitionState("MidairState");
     }
-    else if (Input.IsActionPressed("move_left") || Input.IsActionPressed("move_right"))
+    else if (p.MoveLeft || p.MoveRight)
     {
       _stateMachine.TransitionState("WalkingState");
     }
-
-    Console.WriteLine(_player.Velocity);
   }
 }
