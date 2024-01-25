@@ -51,10 +51,6 @@ public partial class IdleState : AbstractPlayerState
     {
       _stateMachine.TransitionState("MidairState");
     }
-    // if (p.Jump)
-    // {
-    //   _stateMachine.TransitionState("MidairState");
-    // }
     else if (p.MoveLeft || p.MoveRight)
     {
       _stateMachine.TransitionState("WalkingState");

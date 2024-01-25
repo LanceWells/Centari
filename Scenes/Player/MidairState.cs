@@ -19,14 +19,30 @@ public partial class MidairState : AbstractPlayerState
 
   public void OnBodyEntered(Node2D body)
   {
-    Console.WriteLine("Mantle");
+    PlayerInputs p = GetPlayerInputs();
+
+    Vector2 mantleBoost = Vector2.Zero;
+    if (p.MoveLeft && _player.Velocity.X < 0 && Math.Abs(_player.Velocity.Y) < 500)
+    {
+      mantleBoost.Y -= _player.MaxSpeed * 0.6f;
+      mantleBoost.X -= _player.MaxSpeed * 0.6f;
+    }
+
+    if (p.MoveRight && _player.Velocity.X > 0 && Math.Abs(_player.Velocity.Y) < 500)
+    {
+      mantleBoost.Y -= _player.MaxSpeed * 0.6f;
+      mantleBoost.X += _player.MaxSpeed * 0.6f;
+    }
+
+    // If the mantle activates, do a lil mantle animation.
+
+    _player.Velocity = mantleBoost;
   }
 
   /// <inheritdoc/>
   public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Transition(stateMachine, animationPlayer, owner);
-    // _player.Velocity = new Vector2(_player.Velocity.X, -_player.JumpStrength);
     _player.MantleArea.BodyEntered += OnBodyEntered;
   }
 
