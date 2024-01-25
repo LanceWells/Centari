@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://06ruk4bqpmsf"]
+[gd_scene load_steps=15 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scenes/Player/Player.cs" id="1_slvam"]
 [ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
@@ -246,6 +246,9 @@ _data = {
 "Run": SubResource("Animation_ifq1k")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_axxb2"]
+size = Vector2(9.5, 6)
+
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(2, 2)
 collision_layer = 2
@@ -317,3 +320,10 @@ script = ExtResource("5_k4cly")
 
 [node name="MidairState" type="Node" parent="StateMachine"]
 script = ExtResource("8_sm2ba")
+
+[node name="MantleArea" type="Area2D" parent="."]
+position = Vector2(4.5, 12.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MantleArea"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_axxb2")

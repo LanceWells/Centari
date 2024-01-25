@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 /// <summary>
@@ -27,6 +28,10 @@ public partial class Player : CharacterBody2D
   /// A reference to the BodySprite node for the player.
   /// </summary>
   public Sprite2D BodySprite;
+
+  public Area2D MantleArea;
+
+  private Vector2 _initialMantlePosition;
 
   /// <summary>
   /// A reference to the ArmSprite node for the player.
@@ -86,13 +91,22 @@ public partial class Player : CharacterBody2D
   {
     ArmSprite.FlipH = isFlipped;
     BodySprite.FlipH = isFlipped;
+
     if (isFlipped)
     {
       AimArm.Position = new Vector2(-AimPartAnchorX, AimArm.Position.Y);
+      MantleArea.Position = new Vector2(
+        -_initialMantlePosition.X,
+        _initialMantlePosition.Y
+      );
     }
     else
     {
       AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
+      MantleArea.Position = new Vector2(
+        _initialMantlePosition.X,
+        _initialMantlePosition.Y
+      );
     }
   }
 
@@ -111,10 +125,13 @@ public partial class Player : CharacterBody2D
   {
     BodySprite = GetNode<Sprite2D>("BodySprite");
     ArmSprite = GetNode<Sprite2D>("ArmSprite");
+    MantleArea = GetNode<Area2D>("MantleArea");
 
     AimArm = GetNode<AimArm>("AimArm");
     AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
     AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
+
+    _initialMantlePosition = new Vector2(MantleArea.Position.X, MantleArea.Position.Y);
   }
 
   /// <inheritdoc/>

@@ -17,6 +17,8 @@ public partial class IdleState : AbstractPlayerState
   /// <inheritdoc/>
   protected override bool CanFlip => true;
 
+  protected override bool CanJump => true;
+
   /// <inheritdoc/>
   public override void Transition(
   StateMachine stateMachine,
@@ -45,10 +47,14 @@ public partial class IdleState : AbstractPlayerState
     _player.MoveAndSlide();
     _handleFireProjectile();
 
-    if (p.Jump)
+    if (!_player.IsOnFloor())
     {
       _stateMachine.TransitionState("MidairState");
     }
+    // if (p.Jump)
+    // {
+    //   _stateMachine.TransitionState("MidairState");
+    // }
     else if (p.MoveLeft || p.MoveRight)
     {
       _stateMachine.TransitionState("WalkingState");

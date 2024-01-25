@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class MidairState : AbstractPlayerState
@@ -14,11 +15,25 @@ public partial class MidairState : AbstractPlayerState
   /// <inheritdoc/>
   protected override bool CanFlip => true;
 
+  protected override bool CanJump => false;
+
+  public void OnBodyEntered(Node2D body)
+  {
+    Console.WriteLine("Mantle");
+  }
+
   /// <inheritdoc/>
   public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Transition(stateMachine, animationPlayer, owner);
-    _player.Velocity = new Vector2(_player.Velocity.X, -_player.JumpStrength);
+    // _player.Velocity = new Vector2(_player.Velocity.X, -_player.JumpStrength);
+    _player.MantleArea.BodyEntered += OnBodyEntered;
+  }
+
+  public override void Detransition()
+  {
+    base.Detransition();
+    _player.MantleArea.BodyEntered -= OnBodyEntered;
   }
 
   /// <inheritdoc/>

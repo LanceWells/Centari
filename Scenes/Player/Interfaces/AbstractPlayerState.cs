@@ -21,6 +21,8 @@ public abstract partial class AbstractPlayerState : AbstractState
 
   abstract protected bool CanFlip { get; }
 
+  abstract protected bool CanJump { get; }
+
   virtual protected Vector2 GetWalking(Vector2 direction, double delta)
   {
     PlayerInputs p = GetPlayerInputs();
@@ -43,6 +45,19 @@ public abstract partial class AbstractPlayerState : AbstractState
     return lerpedDir;
   }
 
+  virtual protected Vector2 GetJumping(Vector2 direction, double delta)
+  {
+    PlayerInputs p = GetPlayerInputs();
+
+    Vector2 jumpDirection = Vector2.Zero;
+    if (p.Jump)
+    {
+      jumpDirection.Y -= _player.JumpStrength;
+    }
+
+    return direction + jumpDirection;
+  }
+
   virtual protected Vector2 GetGravity(Vector2 direction, double delta)
   {
     Vector2 gravity = new Vector2(0, _player.Gravity);
@@ -62,6 +77,11 @@ public abstract partial class AbstractPlayerState : AbstractState
     if (CanWalk)
     {
       direction = GetWalking(direction, delta);
+    }
+
+    if (CanJump)
+    {
+      direction = GetJumping(direction, delta);
     }
 
     return direction;
