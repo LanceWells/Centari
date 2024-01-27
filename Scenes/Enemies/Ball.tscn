@@ -7,11 +7,13 @@
 [node name="Ball" type="RigidBody2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(2, 2)
 shape = SubResource("CircleShape2D_nq0yf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
-position = Vector2(0, -14)
+position = Vector2(0, -28)
+scale = Vector2(2, 2)
 texture = ExtResource("1_i8oed")
 metadata/_aseprite_wizard_config_ = {
 "i_mode": 1,
