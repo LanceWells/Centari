@@ -176,7 +176,7 @@ public partial class LevelTiles : TileMap
 		var cellCoords = GetUsedCells(0);
 		foreach (Vector2I coords in cellCoords)
 		{
-			if (!nav.GetTile(coords).IsPlatform)
+			if (!nav.GetTile(coords).IsPlatform || !nav.Neighbor(coords, new Vector2I(0, -1)).IsPassable)
 			{
 				continue;
 			}
