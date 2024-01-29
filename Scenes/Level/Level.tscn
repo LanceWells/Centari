@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bqukvhd7sbf0d"]
+[gd_scene load_steps=11 format=3 uid="uid://bqukvhd7sbf0d"]
 
 [ext_resource type="Script" path="res://Scenes/Level/Level.cs" id="1_mp3ih"]
 [ext_resource type="PackedScene" uid="uid://06ruk4bqpmsf" path="res://Scenes/Player/Player.tscn" id="2_61byj"]
@@ -6,18 +6,28 @@
 [ext_resource type="Texture2D" uid="uid://d1h0j3uitt8st" path="res://Assets/Terrain/TestLevel.png" id="4_5n52q"]
 [ext_resource type="PackedScene" uid="uid://764whihjyaw1" path="res://Scenes/Level/LevelTiles/tile_map.tscn" id="4_f7ft8"]
 [ext_resource type="PackedScene" uid="uid://ycfb853quo2n" path="res://Scenes/Enemies/Ball.tscn" id="5_iixkv"]
+[ext_resource type="Script" path="res://Scenes/Enemies/Ball.cs" id="6_mpwqy"]
+[ext_resource type="Script" path="res://Scenes/Level/MonsterManager.cs" id="7_gahak"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f6ve4"]
 texture = ExtResource("4_5n52q")
 texture_region_size = Vector2i(32, 32)
 1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:0/0/custom_data_1 = true
 2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -6.25, -16, -16, 16, -16, 16, -6.25)
 2:0/0/custom_data_0 = true
 2:0/0/custom_data_1 = true
 
 [sub_resource type="TileSet" id="TileSet_qwmvr"]
 tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 14
 custom_data_layer_0/name = "CanJumpThrough"
 custom_data_layer_0/type = 1
 custom_data_layer_1/name = "IsPlatform"
@@ -30,10 +40,14 @@ script = ExtResource("1_mp3ih")
 [node name="Player" parent="." instance=ExtResource("2_61byj")]
 position = Vector2(191, 554)
 
-[node name="ProjectileManager" parent="." instance=ExtResource("3_5rcgh")]
-
 [node name="TileMap" parent="." instance=ExtResource("4_f7ft8")]
 tile_set = SubResource("TileSet_qwmvr")
 
 [node name="Ball" parent="." instance=ExtResource("5_iixkv")]
-position = Vector2(853, 576)
+position = Vector2(874, 446)
+script = ExtResource("6_mpwqy")
+
+[node name="ProjectileManager" parent="." instance=ExtResource("3_5rcgh")]
+
+[node name="MonsterManager" type="Node" parent="."]
+script = ExtResource("7_gahak")

@@ -1,13 +1,8 @@
 using Godot;
-using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 
 public partial class LevelTiles : TileMap
 {
-	// private AStar2D nav;
-
 	private NavMapping nav;
 
 	private Dictionary<long, Vector2> tileIdToCoord;
@@ -18,15 +13,20 @@ public partial class LevelTiles : TileMap
 	{
 		private TileData _tile;
 
+		private Vector2I _coords;
+
 		public bool CanJumpThrough => (bool)(_tile?.GetCustomData("CanJumpThrough") ?? false);
 
 		public bool IsPlatform => (bool)(_tile?.GetCustomData("IsPlatform") ?? false);
 
 		public bool IsPassable => CanJumpThrough || !IsPlatform;
 
-		public TileInfo(TileData tile)
+		public Vector2I Coords => _coords;
+
+		public TileInfo(TileData tile, Vector2I coords)
 		{
 			_tile = tile;
+			_coords = coords;
 		}
 	}
 
@@ -60,7 +60,7 @@ public partial class LevelTiles : TileMap
 		)
 		{
 			long tileId = _nav.GetAvailablePointId();
-			TileInfo tileInfo = new TileInfo(tileData);
+			TileInfo tileInfo = new TileInfo(tileData, mapPosition);
 
 			_tileIdToCoord.Add(tileId, GetTileIndex(mapPosition));
 			_coordToTileId.Add(GetTileIndex(mapPosition), tileId);
@@ -89,7 +89,7 @@ public partial class LevelTiles : TileMap
 				return tileInfo;
 			}
 
-			return new TileInfo(null);
+			return new TileInfo(null, new Vector2I(-1, -1));
 		}
 
 		public TileInfo Neighbor(Vector2I thisPos, Vector2I relativePos)
@@ -102,7 +102,7 @@ public partial class LevelTiles : TileMap
 				return tileInfo;
 			}
 
-			return new TileInfo(null);
+			return new TileInfo(null, new Vector2I(-1, -1));
 		}
 
 		public void Clear()
@@ -110,19 +110,25 @@ public partial class LevelTiles : TileMap
 			_nav.Clear();
 		}
 
+		public Vector2[] GetPointConnection(Vector2 from, Vector2 to)
+		{
+			long fromId = _nav.GetClosestPoint(from);
+			long toId = _nav.GetClosestPoint(to);
+
+			// if (!_nav.ArePointsConnected(toId, fromId))
+			// {
+			// 	return new Vector2[0];
+			// }
+
+			Vector2[] steps = _nav.GetPointPath(fromId, toId);
+			return steps;
+		}
+
 		private long GetTileIndex(Vector2I mapCoords)
 		{
-			return mapCoords.X + mapCoords.Y * _rect.Size.Y;
+			return mapCoords.Y + (mapCoords.X * _rect.Size.Y);
 		}
 	}
-
-	// private TileInfo GetNeighbor(TileInfo tileInfo, Vector2I neighborCoords)
-	// {
-	// 	Vector2I relativeCoords = tileInfo.Coords + neighborCoords;
-	// 	TileData tileData = GetCellTileData(0, relativeCoords);
-
-	// 	return new TileInfo(tileData, relativeCoords);
-	// }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -154,98 +160,55 @@ public partial class LevelTiles : TileMap
 		}
 	}
 
-	// private void RemapNavPoints()
-	// {
-	// 	tileIdToCoord = new Dictionary<long, Vector2>();
-	// 	coordToTileId = new Dictionary<Vector2, long>();
-
-	// 	foreach (Vector2I mapCoords in TileIterator())
-	// 	{
-	// 		long tileId = nav.GetAvailablePointId();
-
-	// 		tileIdToCoord.Add(tileId, mapCoords);
-	// 		coordToTileId.Add(mapCoords, tileId);
-
-	// 		Vector2 localCoords = MapToLocal(mapCoords);
-	// 		nav.AddPoint(tileId, localCoords);
-	// 	}
-	// }
-
 	private void RemapNavSegments()
 	{
 		var cellCoords = GetUsedCells(0);
 		foreach (Vector2I coords in cellCoords)
 		{
-			if (!nav.GetTile(coords).IsPlatform || !nav.Neighbor(coords, new Vector2I(0, -1)).IsPassable)
+			TileInfo
+				thisTile = nav.GetTile(coords),
+				up = nav.Neighbor(coords, new Vector2I(0, -1)),
+				upUp = nav.Neighbor(coords, new Vector2I(0, -2)),
+				upUpRight = nav.Neighbor(coords, new Vector2I(1, -2)),
+				upUpLeft = nav.Neighbor(coords, new Vector2I(-1, -2)),
+				upLeft = nav.Neighbor(coords, new Vector2I(-1, -1)),
+				upRight = nav.Neighbor(coords, new Vector2I(1, -1)),
+				down = nav.Neighbor(coords, new Vector2I(0, 1)),
+				downDown = nav.Neighbor(coords, new Vector2I(0, 2)),
+				downLeft = nav.Neighbor(coords, new Vector2I(-1, 1)),
+				downRight = nav.Neighbor(coords, new Vector2I(1, 1)),
+				right = nav.Neighbor(coords, new Vector2I(1, 0)),
+				rightRight = nav.Neighbor(coords, new Vector2I(2, 0)),
+				left = nav.Neighbor(coords, new Vector2I(-1, 0)),
+				leftLeft = nav.Neighbor(coords, new Vector2I(-2, 0));
+
+			if (!thisTile.IsPlatform || !up.IsPassable)
 			{
 				continue;
 			}
 
-			// TileData thisTileData = GetCellTileData(0, coords);
-			// TileInfo thisTile = new(thisTileData, coords);
+			if (right.IsPlatform && upRight.IsPassable)
+			{
+				nav.ConnectPoints(up.Coords, upRight.Coords);
+			}
 
-			// // There is no space above
-			// // -XX Continue
-			// if (
-			// 	!thisTile.IsPlatform ||
-			// 	!GetNeighbor(thisTile, new Vector2I(0, -1)).IsPassable
-			// )
-			// {
-			// 	continue;
-			// }
+			if (left.IsPlatform && upLeft.IsPassable)
+			{
+				nav.ConnectPoints(up.Coords, upLeft.Coords);
+			}
 
 			// // There is a tile to the right
 			// // There is space above the tile to the right
 			// // ->> Connect tile above to tile above to the right.
-			// if (
-			// 	GetNeighbor(thisTile, new Vector2I(1, 0)).IsPlatform &&
-			// 	GetNeighbor(thisTile, new Vector2I(1, -1)).IsPassable
-			// )
-			// {
-			// 	Vector2I upRightTileCoords = coords + new Vector2I(1, -1);
-			// 	Vector2I upTileCoords = coords + new Vector2I(0, -1);
-
-			// 	bool haveKeys = true;
-			// 	long upTileId = -1, upRightTileId = -1;
-			// 	haveKeys = haveKeys && coordToTileId.TryGetValue(upTileCoords, out upTileId);
-			// 	haveKeys = haveKeys && coordToTileId.TryGetValue(upRightTileCoords, out upRightTileId);
-
-			// 	if (haveKeys)
-			// 	{
-			// 		nav.ConnectPoints(upTileId, upRightTileId);
-			// 	}
-			// }
 
 			// // There is a tile to the left
 			// // There is space above the tile to the left
 			// // ->> Connect tile above to tile above to the left.
-			// if (
-			// 	GetNeighbor(thisTile, new Vector2I(-1, 0)).IsPlatform &&
-			// 	GetNeighbor(thisTile, new Vector2I(-1, -1)).IsPassable
-			// )
-			// {
-			// 	Vector2I upLeftTileCoords = coords + new Vector2I(-1, -1);
-			// 	Vector2I upTileCoords = coords + new Vector2I(0, -1);
-
-			// 	bool haveKeys = true;
-			// 	long upTileId = -1, upLeftTileId = -1;
-			// 	haveKeys = haveKeys && coordToTileId.TryGetValue(upTileCoords, out upTileId);
-			// 	haveKeys = haveKeys && coordToTileId.TryGetValue(upLeftTileCoords, out upLeftTileId);
-
-			// 	if (haveKeys)
-			// 	{
-			// 		nav.ConnectPoints(upTileId, upLeftTileId);
-			// 	}
-			// }
 
 			// // There is a tile above and to the right
 			// // There is space above that tile
 			// // There is a space two above this tile
 			// // ->> Connect tile above to that tile
-			// // if (GetNeighborInfo(coords, new Vector2I()))
-			// // {
-
-			// // }
 
 			// // There is a tile above and to the left
 			// // There is space above that tile
@@ -266,6 +229,11 @@ public partial class LevelTiles : TileMap
 		nav.Clear();
 		RemapNavPoints();
 		RemapNavSegments();
+	}
+
+	public Vector2[] GetWalkingPath(Vector2 fromPoint, Vector2 toPoint)
+	{
+		return nav.GetPointConnection(fromPoint, toPoint);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
