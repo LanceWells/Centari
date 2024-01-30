@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
 [ext_resource type="Texture2D" uid="uid://b4jtcf36kkaia" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
 [ext_resource type="PackedScene" uid="uid://c6q6nnxeomf7i" path="res://Scenes/Player/AimArm/aim_arm.tscn" id="4_0ihbt"]
-[ext_resource type="Script" path="res://Scripts/StateMachine/StateMachine.cs" id="5_uct5p"]
+[ext_resource type="Script" path="res://Scripts/AI/StateMachine/StateMachine.cs" id="5_aygjl"]
 [ext_resource type="Script" path="res://Scripts/Player/States/IdleState.cs" id="6_eg8fx"]
 [ext_resource type="Script" path="res://Scripts/Player/States/WalkingState.cs" id="7_5xhd5"]
 [ext_resource type="Script" path="res://Scripts/Player/States/MidairState.cs" id="8_h02to"]
@@ -252,7 +252,6 @@ size = Vector2(9.5, 6)
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(2, 2)
 collision_layer = 2
-collision_mask = 5
 script = ExtResource("1_jn4aw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -306,7 +305,7 @@ visible = false
 position = Vector2(-3, -3)
 
 [node name="StateMachine" type="Node" parent="."]
-script = ExtResource("5_uct5p")
+script = ExtResource("5_aygjl")
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("6_eg8fx")

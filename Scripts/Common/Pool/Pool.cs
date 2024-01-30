@@ -25,7 +25,6 @@ public class Pool<T> where T : Node
       T oldResource = _resources.Dequeue();
       if (oldResource != null)
       {
-        // oldResource.Dispose();
         oldResource.QueueFree();
       }
     }

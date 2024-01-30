@@ -3,11 +3,13 @@ using Centari.Navigation;
 using Centari.Player;
 using Godot;
 
+namespace Centari.Common;
+
 public partial class Level : Node2D
 {
   private ProjectileManager _projectileManager;
 
-  private LevelTiles _tiles;
+  private TileMap _tiles;
 
   private TestBall _ball;
 
@@ -22,7 +24,7 @@ public partial class Level : Node2D
     base._Ready();
 
     _projectileManager = GetNode<ProjectileManager>("ProjectileManager");
-    _tiles = GetNode<LevelTiles>("TileMap");
+    _tiles = GetNode<TileMap>("TileMap");
     _ball = GetNode<TestBall>("Ball");
     var player = GetNode<PlayerCharacter>("Player");
 

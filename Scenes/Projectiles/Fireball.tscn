@@ -1,6 +1,6 @@
 [gd_scene load_steps=68 format=3 uid="uid://413iceuajbn3"]
 
-[ext_resource type="Script" path="res://Scenes/Projectiles/Fireball.cs" id="1_ljbex"]
+[ext_resource type="Script" path="res://Scripts/Projectiles/Fireball.cs" id="1_oxqp1"]
 [ext_resource type="Texture2D" uid="uid://bfh2ewnllo7p0" path="res://Assets/Projectiles/energyfade_12x11.png" id="2_8y4e2"]
 [ext_resource type="Texture2D" uid="uid://db2qtuo1pqcka" path="res://Scenes/Projectiles/energy_smol_12x12.png" id="2_n6ptn"]
 
@@ -458,7 +458,7 @@ radius = 11.4018
 [node name="Fireball" type="RigidBody2D"]
 collision_layer = 8
 collision_mask = 5
-script = ExtResource("1_ljbex")
+script = ExtResource("1_oxqp1")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 material = SubResource("CanvasItemMaterial_svumt")
