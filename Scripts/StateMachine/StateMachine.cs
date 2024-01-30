@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Centari.State;
+
 /// <summary>
 /// A manager-type node that coordinates states; which one is active and when they desire to
 /// transition to another state.

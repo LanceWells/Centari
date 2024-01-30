@@ -1,9 +1,12 @@
 using Godot;
 
+namespace Centari.State;
+
 /// <summary>
 /// An abstraction of <see cref="IState"/>. Used to add common methods and setup.
 /// </summary>
-public abstract partial class AbstractState : Node, IState {
+public abstract partial class AbstractState : Node, IState
+{
   /// <summary>
   /// A reference to the state machine that this state belongs to.
   /// </summary>
@@ -31,7 +34,8 @@ public abstract partial class AbstractState : Node, IState {
     StateMachine stateMachine,
     AnimationPlayer animationPlayer,
     Node owner
-  ) {
+  )
+  {
     _stateMachine = stateMachine;
     _animationPlayer = animationPlayer;
     _owner = owner;

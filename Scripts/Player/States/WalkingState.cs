@@ -1,4 +1,7 @@
+using Centari.State;
 using Godot;
+
+namespace Centari.Player;
 
 /// <summary>
 /// This is the standard movement state. A player should be able to perform most actions while

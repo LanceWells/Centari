@@ -1,5 +1,6 @@
 using Centari.Navigation;
 using Centari.Navigation.Rules;
+using Centari.Player;
 using Godot;
 
 namespace Centari.Monsters;
@@ -21,7 +22,7 @@ public partial class TestBall : AbstractMonster
   [Export]
   public float WalkSpeed = 50f;
 
-  public void Prepare(NavCoordinator nav, Player player)
+  public void Prepare(NavCoordinator nav, PlayerCharacter player)
   {
     _tree = new TestBallTree(this, nav, player);
     _tree.Start();

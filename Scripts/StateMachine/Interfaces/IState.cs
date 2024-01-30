@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Centari.State;
+
 /// <summary>
 /// Class used to add an wrapper to nodes fetched via <see cref="Node.GetNode(Godot.NodePath)"/>.
 /// The idea is that state nodes fetched via that method can be wrapped into this type, which then

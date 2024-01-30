@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Centari.BehaviorTree;
 using Centari.Navigation;
+using Centari.Player;
 
 namespace Centari.Monsters;
 
@@ -10,12 +11,12 @@ public class TestBallTree : Tree
 
   private NavCoordinator _nav;
 
-  private Player _player;
+  private PlayerCharacter _player;
 
   public TestBallTree(
     TestBall ball,
     NavCoordinator nav,
-    Player player
+    PlayerCharacter player
   )
   {
     _ball = ball;

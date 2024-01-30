@@ -1,5 +1,8 @@
 using System;
+using Centari.State;
 using Godot;
+
+namespace Centari.Player;
 
 public partial class MidairState : AbstractPlayerState
 {

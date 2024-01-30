@@ -1,7 +1,7 @@
 [gd_scene load_steps=79 format=3 uid="uid://c6q6nnxeomf7i"]
 
-[ext_resource type="Script" path="res://Scenes/Player/AimArm/AimArm.cs" id="1_aryim"]
 [ext_resource type="Texture2D" uid="uid://c8gwn2175k8fy" path="res://Assets/Projectiles/MagicCircle.png" id="1_gasat"]
+[ext_resource type="Script" path="res://Scripts/Player/AimArm.cs" id="1_rq6s3"]
 [ext_resource type="Texture2D" uid="uid://cxlqt2pq5g60p" path="res://Assets/Player/FA-Aim1H.png" id="1_t1etj"]
 [ext_resource type="Shader" path="res://Scenes/Player/AimArm/MagicCircle.gdshader" id="3_pybmk"]
 [ext_resource type="Texture2D" uid="uid://cuw47kq2k0myc" path="res://Assets/Projectiles/MagicMuzzle.png" id="5_fweyj"]
@@ -748,7 +748,7 @@ anim_speed_max = 0.3
 anim_offset_max = 0.2
 
 [node name="AimArm" type="Node2D"]
-script = ExtResource("1_aryim")
+script = ExtResource("1_rq6s3")
 
 [node name="ArmSprite" type="Sprite2D" parent="."]
 texture_filter = 1

@@ -1,4 +1,7 @@
+using Centari.State;
 using Godot;
+
+namespace Centari.Player;
 
 /// <summary>
 /// A state used to represent a player being idle, with no input.

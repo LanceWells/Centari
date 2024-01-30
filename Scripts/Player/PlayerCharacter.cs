@@ -1,16 +1,17 @@
-using System;
 using Godot;
+
+namespace Centari.Player;
 
 /// <summary>
 /// This class is used to refer to the player scene itself.
 /// </summary>
-public partial class Player : CharacterBody2D
+public partial class PlayerCharacter : CharacterBody2D
 {
   /// <summary>
   /// A configurable walking speed for the player.
   /// </summary>
   [Export]
-  public float MaxSpeed = 200.0f;
+  public float MaxSpeed = 400.0f;
 
   [Export]
   public float JumpStrength = 1000.0f;
@@ -19,7 +20,7 @@ public partial class Player : CharacterBody2D
   public int AimPartAnchorX = -4;
 
   [Export]
-  public float Gravity = 4500.0f;
+  public float Gravity = 3000.0f;
 
   [Export]
   public float Friction = 8.0f;

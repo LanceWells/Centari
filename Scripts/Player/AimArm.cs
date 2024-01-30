@@ -1,5 +1,7 @@
 using Godot;
 
+namespace Centari.Player;
+
 /// <summary>
 /// This refers to the AimArm node. This node is visible only when the player is aiming. It also
 /// determines the visual point from which a projectile should emerge, so we use this node to

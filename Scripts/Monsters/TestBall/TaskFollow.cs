@@ -1,6 +1,7 @@
 using Centari.BehaviorTree;
 using Centari.Navigation;
 using Centari.Navigation.Rules;
+using Centari.Player;
 using Godot;
 
 namespace Centari.Monsters;
@@ -10,7 +11,7 @@ public class TaskFollow : AbstractBallTask
   public TaskFollow(
     TestBall ball,
     NavCoordinator nav,
-    Player player
+    PlayerCharacter player
   ) : base(ball, nav, player)
   { }
 

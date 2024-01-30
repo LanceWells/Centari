@@ -1,5 +1,6 @@
 using Centari.Monsters;
 using Centari.Navigation;
+using Centari.Player;
 using Godot;
 
 public partial class Level : Node2D
@@ -21,14 +22,14 @@ public partial class Level : Node2D
     base._Ready();
 
     _projectileManager = GetNode<ProjectileManager>("ProjectileManager");
-
-    Player player = GetNode<Player>("Player");
-    player.FireProjectile += OnPlayerFireProjectile;
-
     _tiles = GetNode<LevelTiles>("TileMap");
+    _ball = GetNode<TestBall>("Ball");
+    var player = GetNode<PlayerCharacter>("Player");
 
     NavCoordinator nav = new NavCoordinator(_tiles);
-    _ball = GetNode<TestBall>("Ball");
+
+    player.FireProjectile += OnPlayerFireProjectile;
+
     _ball.Prepare(nav, player);
   }
 

@@ -1,4 +1,7 @@
+using Centari.State;
 using Godot;
+
+namespace Centari.Player;
 
 /// <summary>
 /// An abstraction of the player's state. Used to add things like player reference.
@@ -8,7 +11,7 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// <summary>
   /// A reference to the player that this state refers to.
   /// </summary>
-  protected Player _player;
+  protected PlayerCharacter _player;
 
   protected PackedScene _activeProjectile;
 
@@ -140,7 +143,7 @@ public abstract partial class AbstractPlayerState : AbstractState
   protected override void Prepare(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Prepare(stateMachine, animationPlayer, owner);
-    _player = (Player)owner;
+    _player = (PlayerCharacter)owner;
   }
 
   /// <inheritdoc/>

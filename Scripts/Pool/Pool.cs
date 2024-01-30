@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Godot;
 
+namespace Centari.Common;
+
 public class Pool<T> where T : Node
 {
   private Queue<T> _resources;
