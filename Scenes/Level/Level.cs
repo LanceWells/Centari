@@ -1,15 +1,14 @@
+using Centari.Monsters;
+using Centari.Navigation;
 using Godot;
-using System;
 
 public partial class Level : Node2D
 {
   private ProjectileManager _projectileManager;
 
-  private MonsterManager _monsterManager;
-
   private LevelTiles _tiles;
 
-  private CharacterBody2D _ball;
+  private TestBall _ball;
 
   private int GetTileIndex(float x, float y, float MapHeight)
   {
@@ -21,18 +20,16 @@ public partial class Level : Node2D
   {
     base._Ready();
 
+    _projectileManager = GetNode<ProjectileManager>("ProjectileManager");
+
     Player player = GetNode<Player>("Player");
     player.FireProjectile += OnPlayerFireProjectile;
 
     _tiles = GetNode<LevelTiles>("TileMap");
-    _ball = GetNode<CharacterBody2D>("Ball");
 
-    _projectileManager = GetNode<ProjectileManager>("ProjectileManager");
-    _monsterManager = GetNode<MonsterManager>("MonsterManager");
-    _monsterManager.Prepare(player, _tiles);
-    _monsterManager.RegisterMonster(_ball);
-
-    Console.WriteLine("test");
+    NavCoordinator nav = new NavCoordinator(_tiles);
+    _ball = GetNode<TestBall>("Ball");
+    _ball.Prepare(nav, player);
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.

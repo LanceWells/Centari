@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bqukvhd7sbf0d"]
+[gd_scene load_steps=10 format=3 uid="uid://bqukvhd7sbf0d"]
 
 [ext_resource type="Script" path="res://Scenes/Level/Level.cs" id="1_mp3ih"]
 [ext_resource type="PackedScene" uid="uid://06ruk4bqpmsf" path="res://Scenes/Player/Player.tscn" id="2_61byj"]
@@ -6,8 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d1h0j3uitt8st" path="res://Assets/Terrain/TestLevel.png" id="4_5n52q"]
 [ext_resource type="PackedScene" uid="uid://764whihjyaw1" path="res://Scenes/Level/LevelTiles/tile_map.tscn" id="4_f7ft8"]
 [ext_resource type="PackedScene" uid="uid://ycfb853quo2n" path="res://Scenes/Enemies/Ball.tscn" id="5_iixkv"]
-[ext_resource type="Script" path="res://Scenes/Enemies/Ball.cs" id="6_mpwqy"]
-[ext_resource type="Script" path="res://Scenes/Level/MonsterManager.cs" id="7_gahak"]
+[ext_resource type="Script" path="res://Scripts/Monsters/TestBall/TestBall.cs" id="6_yt5xx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f6ve4"]
 texture = ExtResource("4_5n52q")
@@ -45,9 +44,6 @@ tile_set = SubResource("TileSet_qwmvr")
 
 [node name="Ball" parent="." instance=ExtResource("5_iixkv")]
 position = Vector2(874, 446)
-script = ExtResource("6_mpwqy")
+script = ExtResource("6_yt5xx")
 
 [node name="ProjectileManager" parent="." instance=ExtResource("3_5rcgh")]
-
-[node name="MonsterManager" type="Node" parent="."]
-script = ExtResource("7_gahak")
