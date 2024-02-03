@@ -13,6 +13,8 @@ public partial class Level : Node2D
 
   private TestBall _ball;
 
+  private bool didSetNav = false;
+
   private int GetTileIndex(float x, float y, float MapHeight)
   {
     return (int)(y + (x * MapHeight));

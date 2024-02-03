@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using Godot;
 
 namespace Centari.Navigation.Rules;
@@ -7,6 +9,7 @@ public class SnailNavRules : AbstractNavRules
 {
   public override void SetValidPaths(NavMapping nav, TileMap tiles)
   {
+    var world = tiles.GetWorld2D();
     var cellCoords = tiles.GetUsedCells(0);
     foreach (Vector2I coords in cellCoords)
     {
@@ -32,11 +35,17 @@ public class SnailNavRules : AbstractNavRules
         continue;
       }
 
-      Rect2I leftJumpBox = new Rect2I(-1, -5, 2, 4);
-      Rect2I rightJumpBox = new Rect2I(0, -5, 2, 4);
+      var lJumpVects = RectToVect(
+        new Rect2I(-1, -5, 2, 4)
+      ).Concat(RectToVect(
+        new Rect2I(-2, -5, 1, 2)
+      ));
 
-      var lJumpVects = RectToVect(leftJumpBox).Concat(RectToVect(new Rect2I(-2, -5, 1, 2)));
-      var rJumpVects = RectToVect(rightJumpBox).Concat(RectToVect(new Rect2I(2, -5, 1, 2)));
+      var rJumpVects = RectToVect(
+        new Rect2I(0, -5, 2, 4)
+      ).Concat(RectToVect(
+        new Rect2I(2, -5, 1, 2)
+      ));
 
       var leftJumpBoxV = lJumpVects.Select((vect) => nav.Neighbor(coords, vect)).ToList();
       var rightJumpBoxV = rJumpVects.Select((vect) => nav.Neighbor(coords, vect)).ToList();
@@ -61,6 +70,26 @@ public class SnailNavRules : AbstractNavRules
       if (rightJumpBoxV.TrueForAll((vect) => vect.IsPassable) && rightLanding.IsPlatform)
       {
         nav.ConnectPoints(up.Coords, rightLanding.Coords + new Vector2I(0, -1));
+      }
+
+      if (left.IsPassable && upLeft.IsPassable)
+      {
+        var spaceState = world.DirectSpaceState;
+        // use global coordinates, not local to node
+        Vector2 fromRay = tiles.MapToLocal(left.Coords);
+        Vector2 ToRay = tiles.MapToLocal(new Vector2I(left.Coords.X, left.Coords.Y + 5));
+        var query = PhysicsRayQueryParameters2D.Create(fromRay, ToRay);
+        // query.CollideWithAreas = true;
+        query.CollideWithBodies = true;
+        query.HitFromInside = true;
+        var result = spaceState.IntersectRay(query);
+
+        var f = tiles.TileSet.GetPhysicsLayerCollisionLayer(0);
+
+        if (result.Keys.Count > 0)
+        {
+          Console.WriteLine(result);
+        }
       }
 
       // There is a tile to the right

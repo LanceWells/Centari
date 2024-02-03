@@ -39,8 +39,8 @@ public class TaskFollow : AbstractBallTask
     if (dirTo.Y < 0)
     {
       Vector2 vel = _thisCreature.Velocity;
-      vel.Y += dirTo.Y * distTo * 8;
-      vel.X += dirTo.X * distTo * 2;
+      vel.Y += dirTo.Y * distTo * 9;
+      vel.X += dirTo.X * distTo * 2.5f;
       _thisCreature.Velocity = vel;
     }
 
