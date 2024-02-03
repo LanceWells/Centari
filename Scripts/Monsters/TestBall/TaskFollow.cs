@@ -29,15 +29,28 @@ public class TaskFollow : AbstractBallTask
 
     Vector2 nextPoint = path[0];
 
-    if (path.Length > 1 && nextPoint.DistanceSquaredTo(nextPoint) < _thisCreature.WalkSpeed)
+    float distTo = pos1.DistanceTo(nextPoint);
+    if (path.Length > 1 && distTo < _thisCreature.WalkSpeed)
     {
       nextPoint = path[1];
     }
 
-    _thisCreature.Position = _thisCreature.Position.MoveToward(
-      nextPoint,
-      (float)delta * _thisCreature.WalkSpeed
-    );
+    Vector2 dirTo = pos1.DirectionTo(nextPoint);
+    if (dirTo.Y < 0)
+    {
+      Vector2 vel = _thisCreature.Velocity;
+      vel.Y += dirTo.Y * distTo * 8;
+      vel.X += dirTo.X * distTo * 2;
+      _thisCreature.Velocity = vel;
+    }
+
+    else
+    {
+      _thisCreature.Position = _thisCreature.Position.MoveToward(
+        nextPoint,
+        (float)delta * _thisCreature.WalkSpeed
+      );
+    }
 
     return NodeState.RUNNING;
   }

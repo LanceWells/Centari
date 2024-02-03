@@ -1,10 +1,11 @@
+using System.Linq;
 using Godot;
 
 namespace Centari.Navigation.Rules;
 
-public class SnailNavRules : INavRules
+public class SnailNavRules : AbstractNavRules
 {
-  public void SetValidPaths(NavMapping nav, TileMap tiles)
+  public override void SetValidPaths(NavMapping nav, TileMap tiles)
   {
     var cellCoords = tiles.GetUsedCells(0);
     foreach (Vector2I coords in cellCoords)
@@ -31,6 +32,15 @@ public class SnailNavRules : INavRules
         continue;
       }
 
+      Rect2I leftJumpBox = new Rect2I(-1, -5, 2, 4);
+      Rect2I rightJumpBox = new Rect2I(0, -5, 2, 4);
+
+      var lJumpVects = RectToVect(leftJumpBox).Concat(RectToVect(new Rect2I(-2, -5, 1, 2)));
+      var rJumpVects = RectToVect(rightJumpBox).Concat(RectToVect(new Rect2I(2, -5, 1, 2)));
+
+      var leftJumpBoxV = lJumpVects.Select((vect) => nav.Neighbor(coords, vect)).ToList();
+      var rightJumpBoxV = rJumpVects.Select((vect) => nav.Neighbor(coords, vect)).ToList();
+
       if (right.IsPlatform && upRight.IsPassable)
       {
         nav.ConnectPoints(up.Coords, upRight.Coords);
@@ -39,6 +49,18 @@ public class SnailNavRules : INavRules
       if (left.IsPlatform && upLeft.IsPassable)
       {
         nav.ConnectPoints(up.Coords, upLeft.Coords);
+      }
+
+      var leftLanding = nav.Neighbor(coords, new Vector2I(-2, -3));
+      if (leftJumpBoxV.TrueForAll((vect) => vect.IsPassable) && leftLanding.IsPlatform)
+      {
+        nav.ConnectPoints(up.Coords, leftLanding.Coords + new Vector2I(0, -1));
+      }
+
+      var rightLanding = nav.Neighbor(coords, new Vector2I(2, -3));
+      if (rightJumpBoxV.TrueForAll((vect) => vect.IsPassable) && rightLanding.IsPlatform)
+      {
+        nav.ConnectPoints(up.Coords, rightLanding.Coords + new Vector2I(0, -1));
       }
 
       // There is a tile to the right
