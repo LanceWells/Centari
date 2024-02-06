@@ -77,18 +77,22 @@ public class SnailNavRules : AbstractNavRules
         var spaceState = world.DirectSpaceState;
         // use global coordinates, not local to node
         Vector2 fromRay = tiles.MapToLocal(left.Coords);
-        Vector2 ToRay = tiles.MapToLocal(new Vector2I(left.Coords.X, left.Coords.Y + 5));
-        var query = PhysicsRayQueryParameters2D.Create(fromRay, ToRay);
-        // query.CollideWithAreas = true;
+        Vector2 ToRay = tiles.MapToLocal(new Vector2I(left.Coords.X, left.Coords.Y + 25));
+        var query = PhysicsRayQueryParameters2D.Create(fromRay, ToRay, 1);
         query.CollideWithBodies = true;
-        query.HitFromInside = true;
         var result = spaceState.IntersectRay(query);
-
-        var f = tiles.TileSet.GetPhysicsLayerCollisionLayer(0);
 
         if (result.Keys.Count > 0)
         {
           Console.WriteLine(result);
+        }
+
+        if (result.ContainsKey("position"))
+        {
+          Vector2I tileCoords = tiles.LocalToMap((Vector2)result["position"].Obj);
+          Vector2I tileCoordsUp = new Vector2I(tileCoords.X, tileCoords.Y - 1);
+          nav.ConnectPoints(up.Coords, upLeft.Coords);
+          nav.ConnectPoints(upLeft.Coords, tileCoordsUp);
         }
       }
 
