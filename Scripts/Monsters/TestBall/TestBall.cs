@@ -19,9 +19,6 @@ public partial class TestBall : AbstractMonster
     }
   }
 
-  [Export]
-  public float WalkSpeed = 50f;
-
   public void Prepare(NavCoordinator nav, PlayerCharacter player)
   {
     _tree = new TestBallTree(this, nav, player);
@@ -30,7 +27,10 @@ public partial class TestBall : AbstractMonster
 
   public override void _PhysicsProcess(double delta)
   {
-    _tree.Update(delta);
+    if (_tree != null)
+    {
+      _tree.Update(delta);
+    }
     base._PhysicsProcess(delta);
   }
 }

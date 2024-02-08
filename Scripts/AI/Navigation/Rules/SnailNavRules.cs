@@ -47,6 +47,16 @@ public class SnailNavRules : AbstractNavRules
         new Rect2I(2, -5, 1, 2)
       ));
 
+      // Platformer logic
+      // ================
+
+      // ._.
+      // /.\
+      // =.|
+      // ?.|
+      // ??|
+      // ==X
+
       var leftJumpBoxV = lJumpVects.Select((vect) => nav.Neighbor(coords, vect)).ToList();
       var rightJumpBoxV = rJumpVects.Select((vect) => nav.Neighbor(coords, vect)).ToList();
 

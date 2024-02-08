@@ -2,15 +2,16 @@ using System.Collections.Generic;
 
 namespace Centari.BehaviorTree;
 
-public class AndNode : TreeNode
+public class AndNode<T> : TreeNode<T>
+where T : INode
 {
-  public AndNode(List<INode> children) : base(children) { }
+  public AndNode(List<T> children) : base(children) { }
 
   public override NodeState Evaluate(double delta)
   {
     bool anyChildRunning = false;
 
-    foreach (TreeNode node in _children)
+    foreach (T node in _children)
     {
       switch (node.Evaluate(delta))
       {

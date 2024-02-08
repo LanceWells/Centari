@@ -26,11 +26,20 @@ public class TestBallTree : Tree
 
   protected override INode SetupTree()
   {
-    TreeNode root = new OrNode(
+    TreeNode<INode> root = new OrNode<INode>(
       new List<INode>()
       {
-        new TaskFollow(_ball, _nav, _player),
-        new TaskIdle(),
+        new TaskAirFollow(_ball, _nav, _player),
+        new PathfindNode(new List<INavNode>()
+        {
+          new TaskJump(_ball, _nav, _player),
+          new TaskFollow(_ball, _nav, _player),
+        },
+        _nav,
+        _player,
+        _ball
+        ),
+        new TaskIdle<INode>(),
       }
     );
 

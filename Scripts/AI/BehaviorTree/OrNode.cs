@@ -2,13 +2,14 @@ using System.Collections.Generic;
 
 namespace Centari.BehaviorTree;
 
-public class OrNode : TreeNode
+public class OrNode<T> : TreeNode<T>
+where T : INode
 {
-  public OrNode(List<INode> children) : base(children) { }
+  public OrNode(List<T> children) : base(children) { }
 
   public override NodeState Evaluate(double delta)
   {
-    foreach (INode node in _children)
+    foreach (T node in _children)
     {
       switch (node.Evaluate(delta))
       {

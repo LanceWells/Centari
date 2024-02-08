@@ -1,12 +1,11 @@
 using Centari.BehaviorTree;
 using Centari.Navigation;
-using Centari.Navigation.Rules;
 using Centari.Player;
 using Godot;
 
 namespace Centari.Monsters;
 
-public class TaskFollow : AbstractBallTask
+public class TaskFollow : AbstractNavTask
 {
   public TaskFollow(
     TestBall ball,
@@ -17,41 +16,38 @@ public class TaskFollow : AbstractBallTask
 
   public override NodeState Evaluate(double delta)
   {
-    Vector2 pos1 = _thisCreature.Position;
-    Vector2 pos2 = _player.Position;
+    // Vector2 thisPos = _thisCreature.Position;
 
-    Vector2[] path = _nav.GetPath(TestBall.Nav, pos1, pos2);
+    // if (_path.Length == 0)
+    // {
+    //   return NodeState.SUCCESS;
+    // }
 
-    if (path.Length == 0)
-    {
-      return NodeState.SUCCESS;
-    }
+    // Vector2 nextPoint = _path[0];
 
-    Vector2 nextPoint = path[0];
+    // float distTo = thisPos.DistanceTo(nextPoint);
+    // if (_path.Length > 1 && distTo < _thisCreature.WalkSpeed)
+    // {
+    //   nextPoint = _path[1];
+    // }
 
-    float distTo = pos1.DistanceTo(nextPoint);
-    if (path.Length > 1 && distTo < _thisCreature.WalkSpeed)
-    {
-      nextPoint = path[1];
-    }
+    // Vector2 dirTo = thisPos.DirectionTo(nextPoint);
+    // if (dirTo.Y < 0)
+    // {
+    //   Vector2 vel = Vector2.Zero;
+    //   vel.Y = -(distTo * _thisCreature.Gravity * (float)0.075);
+    //   vel.X = dirTo.X * distTo * 5;
+    //   _thisCreature.Velocity = vel;
+    // }
 
-    Vector2 dirTo = pos1.DirectionTo(nextPoint);
-    if (dirTo.Y < 0)
-    {
-      Vector2 vel = _thisCreature.Velocity;
-      vel.Y += dirTo.Y * distTo * 12;
-      vel.X += dirTo.X * distTo * 3;
-      _thisCreature.Velocity = vel;
-    }
-
-    else
-    {
-      Vector2 newPos = new Vector2(nextPoint.X, _thisCreature.Position.Y);
-      _thisCreature.Position = _thisCreature.Position.MoveToward(
-        newPos,
-        (float)delta * _thisCreature.WalkSpeed
-      );
-    }
+    // else
+    // {
+    Vector2 newPos = new Vector2(NextPoint.X, _thisCreature.Position.Y);
+    _thisCreature.Position = _thisCreature.Position.MoveToward(
+      newPos,
+      (float)delta * _thisCreature.WalkSpeed
+    );
+    // }
 
     return NodeState.RUNNING;
   }
