@@ -6,7 +6,7 @@ public abstract partial class AbstractMonster : CharacterBody2D
 {
   private float _gravity = 400;
 
-  private float _walkSpeed = 400;
+  private float _walkSpeed = 200;
 
   [Export]
   public float Gravity

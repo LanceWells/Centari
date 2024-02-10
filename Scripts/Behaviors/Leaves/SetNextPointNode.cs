@@ -16,13 +16,13 @@ public class SetNextPointNode : INode<INavContext>
   public NodeState Process(double delta)
   {
     Vector2 thisPos = _navContext.ThisMonster.Position;
-    Vector2 nextPos = _navContext.TrackedCreature.Position;
+    Vector2 targetPos = _navContext.TrackedCreature.Position;
     float walkSpeed = _navContext.ThisMonster.WalkSpeed;
 
     Vector2[] path = _navContext.Nav.GetPath(
       _navContext.NavModes,
       thisPos,
-      nextPos
+      targetPos
     );
 
     if (path.Length == 0)
@@ -30,7 +30,7 @@ public class SetNextPointNode : INode<INavContext>
       return NodeState.FAILURE;
     }
 
-    if (path.Length > 1 && thisPos.DistanceTo(nextPos) < (walkSpeed * 0.1))
+    if (path.Length > 1 && thisPos.DistanceTo(path[0]) < (walkSpeed * 0.1f))
     {
       _navContext.NextPoint = path[1];
     }

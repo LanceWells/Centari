@@ -16,7 +16,7 @@ public class JumpNode : INode<INavContext>
   public NodeState Process(double delta)
   {
     Vector2 thisPos = _navContext.ThisMonster.Position;
-    Vector2 nextPos = _navContext.TrackedCreature.Position;
+    Vector2 nextPos = _navContext.NextPoint;
     float gravity = _navContext.ThisMonster.Gravity;
 
     if (thisPos.Y < nextPos.Y)
