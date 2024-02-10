@@ -10,6 +10,7 @@ public partial class Level : Node2D
 {
   private enum NavState
   {
+    NOT_READY,
     NOT_STARTED,
     SET_TILE,
     SET,
@@ -21,7 +22,7 @@ public partial class Level : Node2D
 
   private TestBall _ball;
 
-  private NavState didSetNav = NavState.NOT_STARTED;
+  private NavState didSetNav = NavState.NOT_READY;
 
   private Vector2I raycastReadyTile;
 
@@ -42,7 +43,7 @@ public partial class Level : Node2D
 
 
     player.FireProjectile += OnPlayerFireProjectile;
-
+    didSetNav = NavState.NOT_STARTED;
   }
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -119,6 +120,10 @@ public partial class Level : Node2D
           break;
         }
       case NavState.SET:
+        {
+          break;
+        }
+      default:
         {
           break;
         }

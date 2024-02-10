@@ -2,8 +2,7 @@ using Centari.BehaviorTree;
 
 namespace Centari.Monsters;
 
-public class TaskIdle<T> : TreeNode<T>
-where T : INode
+public class TaskIdle : TreeNode<INode>
 {
   public override NodeState Evaluate(double delta)
   {

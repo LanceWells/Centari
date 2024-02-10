@@ -85,6 +85,7 @@ public class SnailNavRules : AbstractNavRules
       if (left.IsPassable && upLeft.IsPassable)
       {
         var spaceState = world.DirectSpaceState;
+
         // use global coordinates, not local to node
         Vector2 fromRay = tiles.MapToLocal(left.Coords);
         Vector2 ToRay = tiles.MapToLocal(new Vector2I(left.Coords.X, left.Coords.Y + 25));
@@ -99,10 +100,37 @@ public class SnailNavRules : AbstractNavRules
 
         if (result.ContainsKey("position"))
         {
-          Vector2I tileCoords = tiles.LocalToMap((Vector2)result["position"].Obj);
-          Vector2I tileCoordsUp = new Vector2I(tileCoords.X, tileCoords.Y - 1);
-          nav.ConnectPoints(up.Coords, upLeft.Coords);
-          nav.ConnectPoints(upLeft.Coords, tileCoordsUp);
+          Vector2I landingTileCoords = tiles.LocalToMap((Vector2)result["position"].Obj);
+          Vector2I landingTileCoordsSpace = new Vector2I(landingTileCoords.X, landingTileCoords.Y - 1);
+          // nav.ConnectPoints(up.Coords, upLeft.Coords, true);
+          // nav.ConnectPoints(upLeft.Coords, landingTileCoordsSpace);
+          nav.ConnectPoints(up.Coords, landingTileCoordsSpace);
+        }
+      }
+
+      if (right.IsPassable && upRight.IsPassable)
+      {
+        var spaceState = world.DirectSpaceState;
+
+        // use global coordinates, not local to node
+        Vector2 fromRay = tiles.MapToLocal(right.Coords);
+        Vector2 ToRay = tiles.MapToLocal(new Vector2I(right.Coords.X, right.Coords.Y + 25));
+        var query = PhysicsRayQueryParameters2D.Create(fromRay, ToRay, 1);
+        query.CollideWithBodies = true;
+        var result = spaceState.IntersectRay(query);
+
+        if (result.Keys.Count > 0)
+        {
+          Console.WriteLine(result);
+        }
+
+        if (result.ContainsKey("position"))
+        {
+          Vector2I landingTileCoords = tiles.LocalToMap((Vector2)result["position"].Obj);
+          Vector2I landingTileCoordsSpace = new Vector2I(landingTileCoords.X, landingTileCoords.Y - 1);
+          nav.ConnectPoints(up.Coords, landingTileCoordsSpace);
+          // nav.ConnectPoints(up.Coords, upRight.Coords, true);
+          // nav.ConnectPoints(upRight.Coords, landingTileCoordsSpace);
         }
       }
 

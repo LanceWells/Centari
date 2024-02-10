@@ -4,11 +4,23 @@ namespace Centari.Monsters;
 
 public abstract partial class AbstractMonster : CharacterBody2D
 {
-  [Export]
-  public float Gravity = 400;
+  private float _gravity = 400;
+
+  private float _walkSpeed = 400;
 
   [Export]
-  public float WalkSpeed = 100f;
+  public float Gravity
+  {
+    get => _gravity;
+    set => _gravity = value;
+  }
+
+  [Export]
+  public float WalkSpeed
+  {
+    get => _walkSpeed;
+    set => _walkSpeed = value;
+  }
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
@@ -16,8 +28,7 @@ public abstract partial class AbstractMonster : CharacterBody2D
 
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta)
-  {
-  }
+  { }
 
   public virtual Vector2 GetMovement(double delta)
   {

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Common/Level.cs" id="1_k0tfw"]
 [ext_resource type="PackedScene" uid="uid://06ruk4bqpmsf" path="res://Scenes/Player/Player.tscn" id="2_61byj"]
 [ext_resource type="PackedScene" uid="uid://dwoh020h0q3on" path="res://Scenes/Managers/ProjectileManager.tscn" id="3_5rcgh"]
-[ext_resource type="Texture2D" uid="uid://p3fotyu5qecp" path="res://Assets/Terrain/TestLevel.png" id="4_5n52q"]
+[ext_resource type="Texture2D" uid="uid://d1h0j3uitt8st" path="res://Assets/Terrain/TestLevel.png" id="4_5n52q"]
 [ext_resource type="PackedScene" uid="uid://ycfb853quo2n" path="res://Scenes/Enemies/Ball.tscn" id="5_iixkv"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fcwcv"]

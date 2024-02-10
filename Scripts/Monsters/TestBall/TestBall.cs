@@ -19,6 +19,11 @@ public partial class TestBall : AbstractMonster
     }
   }
 
+  public Vector2 GetLastKnownPoint()
+  {
+    throw new System.NotImplementedException();
+  }
+
   public void Prepare(NavCoordinator nav, PlayerCharacter player)
   {
     _tree = new TestBallTree(this, nav, player);

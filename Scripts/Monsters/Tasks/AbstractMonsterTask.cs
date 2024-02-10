@@ -13,15 +13,15 @@ public abstract class AbstractMonsterTask : TreeNode<INode>
 
   protected CharacterBody2D TrackedCreature => _creatureToTrack;
 
-  protected TestBall _thisCreature;
+  protected AbstractMonster _thisCreature;
 
   public AbstractMonsterTask(
-    TestBall ball,
+    AbstractMonster monster,
     NavCoordinator nav,
     PlayerCharacter player
   ) : base()
   {
-    _thisCreature = ball;
+    _thisCreature = monster;
     _nav = nav;
     _creatureToTrack = player;
   }

@@ -1,8 +1,8 @@
 [gd_scene load_steps=15 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scripts/Player/PlayerCharacter.cs" id="1_jn4aw"]
-[ext_resource type="Texture2D" uid="uid://qr8tq7gt5wp4" path="res://Assets/Player/Player.png" id="2_w4w4p"]
-[ext_resource type="Texture2D" uid="uid://c3dlf5orl82p3" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
+[ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
+[ext_resource type="Texture2D" uid="uid://b4jtcf36kkaia" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
 [ext_resource type="PackedScene" uid="uid://c6q6nnxeomf7i" path="res://Scenes/Player/AimArm/aim_arm.tscn" id="4_0ihbt"]
 [ext_resource type="Script" path="res://Scripts/AI/StateMachine/StateMachine.cs" id="5_aygjl"]
 [ext_resource type="Script" path="res://Scripts/Player/States/IdleState.cs" id="6_eg8fx"]
@@ -262,7 +262,6 @@ texture_filter = 1
 texture = ExtResource("2_w4w4p")
 hframes = 4
 vframes = 3
-frame = 4
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
@@ -281,7 +280,6 @@ texture_filter = 1
 texture = ExtResource("3_q8yaq")
 hframes = 4
 vframes = 3
-frame = 4
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
@@ -302,7 +300,7 @@ libraries = {
 
 [node name="AimArm" parent="." instance=ExtResource("4_0ihbt")]
 visible = false
-position = Vector2(-3, -3)
+position = Vector2(-3, -2)
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("5_aygjl")
