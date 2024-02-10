@@ -8,6 +8,8 @@ public class SetNextPointNode : INode<INavContext>
 {
   private INavContext _navContext;
 
+  private Vector2 _lastKnownTargetPoint;
+
   public void Init(ref INavContext contextRef)
   {
     _navContext = contextRef;
@@ -27,7 +29,20 @@ public class SetNextPointNode : INode<INavContext>
 
     if (path.Length == 0)
     {
-      return NodeState.FAILURE;
+      path = _navContext.Nav.GetPath(
+        _navContext.NavModes,
+        thisPos,
+        _lastKnownTargetPoint
+      );
+
+      if (path.Length == 0)
+      {
+        return NodeState.FAILURE;
+      }
+    }
+    else
+    {
+      _lastKnownTargetPoint = targetPos;
     }
 
     if (path.Length > 1 && thisPos.DistanceTo(path[0]) < (walkSpeed * 0.1f))

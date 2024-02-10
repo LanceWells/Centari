@@ -24,7 +24,9 @@ public class JumpNode : INode<INavContext>
       return NodeState.FAILURE;
     }
 
-    float jumpStrength = (nextPos.Y - thisPos.Y) * (gravity * 0.01f);
+    // Factor in our gravity. The multiplier here is because there's no 1:1 relationship between
+    // gravity and how much we should jump. It's an estimated amount that looks natural.
+    float jumpStrength = (nextPos.Y - thisPos.Y) * (gravity * 0.015f);
 
     Vector2 targetVel = new(0, jumpStrength);
 

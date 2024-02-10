@@ -24,15 +24,6 @@ public class WalkHorizontalNode : INode<INavContext>
       return NodeState.FAILURE;
     }
 
-    // float horizontalSpeed = _navContext.NextPoint.X < _navContext.ThisMonster.Position.X
-    //   ? -_navContext.ThisMonster.WalkSpeed
-    //   : _navContext.ThisMonster.WalkSpeed;
-
-    // Vector2 currVel = _navContext.ThisMonster.Velocity;
-    // Vector2 targetVel = new(horizontalSpeed, currVel.Y);
-
-    // _navContext.ThisMonster.Velocity = targetVel;
-
     _navContext.ThisMonster.Position = thisPos.MoveToward(nextPos, (float)delta * walkSpeed);
 
     return NodeState.RUNNING;
