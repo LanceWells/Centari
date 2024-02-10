@@ -1,3 +1,4 @@
+using Centari.Player.States;
 using Centari.State;
 using Godot;
 
@@ -13,19 +14,20 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// </summary>
   protected PlayerCharacter _player;
 
-  protected PackedScene _activeProjectile;
+  /// <summary>
+  /// A list of capabilities for the player. Should be set on every state.
+  /// </summary>
+  abstract protected StateCapabilities Capabilities { get; }
 
-  abstract protected bool CanWalk { get; }
-
-
-  abstract protected bool GravityAffected { get; }
-
-  abstract protected bool CanAttack { get; }
-
-  abstract protected bool CanFlip { get; }
-
-  abstract protected bool CanJump { get; }
-
+  /// <summary>
+  /// Gets the horizontal movement vector based on the current player input.
+  /// </summary>
+  /// <param name="direction">
+  /// The current direction of the player. This will be lerped against the derived movement, which
+  /// is then returned.
+  /// </param>
+  /// <param name="delta">The time delta since the last frame.</param>
+  /// <returns>The new vector, post-lerp.</returns>
   virtual protected Vector2 GetWalking(Vector2 direction, double delta)
   {
     PlayerInputs p = GetPlayerInputs();
@@ -48,6 +50,15 @@ public abstract partial class AbstractPlayerState : AbstractState
     return lerpedDir;
   }
 
+  /// <summary>
+  /// Gets the vertical movement vector based on player jump inputs.
+  /// </summary>
+  /// <param name="direction">
+  /// The current direction of the player. This will be lerped against the derived movement, which
+  /// is then returned.
+  /// </param>
+  /// <param name="delta">The time delta since the last frame.</param>
+  /// <returns>The new vector, post-lerp.</returns>
   virtual protected Vector2 GetJumping(Vector2 direction, double delta)
   {
     PlayerInputs p = GetPlayerInputs();
@@ -61,28 +72,43 @@ public abstract partial class AbstractPlayerState : AbstractState
     return direction + jumpDirection;
   }
 
+  /// <summary>
+  /// Gets the gravity movement vector for the player.
+  /// </summary>
+  /// <param name="direction">
+  /// The current direction of the player. This will be lerped against the derived movement, which
+  /// is then returned.
+  /// </param>
+  /// <param name="delta">The time delta since the last frame.</param>
+  /// <returns>The new vector, post-lerp.</returns>
   virtual protected Vector2 GetGravity(Vector2 direction, double delta)
   {
-    Vector2 gravity = new Vector2(0, _player.Gravity);
+    Vector2 gravity = new(0, _player.Gravity);
     direction = direction.Lerp(gravity, (float)delta);
     return direction;
   }
 
+  /// <summary>
+  /// Calculates the direction that the player should head in, given all of their inputs and
+  /// external physics forces.
+  /// </summary>
+  /// <param name="delta">The time delta since the last frame.</param>
+  /// <returns>The new velocity that should be used for the player.</returns>
   protected Vector2 CalculateDirection(double delta)
   {
     Vector2 direction = _player.Velocity;
 
-    if (GravityAffected)
+    if (Capabilities.GravityAffected)
     {
       direction = GetGravity(direction, delta);
     }
 
-    if (CanWalk)
+    if (Capabilities.CanWalk)
     {
       direction = GetWalking(direction, delta);
     }
 
-    if (CanJump)
+    if (Capabilities.CanJump)
     {
       direction = GetJumping(direction, delta);
     }
@@ -96,7 +122,7 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// </summary>
   protected void _handleFireProjectile()
   {
-    if (Input.IsActionJustPressed("fire_projectile"))
+    if (Capabilities.CanAttack && Input.IsActionJustPressed("fire_projectile"))
     {
       PackedScene projectile = GD.Load<PackedScene>("res://Scenes/Projectiles/Fireball.tscn");
       _player.HandleFireProjectile(projectile);
@@ -157,10 +183,6 @@ public abstract partial class AbstractPlayerState : AbstractState
   }
 
   /// <inheritdoc/>
-  public override void Detransition()
-  { }
-
-  /// <inheritdoc/>
   public override void Process(double delta)
   { }
 
@@ -168,18 +190,35 @@ public abstract partial class AbstractPlayerState : AbstractState
   public override void PhysicsProcess(double delta)
   { }
 
+  /// <summary>
+  /// A structure used to represent the list of inputs that a player might provide for their
+  /// movement.
+  /// </summary>
   public struct PlayerInputs
   {
+    /// <summary>
+    /// If true, the player wants to move left.
+    /// </summary>
     public bool MoveLeft;
 
+    /// <summary>
+    /// If true, the player wants to move right.
+    /// </summary>
     public bool MoveRight;
 
+    /// <summary>
+    /// If true, the player wants to jump.
+    /// </summary>
     public bool Jump;
   }
 
-  protected PlayerInputs GetPlayerInputs()
+  /// <summary>
+  /// Gets the list of movement inputs that the player is currently pressing.
+  /// </summary>
+  /// <returns></returns>
+  protected static PlayerInputs GetPlayerInputs()
   {
-    PlayerInputs p = new PlayerInputs
+    PlayerInputs p = new()
     {
       MoveLeft = Input.IsActionPressed("move_left"),
       MoveRight = Input.IsActionPressed("move_right"),

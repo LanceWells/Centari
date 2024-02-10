@@ -1,26 +1,20 @@
 using Centari.State;
 using Godot;
 
-namespace Centari.Player;
+namespace Centari.Player.States;
 
 /// <summary>
 /// A state used to represent a player being idle, with no input.
 /// </summary>
 public partial class IdleState : AbstractPlayerState
 {
-  /// <inheritdoc/>
-  protected override bool CanWalk => true;
-
-  /// <inheritdoc/>
-  protected override bool GravityAffected => true;
-
-  /// <inheritdoc/>
-  protected override bool CanAttack => true;
-
-  /// <inheritdoc/>
-  protected override bool CanFlip => true;
-
-  protected override bool CanJump => true;
+  protected override StateCapabilities Capabilities => new()
+  {
+    CanWalk = true,
+    CanJump = true,
+    CanAttack = true,
+    GravityAffected = false,
+  };
 
   /// <inheritdoc/>
   public override void Transition(

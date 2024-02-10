@@ -2,25 +2,30 @@ using System;
 using Centari.State;
 using Godot;
 
-namespace Centari.Player;
+namespace Centari.Player.States;
 
+/// <summary>
+/// This state should be entered when the player is mid-air. This may be entered when the player has
+/// either walked off an edge, or is actively jumping.
+/// </summary>
 public partial class MidairState : AbstractPlayerState
 {
   /// <inheritdoc/>
-  protected override bool CanWalk => true;
+  protected override StateCapabilities Capabilities => new()
+  {
+    CanWalk = true,
+    CanJump = false,
+    CanAttack = true,
+    GravityAffected = true,
+  };
 
-  /// <inheritdoc/>
-  protected override bool GravityAffected => true;
-
-  /// <inheritdoc/>
-  protected override bool CanAttack => true;
-
-  /// <inheritdoc/>
-  protected override bool CanFlip => true;
-
-  protected override bool CanJump => false;
-
-  public void OnBodyEntered(Node2D body)
+  /// <summary>
+  /// This handler is called when the "mantle area" for a player collides witha body. This is used
+  /// to determine if the player's foot is caught against a tile corner. If this happens, we push
+  /// the player up and over the corner to help them move.
+  /// </summary>
+  /// <param name="body">The body that was collided with.</param>
+  public void OnMantleAreaBodyEntered(Node2D body)
   {
     PlayerInputs p = GetPlayerInputs();
 
@@ -37,7 +42,7 @@ public partial class MidairState : AbstractPlayerState
       mantleBoost.X += _player.MaxSpeed * 0.6f;
     }
 
-    // If the mantle activates, do a lil mantle animation.
+    // TODO: If the mantle activates, do a lil mantle animation.
 
     _player.Velocity = mantleBoost;
   }
@@ -46,13 +51,13 @@ public partial class MidairState : AbstractPlayerState
   public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Transition(stateMachine, animationPlayer, owner);
-    _player.MantleArea.BodyEntered += OnBodyEntered;
+    _player.MantleArea.BodyEntered += OnMantleAreaBodyEntered;
   }
 
+  /// <inheritdoc/>
   public override void Detransition()
   {
-    base.Detransition();
-    _player.MantleArea.BodyEntered -= OnBodyEntered;
+    _player.MantleArea.BodyEntered -= OnMantleAreaBodyEntered;
   }
 
   /// <inheritdoc/>

@@ -16,19 +16,16 @@ public interface INavContext
   public NavCoordinator Nav
   {
     get;
-    set;
   }
 
   public AbstractMonster ThisMonster
   {
     get;
-    set;
   }
 
   public Node2D TrackedCreature
   {
     get;
-    set;
   }
 
   public NavModes[] NavModes

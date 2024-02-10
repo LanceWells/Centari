@@ -1,7 +1,7 @@
 using Centari.State;
 using Godot;
 
-namespace Centari.Player;
+namespace Centari.Player.States;
 
 /// <summary>
 /// This is the standard movement state. A player should be able to perform most actions while
@@ -9,19 +9,27 @@ namespace Centari.Player;
 /// </summary>
 public partial class WalkingState : AbstractPlayerState
 {
-  /// <inheritdoc/>
-  protected override bool CanWalk => true;
+  // /// <inheritdoc/>
+  // protected override bool CanWalk => true;
 
-  /// <inheritdoc/>
-  protected override bool GravityAffected => true;
+  // /// <inheritdoc/>
+  // protected override bool GravityAffected => true;
 
-  /// <inheritdoc/>
-  protected override bool CanAttack => true;
+  // /// <inheritdoc/>
+  // protected override bool CanAttack => true;
 
-  /// <inheritdoc/>
-  protected override bool CanFlip => true;
+  // /// <inheritdoc/>
+  // protected override bool CanFlip => true;
 
-  protected override bool CanJump => true;
+  // protected override bool CanJump => true;
+
+  protected override StateCapabilities Capabilities => new()
+  {
+    CanWalk = true,
+    CanJump = true,
+    CanAttack = true,
+    GravityAffected = true,
+  };
 
   /// <inheritdoc/>
   public override void Transition(

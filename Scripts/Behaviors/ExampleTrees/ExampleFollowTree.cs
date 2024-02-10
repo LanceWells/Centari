@@ -91,19 +91,16 @@ public class ExampleFollowTreeContext : INavContext
   public NavCoordinator Nav
   {
     get => _nav;
-    set => _nav = value;
   }
 
   public AbstractMonster ThisMonster
   {
     get => _thisMonster;
-    set => _thisMonster = value;
   }
 
   public Node2D TrackedCreature
   {
     get => _trackedCreature;
-    set => _trackedCreature = value;
   }
 
   public NavModes[] NavModes
