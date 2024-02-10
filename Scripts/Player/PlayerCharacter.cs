@@ -14,7 +14,7 @@ public partial class PlayerCharacter : CharacterBody2D
   public float MaxSpeed = 400.0f;
 
   [Export]
-  public float JumpStrength = 1000.0f;
+  public float JumpStrength = 500.0f;
 
   [Export]
   public int AimPartAnchorX = -4;
@@ -31,6 +31,10 @@ public partial class PlayerCharacter : CharacterBody2D
   public Sprite2D BodySprite;
 
   public Area2D MantleArea;
+
+  public bool IsFlipped => _isFlipped;
+
+  private bool _isFlipped = false;
 
   private Vector2 _initialMantlePosition;
 
@@ -90,6 +94,8 @@ public partial class PlayerCharacter : CharacterBody2D
   /// </param>
   public void HandleFlip(bool isFlipped)
   {
+    _isFlipped = isFlipped;
+
     ArmSprite.FlipH = isFlipped;
     BodySprite.FlipH = isFlipped;
 

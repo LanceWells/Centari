@@ -14,6 +14,7 @@ public partial class IdleState : AbstractPlayerState
     CanJump = true,
     CanAttack = true,
     GravityAffected = false,
+    CanFlip = true,
   };
 
   /// <inheritdoc/>
@@ -36,17 +37,17 @@ public partial class IdleState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
+    base.PhysicsProcess(delta);
+
     PlayerInputs p = GetPlayerInputs();
-    Vector2 inputDir = CalculateDirection(delta);
-    _player.Velocity = inputDir;
 
-    _player.HandleFlip(_shouldFlip());
-    _player.MoveAndSlide();
-    _handleFireProjectile();
-
-    if (!_player.IsOnFloor())
+    if (p.Jump)
     {
-      _stateMachine.TransitionState("MidairState");
+      _stateMachine.TransitionState("JumpingState");
+    }
+    else if (!_player.IsOnFloor())
+    {
+      _stateMachine.TransitionState("FallingState");
     }
     else if (p.MoveLeft || p.MoveRight)
     {

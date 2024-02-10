@@ -188,7 +188,21 @@ public abstract partial class AbstractPlayerState : AbstractState
 
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
-  { }
+  {
+    Vector2 inputDir = CalculateDirection(delta);
+    _player.Velocity = inputDir;
+    _player.MoveAndSlide();
+
+    if (Capabilities.CanFlip)
+    {
+      _player.HandleFlip(_shouldFlip());
+    }
+
+    if (Capabilities.CanAttack)
+    {
+      _handleFireProjectile();
+    }
+  }
 
   /// <summary>
   /// A structure used to represent the list of inputs that a player might provide for their

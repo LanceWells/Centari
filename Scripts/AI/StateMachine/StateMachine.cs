@@ -80,7 +80,7 @@ public partial class StateMachine : Node
 		}
 		else
 		{
-			GD.PrintErr($"WARNING! Attempted to transition to state ${stateName}, which could not be found");
+			GD.PrintErr($"WARNING! Attempted to transition to state {stateName}, which could not be found");
 		}
 	}
 }

@@ -9,26 +9,13 @@ namespace Centari.Player.States;
 /// </summary>
 public partial class WalkingState : AbstractPlayerState
 {
-  // /// <inheritdoc/>
-  // protected override bool CanWalk => true;
-
-  // /// <inheritdoc/>
-  // protected override bool GravityAffected => true;
-
-  // /// <inheritdoc/>
-  // protected override bool CanAttack => true;
-
-  // /// <inheritdoc/>
-  // protected override bool CanFlip => true;
-
-  // protected override bool CanJump => true;
-
   protected override StateCapabilities Capabilities => new()
   {
     CanWalk = true,
     CanJump = true,
     CanAttack = true,
     GravityAffected = true,
+    CanFlip = true,
   };
 
   /// <inheritdoc/>
@@ -51,17 +38,17 @@ public partial class WalkingState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
+    base.PhysicsProcess(delta);
+
     PlayerInputs p = GetPlayerInputs();
-    Vector2 inputDir = CalculateDirection(delta);
-    _player.Velocity = inputDir;
 
-    _player.HandleFlip(_shouldFlip());
-    _player.MoveAndSlide();
-    _handleFireProjectile();
-
-    if (!_player.IsOnFloor())
+    if (p.Jump)
     {
-      _stateMachine.TransitionState("MidairState");
+      _stateMachine.TransitionState("JumpingState");
+    }
+    else if (!_player.IsOnFloor())
+    {
+      _stateMachine.TransitionState("FallingState");
     }
     else if (!p.MoveLeft && !p.MoveRight)
     {

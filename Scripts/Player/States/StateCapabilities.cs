@@ -9,4 +9,6 @@ public readonly record struct StateCapabilities
   public bool CanAttack { get; init; }
 
   public bool CanJump { get; init; }
+
+  public bool CanFlip { get; init; }
 }

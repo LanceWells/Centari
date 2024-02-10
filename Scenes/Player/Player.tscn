@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://06ruk4bqpmsf"]
+[gd_scene load_steps=17 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scripts/Player/PlayerCharacter.cs" id="1_jn4aw"]
 [ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
@@ -7,7 +7,9 @@
 [ext_resource type="Script" path="res://Scripts/AI/StateMachine/StateMachine.cs" id="5_aygjl"]
 [ext_resource type="Script" path="res://Scripts/Player/States/IdleState.cs" id="6_eg8fx"]
 [ext_resource type="Script" path="res://Scripts/Player/States/WalkingState.cs" id="7_5xhd5"]
-[ext_resource type="Script" path="res://Scripts/Player/States/MidairState.cs" id="8_h02to"]
+[ext_resource type="Script" path="res://Scripts/Player/States/FallingState.cs" id="9_58pqx"]
+[ext_resource type="Script" path="res://Scripts/Player/States/JumpingState.cs" id="10_34f36"]
+[ext_resource type="Script" path="res://Scripts/Player/States/MantleState.cs" id="10_41is0"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7igll"]
 
@@ -246,8 +248,9 @@ _data = {
 "Run": SubResource("Animation_ifq1k")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_axxb2"]
-size = Vector2(9.5, 6)
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ll78l"]
+a = Vector2(0, -0.5)
+b = Vector2(19.5, -0.5)
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(2, 2)
@@ -311,12 +314,31 @@ script = ExtResource("6_eg8fx")
 [node name="WalkingState" type="Node" parent="StateMachine"]
 script = ExtResource("7_5xhd5")
 
-[node name="MidairState" type="Node" parent="StateMachine"]
-script = ExtResource("8_h02to")
+[node name="FallingState" type="Node" parent="StateMachine"]
+script = ExtResource("9_58pqx")
+
+[node name="JumpingState" type="Node" parent="StateMachine"]
+script = ExtResource("10_34f36")
+
+[node name="JumpEnabledTimer" type="Timer" parent="StateMachine/JumpingState"]
+process_callback = 0
+wait_time = 0.2
+one_shot = true
+
+[node name="JumpCancelAfterTimer" type="Timer" parent="StateMachine/JumpingState"]
+process_callback = 0
+wait_time = 0.075
+one_shot = true
+
+[node name="MantleState" type="Node" parent="StateMachine"]
+script = ExtResource("10_41is0")
+
+[node name="MantleTimer" type="Timer" parent="StateMachine/MantleState"]
 
 [node name="MantleArea" type="Area2D" parent="."]
 position = Vector2(4.5, 12.5)
+collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MantleArea"]
-position = Vector2(0, -1)
-shape = SubResource("RectangleShape2D_axxb2")
+position = Vector2(-4.5, 0)
+shape = SubResource("SegmentShape2D_ll78l")
