@@ -102,9 +102,9 @@ public class SnailNavRules : AbstractNavRules
         {
           Vector2I landingTileCoords = tiles.LocalToMap((Vector2)result["position"].Obj);
           Vector2I landingTileCoordsSpace = new Vector2I(landingTileCoords.X, landingTileCoords.Y - 1);
-          // nav.ConnectPoints(up.Coords, upLeft.Coords, true);
-          // nav.ConnectPoints(upLeft.Coords, landingTileCoordsSpace);
-          nav.ConnectPoints(up.Coords, landingTileCoordsSpace);
+
+          nav.ConnectPoints(up.Coords, upLeft.Coords, true);
+          nav.ConnectPoints(upLeft.Coords, landingTileCoordsSpace);
         }
       }
 
@@ -128,9 +128,9 @@ public class SnailNavRules : AbstractNavRules
         {
           Vector2I landingTileCoords = tiles.LocalToMap((Vector2)result["position"].Obj);
           Vector2I landingTileCoordsSpace = new Vector2I(landingTileCoords.X, landingTileCoords.Y - 1);
-          nav.ConnectPoints(up.Coords, landingTileCoordsSpace);
-          // nav.ConnectPoints(up.Coords, upRight.Coords, true);
-          // nav.ConnectPoints(upRight.Coords, landingTileCoordsSpace);
+
+          nav.ConnectPoints(up.Coords, upRight.Coords, true);
+          nav.ConnectPoints(upRight.Coords, landingTileCoordsSpace);
         }
       }
 

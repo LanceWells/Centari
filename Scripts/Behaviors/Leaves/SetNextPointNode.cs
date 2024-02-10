@@ -27,6 +27,9 @@ public class SetNextPointNode : INode<INavContext>
       targetPos
     );
 
+    // If we couldn't find the target, try its last known position. In future, this can be a little
+    // more advanced, e.g. we check to see if there's a raycast to the target before setting its
+    // last known position.
     if (path.Length == 0)
     {
       path = _navContext.Nav.GetPath(
