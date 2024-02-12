@@ -158,13 +158,6 @@ public abstract partial class AbstractPlayerState : AbstractState
   public override void _Ready()
   { }
 
-  /// <summary>
-  /// Called every frame. 'delta' is the elapsed time since the previous frame.
-  /// </summary>
-  /// <param name="delta">The time elapsed since last frame.</param>
-  public override void _Process(double delta)
-  { }
-
   /// <inheritdoc/>
   protected override void Prepare(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
@@ -182,13 +175,16 @@ public abstract partial class AbstractPlayerState : AbstractState
     Prepare(stateMachine, animationPlayer, owner);
   }
 
-  /// <inheritdoc/>
-  public override void Process(double delta)
-  { }
+  public override void Detransition()
+  {
+    _animationPlayer.Play("RESET");
+    _animationPlayer.Stop();
+  }
 
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
+    base.PhysicsProcess(delta);
     Vector2 inputDir = CalculateDirection(delta);
     _player.Velocity = inputDir;
     _player.MoveAndSlide();
@@ -202,6 +198,11 @@ public abstract partial class AbstractPlayerState : AbstractState
     {
       _handleFireProjectile();
     }
+  }
+
+  public override void Process(double delta)
+  {
+    base.Process(delta);
   }
 
   /// <summary>

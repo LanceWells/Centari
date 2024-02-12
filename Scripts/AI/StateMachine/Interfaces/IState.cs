@@ -71,19 +71,19 @@ public interface IState
   /// </summary>
   public void Detransition();
 
-  /// <summary>
-  /// Called for each logical processing.
-  /// </summary>
-  /// <param name="delta">
-  /// The number of frames that have passed since last calling this method.
-  /// </param>
-  public void Process(double delta);
+  // /// <summary>
+  // /// Called for each logical processing.
+  // /// </summary>
+  // /// <param name="delta">
+  // /// The number of frames that have passed since last calling this method.
+  // /// </param>
+  // public void Process(double delta);
 
-  /// <summary>
-  /// Called for each physics processing.
-  /// </summary>
-  /// <param name="delta">
-  /// The number of frames that have passed since last calling this method.
-  /// </param>
-  public void PhysicsProcess(double delta);
+  // /// <summary>
+  // /// Called for each physics processing.
+  // /// </summary>
+  // /// <param name="delta">
+  // /// The number of frames that have passed since last calling this method.
+  // /// </param>
+  // public void PhysicsProcess(double delta);
 }

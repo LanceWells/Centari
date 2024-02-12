@@ -52,8 +52,24 @@ public abstract partial class AbstractState : Node, IState
   public abstract void Detransition();
 
   /// <inheritdoc/>
-  public abstract void Process(double delta);
+  public virtual void Process(double delta)
+  {
+    _Process(delta);
+  }
 
   /// <inheritdoc/>
-  public abstract void PhysicsProcess(double delta);
+  public virtual void PhysicsProcess(double delta)
+  {
+    _PhysicsProcess(delta);
+  }
+
+  public sealed override void _PhysicsProcess(double delta)
+  {
+    base._PhysicsProcess(delta);
+  }
+
+  public sealed override void _Process(double delta)
+  {
+    base._Process(delta);
+  }
 }

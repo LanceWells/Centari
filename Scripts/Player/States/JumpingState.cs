@@ -1,4 +1,5 @@
 using System;
+using Centari.Navigation;
 using Centari.State;
 using Godot;
 
@@ -38,7 +39,7 @@ public partial class JumpingState : AbstractPlayerState
   /// the player up and over the corner to help them move.
   /// </summary>
   /// <param name="body">The body that was collided with.</param>
-  public void OnMantleAreaBodyEntered(Node2D body)
+  public void OnMantleClimbRayBodyEntered(Node2D body)
   {
     PlayerInputs p = GetPlayerInputs();
 
@@ -62,6 +63,8 @@ public partial class JumpingState : AbstractPlayerState
     // TODO: If the mantle activates, do a lil mantle animation.
 
     _player.Velocity = mantleBoost;
+
+    _stateMachine.TransitionState("MantleClimbState");
   }
 
   public void OnJumpEnabledTimeout()
@@ -125,7 +128,7 @@ public partial class JumpingState : AbstractPlayerState
   public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Transition(stateMachine, animationPlayer, owner);
-    _player.MantleArea.BodyEntered += OnMantleAreaBodyEntered;
+    // _player.MantleClimbRay. += OnMantleClimbRayBodyEntered;
 
     JumpEnabledTimer = GetNode<Timer>("JumpEnabledTimer");
     JumpEnabledTimer.Timeout += OnJumpEnabledTimeout;
@@ -140,9 +143,38 @@ public partial class JumpingState : AbstractPlayerState
 
   public override void Detransition()
   {
-    _player.MantleArea.BodyEntered -= OnMantleAreaBodyEntered;
+    // _player.MantleClimbRay.Rotate -= OnMantleClimbRayBodyEntered;
     JumpEnabledTimer.Timeout -= OnJumpEnabledTimeout;
     JumpCancelAfterTimer.Timeout -= OnJumpCancelAfterTimeout;
+  }
+
+  public override void Process(double delta)
+  {
+    base.Process(delta);
+
+    if (_player.HeadRay.GetCollider() is TileMap)
+    {
+      return;
+    }
+
+    if (_player.BodyRay.GetCollider() is not TileMap tileMap)
+    {
+      return;
+    }
+
+    Vector2 collisionPoint = _player.BodyRay.GetCollisionPoint();
+    Vector2I tileMapPoint = tileMap.LocalToMap(collisionPoint);
+    TileData tileData = tileMap.GetCellTileData(0, tileMapPoint);
+    TileInfo tileInfo = new(tileData, tileMapPoint);
+
+    if (!tileInfo.IsPlatform)
+    {
+      return;
+    }
+
+    _stateMachine.TransitionState("MantleClimbState");
+
+    // Console.WriteLine(tileInfo);
   }
 
   public override void PhysicsProcess(double delta)
