@@ -118,17 +118,11 @@ public partial class JumpingState : AbstractPlayerState
     }
 
     return vel;
-
-    // Vector2 jumpDirection = new(direction.X, -_player.JumpStrength);
-    // return jumpDirection;
-
-    // return base.GetJumping(direction, delta);
   }
 
   public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Transition(stateMachine, animationPlayer, owner);
-    // _player.MantleClimbRay. += OnMantleClimbRayBodyEntered;
 
     JumpEnabledTimer = GetNode<Timer>("JumpEnabledTimer");
     JumpEnabledTimer.Timeout += OnJumpEnabledTimeout;
@@ -143,7 +137,6 @@ public partial class JumpingState : AbstractPlayerState
 
   public override void Detransition()
   {
-    // _player.MantleClimbRay.Rotate -= OnMantleClimbRayBodyEntered;
     JumpEnabledTimer.Timeout -= OnJumpEnabledTimeout;
     JumpCancelAfterTimer.Timeout -= OnJumpCancelAfterTimeout;
   }
@@ -152,17 +145,25 @@ public partial class JumpingState : AbstractPlayerState
   {
     base.Process(delta);
 
-    if (_player.HeadRay.GetCollider() is TileMap)
+    if (_player.HeadRay.Item.GetCollider() is TileMap)
     {
       return;
     }
 
-    if (_player.BodyRay.GetCollider() is not TileMap tileMap)
+    if (_player.BodyRay.Item.GetCollider() is not TileMap tileMap)
     {
       return;
     }
 
-    Vector2 collisionPoint = _player.BodyRay.GetCollisionPoint();
+    // There's what seems to be a bug when raycasting to the left against a tilemap. The pixel for
+    // detecting a given tile to the right seems to land in the tile, but raycasting to the left
+    // seems to pick the tile to the right of that tile when translating to map coords.
+
+    Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
+    collisionPoint.X += _player.HeadRay.IsFlipped
+      ? -1
+      : 1;
+
     Vector2I tileMapPoint = tileMap.LocalToMap(collisionPoint);
     TileData tileData = tileMap.GetCellTileData(0, tileMapPoint);
     TileInfo tileInfo = new(tileData, tileMapPoint);
@@ -173,8 +174,6 @@ public partial class JumpingState : AbstractPlayerState
     }
 
     _stateMachine.TransitionState("MantleClimbState");
-
-    // Console.WriteLine(tileInfo);
   }
 
   public override void PhysicsProcess(double delta)

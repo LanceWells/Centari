@@ -1,3 +1,4 @@
+using Centari.Common;
 using Godot;
 
 namespace Centari.Player;
@@ -30,19 +31,17 @@ public partial class PlayerCharacter : CharacterBody2D
   /// </summary>
   public Sprite2D BodySprite;
 
-  public RayCast2D HeadRay;
+  public FlippableRayCast HeadRay;
 
-  public RayCast2D BodyRay;
+  public FlippableRayCast BodyRay;
 
-  public RayCast2D FeetRay;
+  public FlippableRayCast FeetRay;
+
+  public FlippableNode MantleCornerPoint;
 
   public bool IsFlipped => _isFlipped;
 
   private bool _isFlipped = false;
-
-  private Vector2 _initialMantlePosition;
-
-  public Node2D MantleCornerPoint;
 
   /// <summary>
   /// A reference to the ArmSprite node for the player.
@@ -105,21 +104,18 @@ public partial class PlayerCharacter : CharacterBody2D
     ArmSprite.FlipH = isFlipped;
     BodySprite.FlipH = isFlipped;
 
+    HeadRay.SetFlipped(IsFlipped);
+    BodyRay.SetFlipped(IsFlipped);
+    FeetRay.SetFlipped(IsFlipped);
+    MantleCornerPoint.SetFlipped(isFlipped);
+
     if (isFlipped)
     {
       AimArm.Position = new Vector2(-AimPartAnchorX, AimArm.Position.Y);
-      HeadRay.Position = new Vector2(
-        -_initialMantlePosition.X,
-        _initialMantlePosition.Y
-      );
     }
     else
     {
       AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
-      HeadRay.Position = new Vector2(
-        _initialMantlePosition.X,
-        _initialMantlePosition.Y
-      );
     }
   }
 
@@ -138,15 +134,22 @@ public partial class PlayerCharacter : CharacterBody2D
   {
     BodySprite = GetNode<Sprite2D>("BodySprite");
     ArmSprite = GetNode<Sprite2D>("ArmSprite");
-    HeadRay = GetNode<RayCast2D>("HeadRay");
-    BodyRay = GetNode<RayCast2D>("BodyRay");
-    FeetRay = GetNode<RayCast2D>("FeetRay");
-    MantleCornerPoint = GetNode<Node2D>("MantleCornerPoint");
+
+    var _headRay = GetNode<RayCast2D>("HeadRay");
+    var _bodyRay = GetNode<RayCast2D>("BodyRay");
+    var _feetRay = GetNode<RayCast2D>("FeetRay");
+
+    HeadRay = new FlippableRayCast(_headRay);
+    BodyRay = new FlippableRayCast(_bodyRay);
+    FeetRay = new FlippableRayCast(_feetRay);
+
+    var _mantleCornerPoint = GetNode<Node2D>("MantleCornerPoint");
+
+    MantleCornerPoint = new FlippableNode(_mantleCornerPoint);
 
     AimArm = GetNode<AimArm>("AimArm");
     AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
     AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
-
-    _initialMantlePosition = new Vector2(HeadRay.Position.X, HeadRay.Position.Y);
+    // _initialMantlePosition = new Vector2(HeadRay.Position.X, HeadRay.Position.Y);
   }
 }

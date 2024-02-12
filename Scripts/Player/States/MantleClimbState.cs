@@ -25,7 +25,7 @@ public partial class MantleClimbState : AbstractPlayerState
     _animationPlayer.Play("MantleClimb");
     _animationPlayer.AnimationFinished += OnAnimationFinished;
 
-    if (_player.BodyRay.GetCollider() is not TileMap tileMap)
+    if (_player.BodyRay.Item.GetCollider() is not TileMap tileMap)
     {
       // wat
       _stateMachine.TransitionState("IdleState");
@@ -34,7 +34,11 @@ public partial class MantleClimbState : AbstractPlayerState
     {
       var p = GetPlayerInputs();
 
-      Vector2 collisionPoint = _player.BodyRay.GetCollisionPoint();
+      Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
+      collisionPoint.X += _player.HeadRay.IsFlipped
+        ? -1
+        : 1;
+
       Vector2I tileMapPoint = tileMap.LocalToMap(collisionPoint);
       TileData tileData = tileMap.GetCellTileData(0, tileMapPoint);
       Vector2 tileCenter = tileMap.MapToLocal(tileMapPoint);
@@ -44,9 +48,9 @@ public partial class MantleClimbState : AbstractPlayerState
         tileCenter.Y
       );
 
-      mantleCorner.X += p.MoveRight
-        ? -(tileMap.TileSet.TileSize.X / 2)
-        : +(tileMap.TileSet.TileSize.X / 2);
+      mantleCorner.X += _player.IsFlipped
+        ? +(tileMap.TileSet.TileSize.X / 2)
+        : -(tileMap.TileSet.TileSize.X / 2);
 
       mantleCorner.Y -= tileMap.TileSet.TileSize.Y / 2;
 
@@ -57,15 +61,28 @@ public partial class MantleClimbState : AbstractPlayerState
   public override void Detransition()
   {
     base.Detransition();
-    _player.Position = _mantleCorner - _player.MantleCornerPoint.Position;
+    Vector2 newPos = new()
+    {
+      X = _mantleCorner.X + _player.MantleCornerPoint.Item.Position.X,
+      Y = _mantleCorner.Y - _player.MantleCornerPoint.Item.Position.Y
+    };
+
+    _player.Position = newPos;
     _animationPlayer.AnimationFinished -= OnAnimationFinished;
   }
 
   public override void Process(double delta)
   {
     base.Process(delta);
-    // _player.Position = _mantleCorner + _player.FloorOffset;
-    _player.Position = _mantleCorner - _player.MantleCornerPoint.Position;
+
+    Vector2 playerMantlePoint = _player.MantleCornerPoint.Item.Position;
+    Vector2 newPos = new()
+    {
+      X = _mantleCorner.X + (_player.IsFlipped ? playerMantlePoint.X : -playerMantlePoint.X),
+      Y = _mantleCorner.Y - _player.MantleCornerPoint.Item.Position.Y
+    };
+
+    _player.Position = newPos;
     _player.Velocity = Vector2.Zero;
   }
 
