@@ -3,6 +3,11 @@ using Centari.Behaviors.Common;
 
 namespace Centari.Behaviors.Composites;
 
+/// <summary>
+/// This node acts as an "OR" statement. The idea is that it will process nodes until Its goal is to add fallback behavior. For example, this
+/// node could be used in the context of opening a door. 
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class SelectorNode<T> : INode<T>
 {
   private List<INode<T>> _children;
@@ -26,18 +31,17 @@ public class SelectorNode<T> : INode<T>
     {
       switch (node.Process(delta))
       {
+        case NodeState.SUCCESS:
+          return NodeState.SUCCESS;
         case NodeState.FAILURE:
-          return NodeState.FAILURE;
+          break;
         case NodeState.RUNNING:
           return NodeState.RUNNING;
-        case NodeState.SUCCESS:
-          continue;
         default:
-          continue;
+          break;
       }
     }
 
-    // If every child node returned success, return success.
-    return NodeState.SUCCESS;
+    return NodeState.FAILURE;
   }
 }

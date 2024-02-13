@@ -37,7 +37,7 @@ public class ExampleFollowTree
             new SetNextPointNode(),
           })
         ),
-        new SelectorNode<INavContext>(new List<INode<INavContext>>{
+        new SequenceNode<INavContext>(new List<INode<INavContext>>{
           new InverterNode<INavContext>(
             new WalkHorizontalNode()
           ),

@@ -1,6 +1,5 @@
 using Centari.Behaviors.ExampleTrees;
 using Centari.Navigation;
-using Centari.Navigation.Rules;
 using Centari.Player;
 
 namespace Centari.Monsters;

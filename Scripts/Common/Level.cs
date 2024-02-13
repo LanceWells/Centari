@@ -26,11 +26,6 @@ public partial class Level : Node2D
 
   private Vector2I raycastReadyTile;
 
-  private int GetTileIndex(float x, float y, float MapHeight)
-  {
-    return (int)(y + (x * MapHeight));
-  }
-
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {

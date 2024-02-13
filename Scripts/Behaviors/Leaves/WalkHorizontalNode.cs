@@ -1,3 +1,5 @@
+using System;
+using System.Data.Common;
 using Centari.Behaviors.Common;
 using Centari.Behaviors.Contexts;
 using Godot;
@@ -22,6 +24,10 @@ public class WalkHorizontalNode : INode<INavContext>
     if (thisPos.Y > nextPos.Y)
     {
       return NodeState.FAILURE;
+    }
+    else if (Math.Abs(thisPos.X - nextPos.X) < 0.1)
+    {
+      return NodeState.SUCCESS;
     }
 
     _navContext.ThisMonster.Position = thisPos.MoveToward(nextPos, (float)delta * walkSpeed);

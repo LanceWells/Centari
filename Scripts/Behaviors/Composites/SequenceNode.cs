@@ -22,25 +22,21 @@ public class SequenceNode<T> : INode<T>
 
   public NodeState Process(double delta)
   {
-    bool anyChildRunning = false;
-
     foreach (INode<T> child in _children)
     {
       switch (child.Process(delta))
       {
-        case NodeState.RUNNING:
-          return NodeState.RUNNING;
-        case NodeState.FAILURE:
-          return NodeState.FAILURE;
         case NodeState.SUCCESS:
           break;
+        case NodeState.FAILURE:
+          return NodeState.FAILURE;
+        case NodeState.RUNNING:
+          return NodeState.RUNNING;
         default:
           break;
       }
     }
 
-    return anyChildRunning
-      ? NodeState.RUNNING
-      : NodeState.SUCCESS;
+    return NodeState.SUCCESS;
   }
 }
