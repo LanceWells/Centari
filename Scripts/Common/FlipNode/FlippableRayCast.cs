@@ -3,10 +3,17 @@ using Godot;
 
 namespace Centari.Player;
 
-public class FlippableRayCast : AbstractFlipNode<RayCast2D>
+/// <summary>
+/// Contains a raycast in a flippable container.
+/// </summary>
+public class FlippableRayCast : AbstractFlipNode<RayCast2D>, IFlipNode<RayCast2D>
 {
   private Vector2 _initialTarget;
 
+  /// <summary>
+  /// Creates a new instance of a <see cref="FlippableRayCast"/>.
+  /// </summary>
+  /// <param name="ray">The ray to contain.</param>
   public FlippableRayCast(RayCast2D ray)
   : base(ray)
   {
@@ -14,7 +21,7 @@ public class FlippableRayCast : AbstractFlipNode<RayCast2D>
     _item = ray;
   }
 
-  public override void HandleItemFlipped()
+  protected override void HandleItemFlipped()
   {
     _item.TargetPosition = new Vector2(
       -_initialTarget.X,
@@ -22,7 +29,7 @@ public class FlippableRayCast : AbstractFlipNode<RayCast2D>
     );
   }
 
-  public override void HandleItemNotFlipped()
+  protected override void HandleItemNotFlipped()
   {
     _item.TargetPosition = new Vector2(
       _initialTarget.X,

@@ -63,11 +63,23 @@ public abstract partial class AbstractState : Node, IState
     _PhysicsProcess(delta);
   }
 
+  /// <summary>
+  /// Calls the base <see cref="_PhysicsProcess"/>. This is sealed so that all processing and
+  /// physics processing runs through the state machine, which ensures that only the relevant state
+  /// is processing at any given point.
+  /// </summary>
+  /// <param name="delta">The time delta since the last frame.</param>
   public sealed override void _PhysicsProcess(double delta)
   {
     base._PhysicsProcess(delta);
   }
 
+  /// <summary>
+  /// Calls the base <see cref="_Process"/>. This is sealed so that all processing and physics
+  /// processing runs through the state machine, which ensures that only the relevant state is
+  /// processing at any given point.
+  /// </summary>
+  /// <param name="delta">The time delta since the last frame.</param>
   public sealed override void _Process(double delta)
   {
     base._Process(delta);

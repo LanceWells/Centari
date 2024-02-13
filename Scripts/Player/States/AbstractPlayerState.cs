@@ -175,6 +175,7 @@ public abstract partial class AbstractPlayerState : AbstractState
     Prepare(stateMachine, animationPlayer, owner);
   }
 
+  /// <inheritdoc/>
   public override void Detransition()
   {
     _animationPlayer.Play("RESET");
@@ -200,6 +201,7 @@ public abstract partial class AbstractPlayerState : AbstractState
     }
   }
 
+  /// <inheritdoc/>
   public override void Process(double delta)
   {
     base.Process(delta);

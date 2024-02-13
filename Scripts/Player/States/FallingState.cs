@@ -36,14 +36,17 @@ public partial class FallingState : AbstractPlayerState
     return lerpedDir;
   }
 
+  /// <inheritdoc/>
   public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Transition(stateMachine, animationPlayer, owner);
   }
 
+  /// <inheritdoc/>
   public override void Detransition()
   { }
 
+  /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
     base.PhysicsProcess(delta);

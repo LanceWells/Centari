@@ -2,10 +2,17 @@ using Godot;
 
 namespace Centari.Common;
 
+/// <summary>
+/// Contains a vector in a flippable container.
+/// </summary>
 public class FlippableNode : AbstractFlipNode<Node2D>
 {
   private Vector2 _initialPos;
 
+  /// <summary>
+  /// Creats a new instance of a <see cref="FlippableNode"/>.
+  /// </summary>
+  /// <param name="node"></param>
   public FlippableNode(Node2D node)
   : base(node)
   {
@@ -13,7 +20,7 @@ public class FlippableNode : AbstractFlipNode<Node2D>
     _initialPos = node.Position;
   }
 
-  public override void HandleItemFlipped()
+  protected override void HandleItemFlipped()
   {
     _item.Position = new Vector2(
       -_initialPos.X,
@@ -21,7 +28,7 @@ public class FlippableNode : AbstractFlipNode<Node2D>
     );
   }
 
-  public override void HandleItemNotFlipped()
+  protected override void HandleItemNotFlipped()
   {
     _item.Position = new Vector2(
       _initialPos.X,

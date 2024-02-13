@@ -71,14 +71,6 @@ public partial class Level : Node2D
 
   public override void _PhysicsProcess(double delta)
   {
-    // _tiles.ForceUpdateTransform();
-    // _tiles.UpdateInternals();
-    // _tiles.NotifyRuntimeTileDataUpdate();
-    // base._PhysicsProcess(delta);
-    // var s = GetWorld2D();
-    // var q = PhysicsRayQueryParameters2D.Create(new Vector2(368, 528), new Vector2(368, 1328));
-    // var r = s.DirectSpaceState.IntersectRay(q);
-    // Console.WriteLine(r);
     switch (didSetNav)
     {
       case NavState.NOT_STARTED:

@@ -3,10 +3,10 @@ using Godot;
 namespace Centari.State;
 
 /// <summary>
-/// Class used to add an wrapper to nodes fetched via <see cref="Node.GetNode(Godot.NodePath)"/>.
+/// Class used to add an wrapper to nodes fetched via <see cref="Node.GetNode(NodePath)"/>.
 /// The idea is that state nodes fetched via that method can be wrapped into this type, which then
 /// gives us the ability to call methods natively via Godot's
-/// <see cref="GodotObject.Call(Godot.StringName, Godot.Variant[])"/>.
+/// <see cref="GodotObject.Call(StringName, Godot.Variant[])"/>.
 /// </summary>
 public class StateNode : IState
 {
@@ -71,19 +71,19 @@ public interface IState
   /// </summary>
   public void Detransition();
 
-  // /// <summary>
-  // /// Called for each logical processing.
-  // /// </summary>
-  // /// <param name="delta">
-  // /// The number of frames that have passed since last calling this method.
-  // /// </param>
-  // public void Process(double delta);
+  /// <summary>
+  /// Called for each logical processing.
+  /// </summary>
+  /// <param name="delta">
+  /// The number of frames that have passed since last calling this method.
+  /// </param>
+  public void Process(double delta);
 
-  // /// <summary>
-  // /// Called for each physics processing.
-  // /// </summary>
-  // /// <param name="delta">
-  // /// The number of frames that have passed since last calling this method.
-  // /// </param>
-  // public void PhysicsProcess(double delta);
+  /// <summary>
+  /// Called for each physics processing.
+  /// </summary>
+  /// <param name="delta">
+  /// The number of frames that have passed since last calling this method.
+  /// </param>
+  public void PhysicsProcess(double delta);
 }

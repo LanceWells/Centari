@@ -46,14 +46,12 @@ public partial class JumpingState : AbstractPlayerState
     Console.WriteLine("mantle");
 
     Vector2 mantleBoost = Vector2.Zero;
-    // if (p.MoveLeft && _player.Velocity.X < 0 && Math.Abs(_player.Velocity.Y) < 500)
     if (p.MoveLeft && _player.Velocity.X < 0)
     {
       mantleBoost.Y -= _player.MaxSpeed * 2;
       mantleBoost.X -= _player.MaxSpeed;
     }
 
-    // if (p.MoveRight && _player.Velocity.X > 0 && Math.Abs(_player.Velocity.Y) < 500)
     if (p.MoveRight && _player.Velocity.X > 0)
     {
       mantleBoost.Y -= _player.MaxSpeed * 2;
@@ -67,6 +65,10 @@ public partial class JumpingState : AbstractPlayerState
     _stateMachine.TransitionState("MantleClimbState");
   }
 
+  /// <summary>
+  /// Jumping can only go up for so long. Stop go up when timer done. If we're back on the floor
+  /// though, jump again.
+  /// </summary>
   public void OnJumpEnabledTimeout()
   {
     if (_player.IsOnFloor())
@@ -79,6 +81,10 @@ public partial class JumpingState : AbstractPlayerState
     }
   }
 
+  /// <summary>
+  /// A jump can't be canceled instantly. This timer lets the user cancel their jump after they have
+  /// already risen for some time. This makes the jumping feel more consistent.
+  /// </summary>
   public void OnJumpCancelAfterTimeout()
   {
     _canCancelJump = true;
@@ -107,6 +113,7 @@ public partial class JumpingState : AbstractPlayerState
     return lerpedDir;
   }
 
+  /// <inheritdoc/>
   protected override Vector2 GetJumping(Vector2 direction, double delta)
   {
     PlayerInputs p = GetPlayerInputs();
@@ -120,6 +127,7 @@ public partial class JumpingState : AbstractPlayerState
     return vel;
   }
 
+  /// <inheritdoc/>
   public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
   {
     base.Transition(stateMachine, animationPlayer, owner);
@@ -135,12 +143,14 @@ public partial class JumpingState : AbstractPlayerState
     _canCancelJump = false;
   }
 
+  /// <inheritdoc/>
   public override void Detransition()
   {
     JumpEnabledTimer.Timeout -= OnJumpEnabledTimeout;
     JumpCancelAfterTimer.Timeout -= OnJumpCancelAfterTimeout;
   }
 
+  /// <inheritdoc/>
   public override void Process(double delta)
   {
     base.Process(delta);
@@ -176,6 +186,7 @@ public partial class JumpingState : AbstractPlayerState
     _stateMachine.TransitionState("MantleClimbState");
   }
 
+  /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
     base.PhysicsProcess(delta);
