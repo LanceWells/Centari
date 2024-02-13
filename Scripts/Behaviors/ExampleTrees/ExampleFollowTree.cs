@@ -29,21 +29,21 @@ public class ExampleFollowTree
       trackedCreature
     );
 
+    Queue<Vector2> path = new();
+
     _root = new RepeatUntilFailNode<INavContext>(
       new SequenceNode<INavContext>(new List<INode<INavContext>>{
         new AlwaysSucceedNode<INavContext>(
           new SequenceNode<INavContext>(new List<INode<INavContext>>{
             new TestOnGroundNode(),
-            new SetNextPointNode(),
+            new SetNextPointNode(ref path),
           })
         ),
         new SequenceNode<INavContext>(new List<INode<INavContext>>{
-          new InverterNode<INavContext>(
-            new WalkHorizontalNode()
-          ),
+          new WalkHorizontalNode(ref path),
           new SequenceNode<INavContext>(new List<INode<INavContext>>{
             new TestOnGroundNode(),
-            new JumpNode(),
+            new JumpNode(ref path),
           })
         })
       })

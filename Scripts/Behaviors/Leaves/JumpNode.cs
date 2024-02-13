@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Centari.Behaviors.Common;
 using Centari.Behaviors.Contexts;
 using Godot;
@@ -8,15 +9,27 @@ public class JumpNode : INode<INavContext>
 {
   private INavContext _navContext;
 
+  private Queue<Vector2> _path;
+
   public void Init(ref INavContext contextRef)
   {
     _navContext = contextRef;
   }
 
+  public JumpNode(ref Queue<Vector2> path)
+  {
+    _path = path;
+  }
+
   public NodeState Process(double delta)
   {
+    bool hasNextPoint = _path.TryPeek(out var nextPos);
+    if (!hasNextPoint)
+    {
+      return NodeState.SUCCESS;
+    }
+
     Vector2 thisPos = _navContext.ThisMonster.Position;
-    Vector2 nextPos = _navContext.NextPoint;
     float gravity = _navContext.ThisMonster.Gravity;
 
     if (thisPos.Y < nextPos.Y)

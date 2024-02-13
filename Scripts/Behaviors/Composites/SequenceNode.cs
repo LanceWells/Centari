@@ -7,12 +7,16 @@ public class SequenceNode<T> : INode<T>
 {
   private List<INode<T>> _children;
 
+  private int _nodePointer;
+
   public void Init(ref T contextRef)
   {
     foreach (INode<T> node in _children)
     {
       node.Init(ref contextRef);
     }
+
+    _nodePointer = 0;
   }
 
   public SequenceNode(List<INode<T>> children)

@@ -1,21 +1,27 @@
+using System.Collections.Generic;
+using System.Linq;
 using Centari.Behaviors.Common;
 using Centari.Behaviors.Contexts;
 using Godot;
 
 namespace Centari.Behaviors.Leaves;
 
-public class SetNextPointNode : INode<INavContext>
+public class SetNextPointNode : AbstractEnqueueNode<INavContext, Vector2>
 {
   private INavContext _navContext;
 
   private Vector2 _lastKnownTargetPoint;
 
-  public void Init(ref INavContext contextRef)
+  public override void Init(ref INavContext contextRef)
   {
     _navContext = contextRef;
   }
 
-  public NodeState Process(double delta)
+  public SetNextPointNode(ref Queue<Vector2> queue)
+  : base(ref queue)
+  { }
+
+  public override NodeState Process(double delta)
   {
     Vector2 thisPos = _navContext.ThisMonster.Position;
     Vector2 targetPos = _navContext.TrackedCreature.Position;
@@ -50,11 +56,13 @@ public class SetNextPointNode : INode<INavContext>
 
     if (path.Length > 1 && thisPos.DistanceTo(path[0]) < (walkSpeed * 0.1f))
     {
-      _navContext.NextPoint = path[1];
+      path = path.Skip(1).ToArray();
     }
-    else if (path.Length > 0)
+
+    Queue.Clear();
+    foreach (var vec in path)
     {
-      _navContext.NextPoint = path[0];
+      Queue.Enqueue(vec);
     }
 
     return NodeState.SUCCESS;
