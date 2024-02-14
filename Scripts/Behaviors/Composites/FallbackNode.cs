@@ -3,9 +3,11 @@ using Centari.Behaviors.Common;
 
 namespace Centari.Behaviors;
 
-public class ReactiveSequenceNode<T> : INode<T>
+public class FallbackNode<T> : INode<T>
 {
   private List<INode<T>> _children;
+
+  private int _nodePointer;
 
   public void Init(ref T contextRef)
   {
@@ -15,21 +17,23 @@ public class ReactiveSequenceNode<T> : INode<T>
     }
   }
 
-  public ReactiveSequenceNode(List<INode<T>> children)
+  public FallbackNode(List<INode<T>> children)
   {
     _children = children;
   }
 
   public NodeState Process(double delta)
   {
-    foreach (INode<T> child in _children)
+    for (int i = _nodePointer; i < _children.Count; i++)
     {
+      var child = _children[i];
       switch (child.Process(delta))
       {
         case NodeState.SUCCESS:
-          break;
+          return NodeState.SUCCESS;
         case NodeState.FAILURE:
-          return NodeState.FAILURE;
+          _nodePointer++;
+          break;
         case NodeState.RUNNING:
           return NodeState.RUNNING;
         default:
@@ -37,6 +41,6 @@ public class ReactiveSequenceNode<T> : INode<T>
       }
     }
 
-    return NodeState.SUCCESS;
+    return NodeState.FAILURE;
   }
 }

@@ -1,7 +1,5 @@
 using Centari.Behaviors.Common;
-using Centari.Behaviors.Contexts;
-using Centari.Behaviors.Decorators;
-using Centari.Behaviors.Leaves;
+using Centari.Behaviors.Leaves.Navigation;
 using Centari.Monsters;
 using Centari.Navigation;
 using Centari.Navigation.Rules;
@@ -28,7 +26,7 @@ public class ExampleFollowTree
     );
 
     _root = new RepeatUntilFailNode<INavContext>(
-      new PathfindNode()
+      new PathfindTargetNode()
     );
 
     _root.Init(ref _ctx);

@@ -1,6 +1,6 @@
 using Centari.Behaviors.Common;
 
-namespace Centari.Behaviors.Decorators;
+namespace Centari.Behaviors;
 
 public class AlwaysSucceedNode<T> : INode<T>
 {

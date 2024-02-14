@@ -3,7 +3,7 @@ using Centari.Navigation;
 using Centari.Navigation.Rules;
 using Godot;
 
-namespace Centari.Behaviors.Contexts;
+namespace Centari.Behaviors;
 
 public interface INavContext
 {

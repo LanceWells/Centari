@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using Centari.Behaviors.Common;
-using Centari.Behaviors.Contexts;
 using Godot;
 
-namespace Centari.Behaviors.Leaves;
+namespace Centari.Behaviors.Leaves.Navigation;
 
-public class PathfindNode : INode<INavContext>
+public class PathfindTargetNode : INode<INavContext>
 {
   INavContext _context;
 

@@ -1,14 +1,9 @@
 using System.Collections.Generic;
 using Centari.Behaviors.Common;
 
-namespace Centari.Behaviors.Composites;
+namespace Centari.Behaviors;
 
-/// <summary>
-/// This node acts as an "OR" statement. The idea is that it will process nodes until Its goal is to add fallback behavior. For example, this
-/// node could be used in the context of opening a door. 
-/// </summary>
-/// <typeparam name="T"></typeparam>
-public class SelectorNode<T> : INode<T>
+public class ReactiveFallbackNode<T> : INode<T>
 {
   private List<INode<T>> _children;
 
@@ -20,7 +15,7 @@ public class SelectorNode<T> : INode<T>
     }
   }
 
-  public SelectorNode(List<INode<T>> children)
+  public ReactiveFallbackNode(List<INode<T>> children)
   {
     _children = children;
   }

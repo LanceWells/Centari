@@ -1,0 +1,86 @@
+classes: {
+  ReactiveFallback: {
+    label: ReactiveFallback
+    shape: parallelogram
+    style: {
+      fill: "#296EB4"
+    }
+  }
+
+  ReactiveSequence: {
+    label: ReactiveSequence
+    shape: queue
+    style: {
+      fill: "#5B2333"
+    }
+  }
+
+  ConditionalNode: {
+    style: {
+      fill: "#2B2D42"
+    }
+  }
+
+  ActionNode: {
+    style: {
+      fill: "#1E3231"
+    }
+  }
+}
+
+IsKnownTargetNode.class: ConditionalNode
+IsPotentialTargetVisibleNode.class: ConditionalNode
+IsTargetInMeleeNode.class: ConditionalNode
+IsTargetInRangeNode.class: ConditionalNode
+IsTargetVisibleNode.class: ConditionalNode
+
+AttackMeleeNode.class: ActionNode
+AttackRangedNode.class: ActionNode
+PathfindTargetNode1: PathfindTargetNode
+PathfindTargetNode1.class: ActionNode
+PathfindTargetNode2: PathfindTargetNode
+PathfindTargetNode2.class: ActionNode
+IdleNode.class: ActionNode
+KnowVisibleTargetNode.class: ActionNode
+
+RF_Root.class: ReactiveFallback
+RF_Attack.class: ReactiveFallback
+RF_Target.class: ReactiveFallback
+
+RS_IfKnowTarget.class: ReactiveSequence
+RS_IfTargetVisible.class: ReactiveSequence
+RS_TargetMeleeable.class: ReactiveSequence
+RS_TargetRangeable.class: ReactiveSequence
+RS_OtherTargetsVisible.class: ReactiveSequence
+
+Root: {
+  shape: circle
+}
+
+Root -> RF_Root
+
+RF_Root -> RS_IfKnowTarget
+RF_Root -> RS_OtherTargetsVisible
+RF_Root -> IdleNode
+
+RS_OtherTargetsVisible -> IsPotentialTargetVisibleNode
+RS_OtherTargetsVisible -> KnowVisibleTargetNode
+
+RS_IfKnowTarget -> IsKnownTargetNode
+RS_IfKnowTarget -> RF_Target
+
+RF_Target -> RS_IfTargetVisible
+RF_Target -> PathfindTargetNode2
+
+RS_IfTargetVisible -> IsTargetVisibleNode
+RS_IfTargetVisible -> RF_Attack
+
+RF_Attack -> RS_TargetMeleeable
+RF_Attack -> RS_TargetRangeable
+RF_Attack -> PathfindTargetNode1
+
+RS_TargetMeleeable -> IsTargetInMeleeNode
+RS_TargetMeleeable -> AttackMeleeNode
+
+RS_TargetRangeable -> IsTargetInRangeNode
+RS_TargetRangeable -> AttackRangedNode
