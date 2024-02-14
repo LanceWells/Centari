@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Centari.Monsters;
 using Centari.Navigation;
 using Centari.Navigation.Rules;
@@ -18,6 +19,12 @@ public interface INavContext
   }
 
   public Node2D TrackedCreature
+  {
+    set;
+    get;
+  }
+
+  public List<Node2D> PossibleTargets
   {
     get;
   }

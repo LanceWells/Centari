@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Centari.Behaviors.Common;
 using Centari.Behaviors.Leaves.Navigation;
 using Centari.Monsters;
@@ -48,6 +49,8 @@ public class ExampleFollowTreeContext : INavContext
 
   private NavModes[] _navModes;
 
+  private List<Node2D> _possibleTargets;
+
   public ExampleFollowTreeContext(
     NavCoordinator nav,
     AbstractMonster thisMonster,
@@ -73,10 +76,16 @@ public class ExampleFollowTreeContext : INavContext
   public Node2D TrackedCreature
   {
     get => _trackedCreature;
+    set => _trackedCreature = value;
   }
 
   public NavModes[] NavModes
   {
     get => _navModes;
+  }
+
+  public List<Node2D> PossibleTargets
+  {
+    get => _possibleTargets;
   }
 }

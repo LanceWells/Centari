@@ -1,16 +1,19 @@
+using System;
 using Centari.Behaviors.Common;
 
 namespace Centari.Behaviors.Leaves.Navigation;
 
-public class IsTargetVisibleNode : INode<INavContext>
+public class IdleNode : INode<INavContext>
 {
+  private INavContext _context;
+
   public void Init(ref INavContext contextRef)
   {
-    throw new System.NotImplementedException();
+    _context = contextRef;
   }
 
   public NodeState Process(double delta)
   {
-    throw new System.NotImplementedException();
+    return NodeState.RUNNING;
   }
 }

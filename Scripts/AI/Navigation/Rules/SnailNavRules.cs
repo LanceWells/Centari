@@ -119,11 +119,6 @@ public class SnailNavRules : AbstractNavRules
         query.CollideWithBodies = true;
         var result = spaceState.IntersectRay(query);
 
-        if (result.Keys.Count > 0)
-        {
-          Console.WriteLine(result);
-        }
-
         if (result.ContainsKey("position"))
         {
           Vector2I landingTileCoords = tiles.LocalToMap((Vector2)result["position"].Obj);

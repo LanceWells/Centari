@@ -2,24 +2,38 @@ using Godot;
 
 namespace Centari.Monsters;
 
-public abstract partial class AbstractMonster : CharacterBody2D
+public abstract partial class AbstractMonster : CharacterBody2D, IMonster
 {
   private float _gravity = 400;
 
   private float _walkSpeed = 200;
 
-  [Export]
+  private float _meleeRange = 20;
+
+  private float _projectileRange = -1;
+
   public float Gravity
   {
     get => _gravity;
     set => _gravity = value;
   }
 
-  [Export]
   public float WalkSpeed
   {
     get => _walkSpeed;
     set => _walkSpeed = value;
+  }
+
+  public float MeleeRange
+  {
+    get => _meleeRange;
+    set => _meleeRange = value;
+  }
+
+  public float ProjectileRange
+  {
+    get => _projectileRange;
+    set => _projectileRange = value;
   }
 
   // Called when the node enters the scene tree for the first time.

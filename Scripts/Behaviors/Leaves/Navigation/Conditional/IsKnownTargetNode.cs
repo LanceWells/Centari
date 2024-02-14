@@ -4,13 +4,17 @@ namespace Centari.Behaviors.Leaves.Navigation;
 
 public class IsKnownTargetNode : INode<INavContext>
 {
+  private INavContext _context;
+
   public void Init(ref INavContext contextRef)
   {
-    throw new System.NotImplementedException();
+    _context = contextRef;
   }
 
   public NodeState Process(double delta)
   {
-    throw new System.NotImplementedException();
+    return _context.TrackedCreature != null
+      ? NodeState.SUCCESS
+      : NodeState.FAILURE;
   }
 }
