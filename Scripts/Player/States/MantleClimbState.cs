@@ -69,10 +69,11 @@ public partial class MantleClimbState : AbstractPlayerState
   {
     base.Detransition();
 
+    Vector2 playerMantlePoint = _player.MantleCornerPoint.Item.Position * _player.Scale;
     Vector2 newPos = new()
     {
-      X = _mantleCorner.X + _player.MantleCornerPoint.Item.Position.X,
-      Y = _mantleCorner.Y - _player.MantleCornerPoint.Item.Position.Y
+      X = _mantleCorner.X + playerMantlePoint.X,
+      Y = _mantleCorner.Y - playerMantlePoint.Y
     };
 
     _player.Position = newPos;
@@ -84,11 +85,11 @@ public partial class MantleClimbState : AbstractPlayerState
   {
     base.Process(delta);
 
-    Vector2 playerMantlePoint = _player.MantleCornerPoint.Item.Position;
+    Vector2 playerMantlePoint = _player.MantleCornerPoint.Item.Position * _player.Scale;
     Vector2 newPos = new()
     {
       X = _mantleCorner.X + (_player.IsFlipped ? playerMantlePoint.X : -playerMantlePoint.X),
-      Y = _mantleCorner.Y - _player.MantleCornerPoint.Item.Position.Y
+      Y = _mantleCorner.Y - playerMantlePoint.Y
     };
 
     _player.Position = newPos;

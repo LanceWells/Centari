@@ -49,7 +49,7 @@ public class PathfindTargetNode : INode<INavContext>
 
     Vector2 nextPos = path[0];
 
-    if (thisPos.Y > nextPos.Y)
+    if (thisPos.Y - nextPos.Y > 32)
     {
       // This nested check is important. If we don't ask if we're on the floor, the horizontal
       // movement can happen too early, and the monster will run into the wall on the way up.
