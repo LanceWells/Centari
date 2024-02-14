@@ -92,6 +92,7 @@ public class SnailNavRules : AbstractNavRules
         var query = PhysicsRayQueryParameters2D.Create(fromRay, ToRay, 1);
         query.CollideWithBodies = true;
         var result = spaceState.IntersectRay(query);
+        query.Dispose();
 
         if (result.Keys.Count > 0)
         {
@@ -118,6 +119,7 @@ public class SnailNavRules : AbstractNavRules
         var query = PhysicsRayQueryParameters2D.Create(fromRay, ToRay, 1);
         query.CollideWithBodies = true;
         var result = spaceState.IntersectRay(query);
+        query.Dispose();
 
         if (result.ContainsKey("position"))
         {

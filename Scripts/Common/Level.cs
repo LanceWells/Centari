@@ -80,6 +80,7 @@ public partial class Level : Node2D
           var s = GetWorld2D();
           var q = PhysicsRayQueryParameters2D.Create(rayPos, tilePos);
           var r = s.DirectSpaceState.IntersectRay(q);
+          q.Dispose();
 
           if (!r.ContainsKey("position"))
           {

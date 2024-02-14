@@ -34,6 +34,7 @@ public class IsTargetVisibleNode : INode<INavContext>
     var spaceState = world.DirectSpaceState;
     var query = PhysicsRayQueryParameters2D.Create(fromRay, toRay, 3);
     var result = spaceState.IntersectRay(query);
+    query.Dispose();
 
     return result.ContainsKey("position")
       ? NodeState.SUCCESS
