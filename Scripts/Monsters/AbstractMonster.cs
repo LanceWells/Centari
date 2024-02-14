@@ -8,7 +8,7 @@ public abstract partial class AbstractMonster : CharacterBody2D, IMonster
 
   private float _walkSpeed = 200;
 
-  private float _meleeRange = 20;
+  private float _meleeRange = 30;
 
   private float _projectileRange = -1;
 

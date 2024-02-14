@@ -1,5 +1,6 @@
 using System;
 using Centari.Behaviors.Common;
+using Godot;
 
 namespace Centari.Behaviors.Leaves.Navigation;
 
@@ -20,8 +21,25 @@ public class KnowVisibleTargetNode : INode<INavContext>
     }
 
     // TODO: Find a way to prioritize.
-    _context.TrackedCreature = _context.PossibleTargets[0];
+    foreach (var target in _context.PossibleTargets)
+    {
+      long targetId = (long)target.GetInstanceId();
 
-    return NodeState.SUCCESS;
+      Vector2 fromRay = _context.ThisMonster.Position;
+      Vector2 toRay = target.Position;
+
+      var world = _context.ThisMonster.GetWorld2D();
+      var spaceState = world.DirectSpaceState;
+      var query = PhysicsRayQueryParameters2D.Create(fromRay, toRay, 3);
+      var result = spaceState.IntersectRay(query);
+
+      if (result.ContainsKey("collider_id") && (long)result["collider_id"].Obj == targetId)
+      {
+        _context.TrackedCreature = target;
+        return NodeState.SUCCESS;
+      }
+    }
+
+    return NodeState.FAILURE;
   }
 }

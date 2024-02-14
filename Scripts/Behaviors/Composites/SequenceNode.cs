@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Centari.Behaviors.Common;
 
@@ -9,6 +10,8 @@ public class SequenceNode<T> : INode<T>
 
   private int _nodePointer;
 
+  private string _nodeName;
+
   public void Init(ref T contextRef)
   {
     foreach (INode<T> node in _children)
@@ -17,9 +20,10 @@ public class SequenceNode<T> : INode<T>
     }
   }
 
-  public SequenceNode(List<INode<T>> children)
+  public SequenceNode(string nodeName, List<INode<T>> children)
   {
     _children = children;
+    _nodeName = nodeName;
   }
 
   public NodeState Process(double delta)
@@ -32,6 +36,7 @@ public class SequenceNode<T> : INode<T>
         case NodeState.SUCCESS:
           break;
         case NodeState.FAILURE:
+          // Console.WriteLine($"Failure at {_nodeName} child {i}");
           return NodeState.FAILURE;
         case NodeState.RUNNING:
           _nodePointer++;

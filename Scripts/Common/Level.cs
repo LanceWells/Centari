@@ -41,10 +41,6 @@ public partial class Level : Node2D
     didSetNav = NavState.NOT_STARTED;
   }
 
-  // Called every frame. 'delta' is the elapsed time since the previous frame.
-  public override void _Process(double delta)
-  { }
-
   private void OnPlayerFireProjectile(PackedScene projectile, Vector2 origin, Vector2 target)
   {
     Fireball projectileInstance = projectile.Instantiate<Fireball>();
@@ -64,7 +60,7 @@ public partial class Level : Node2D
     _ball.Prepare(nav, player);
   }
 
-  public override void _PhysicsProcess(double delta)
+  public override void _Process(double delta)
   {
     switch (didSetNav)
     {

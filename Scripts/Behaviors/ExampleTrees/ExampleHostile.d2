@@ -29,7 +29,6 @@ classes: {
 }
 
 IsKnownTargetNode.class: ConditionalNode
-IsPotentialTargetVisibleNode.class: ConditionalNode
 IsTargetInMeleeNode.class: ConditionalNode
 IsTargetInRangeNode.class: ConditionalNode
 IsTargetVisibleNode.class: ConditionalNode
@@ -51,7 +50,6 @@ RS_IfKnowTarget.class: ReactiveSequence
 RS_IfTargetVisible.class: ReactiveSequence
 RS_TargetMeleeable.class: ReactiveSequence
 RS_TargetRangeable.class: ReactiveSequence
-RS_OtherTargetsVisible.class: ReactiveSequence
 
 Root: {
   shape: circle
@@ -60,11 +58,8 @@ Root: {
 Root -> RF_Root
 
 RF_Root -> RS_IfKnowTarget
-RF_Root -> RS_OtherTargetsVisible
+RF_Root -> KnowVisibleTargetNode
 RF_Root -> IdleNode
-
-RS_OtherTargetsVisible -> IsPotentialTargetVisibleNode
-RS_OtherTargetsVisible -> KnowVisibleTargetNode
 
 RS_IfKnowTarget -> IsKnownTargetNode
 RS_IfKnowTarget -> RF_Target

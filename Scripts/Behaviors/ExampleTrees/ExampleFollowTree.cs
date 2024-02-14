@@ -26,9 +26,30 @@ public class ExampleFollowTree
       trackedCreature
     );
 
-    _root = new RepeatUntilFailNode<INavContext>(
-      new PathfindTargetNode()
-    );
+    _root = new ReactiveFallbackNode<INavContext>("RF_Root", new List<INode<INavContext>>() {
+      new ReactiveSequenceNode<INavContext>("RS_KnownTarget", new List<INode<INavContext>>() {
+        new IsKnownTargetNode(),
+        new ReactiveFallbackNode<INavContext>("RF_TargetVisible", new List<INode<INavContext>>() {
+          new ReactiveSequenceNode<INavContext>("RS_TargetVisible", new List<INode<INavContext>>() {
+            new IsTargetVisibleNode(),
+            new ReactiveFallbackNode<INavContext>("RF_Attack", new List<INode<INavContext>>() {
+              new ReactiveSequenceNode<INavContext>("RS_Melee", new List<INode<INavContext>>() {
+                new IsTargetInMeleeNode(),
+                new AttackMeleeNode(),
+              }),
+              new ReactiveSequenceNode<INavContext>("RS_Range", new List<INode<INavContext>>() {
+                new IsTargetInRangeNode(),
+                new AttackRangedNode(),
+              }),
+              new PathfindTargetNode(),
+            })
+          }),
+          new PathfindTargetNode(),
+        })
+      }),
+      new KnowVisibleTargetNode(),
+      new IdleNode()
+    });
 
     _root.Init(ref _ctx);
   }
@@ -49,17 +70,18 @@ public class ExampleFollowTreeContext : INavContext
 
   private NavModes[] _navModes;
 
-  private List<Node2D> _possibleTargets;
+  private List<Node2D> _possibleTargets = new();
 
   public ExampleFollowTreeContext(
     NavCoordinator nav,
     AbstractMonster thisMonster,
-    Node2D trackedCreature
+    Node2D player
   )
   {
     _nav = nav;
     _thisMonster = thisMonster;
-    _trackedCreature = trackedCreature;
+    // _trackedCreature = trackedCreature;
+    _possibleTargets.Add(player);
     _navModes = new NavModes[] { Navigation.Rules.NavModes.SNAIL };
   }
 

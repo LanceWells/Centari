@@ -13,9 +13,9 @@ public partial class TestBall : AbstractMonster
     _tree = new ExampleFollowTree(nav, this, player);
   }
 
-  public override void _PhysicsProcess(double delta)
+  public override void _Process(double delta)
   {
     _tree?.Process(delta);
-    base._PhysicsProcess(delta);
+    base._Process(delta);
   }
 }

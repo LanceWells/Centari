@@ -14,6 +14,11 @@ public class IsTargetInMeleeNode : INode<INavContext>
 
   public NodeState Process(double delta)
   {
+    if (_context.TrackedCreature == null)
+    {
+      return NodeState.FAILURE;
+    }
+
     Vector2 thisPos = _context.ThisMonster.Position;
     Vector2 targetPos = _context.TrackedCreature.Position;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Centari.Behaviors.Common;
 
@@ -9,6 +10,8 @@ public class FallbackNode<T> : INode<T>
 
   private int _nodePointer;
 
+  private string _nodeName;
+
   public void Init(ref T contextRef)
   {
     foreach (INode<T> node in _children)
@@ -17,9 +20,10 @@ public class FallbackNode<T> : INode<T>
     }
   }
 
-  public FallbackNode(List<INode<T>> children)
+  public FallbackNode(string nodeName, List<INode<T>> children)
   {
     _children = children;
+    _nodeName = nodeName;
   }
 
   public NodeState Process(double delta)
@@ -33,6 +37,7 @@ public class FallbackNode<T> : INode<T>
           return NodeState.SUCCESS;
         case NodeState.FAILURE:
           _nodePointer++;
+          // Console.WriteLine($"Failure at {_nodeName} child {i}");
           break;
         case NodeState.RUNNING:
           return NodeState.RUNNING;
