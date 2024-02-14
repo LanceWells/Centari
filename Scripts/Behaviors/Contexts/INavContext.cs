@@ -7,12 +7,6 @@ namespace Centari.Behaviors.Contexts;
 
 public interface INavContext
 {
-  public Vector2 NextPoint
-  {
-    get;
-    set;
-  }
-
   public NavCoordinator Nav
   {
     get;

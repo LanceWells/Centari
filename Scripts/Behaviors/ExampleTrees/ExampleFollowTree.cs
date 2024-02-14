@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Centari.Behaviors.Common;
-using Centari.Behaviors.Composites;
 using Centari.Behaviors.Contexts;
 using Centari.Behaviors.Decorators;
 using Centari.Behaviors.Leaves;
@@ -29,24 +27,8 @@ public class ExampleFollowTree
       trackedCreature
     );
 
-    Queue<Vector2> path = new();
-
     _root = new RepeatUntilFailNode<INavContext>(
-      new SequenceNode<INavContext>(new List<INode<INavContext>>{
-        new AlwaysSucceedNode<INavContext>(
-          new SequenceNode<INavContext>(new List<INode<INavContext>>{
-            new TestOnGroundNode(),
-            new SetNextPointNode(ref path),
-          })
-        ),
-        new SequenceNode<INavContext>(new List<INode<INavContext>>{
-          new WalkHorizontalNode(ref path),
-          new SequenceNode<INavContext>(new List<INode<INavContext>>{
-            new TestOnGroundNode(),
-            new JumpNode(ref path),
-          })
-        })
-      })
+      new PathfindNode()
     );
 
     _root.Init(ref _ctx);
@@ -60,8 +42,6 @@ public class ExampleFollowTree
 
 public class ExampleFollowTreeContext : INavContext
 {
-  private Vector2 _nextPoint;
-
   private NavCoordinator _nav;
 
   private AbstractMonster _thisMonster;
@@ -80,12 +60,6 @@ public class ExampleFollowTreeContext : INavContext
     _thisMonster = thisMonster;
     _trackedCreature = trackedCreature;
     _navModes = new NavModes[] { Navigation.Rules.NavModes.SNAIL };
-  }
-
-  public Vector2 NextPoint
-  {
-    get => _nextPoint;
-    set => _nextPoint = value;
   }
 
   public NavCoordinator Nav

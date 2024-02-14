@@ -3,11 +3,9 @@ using Centari.Behaviors.Common;
 
 namespace Centari.Behaviors.Composites;
 
-public class SequenceNode<T> : INode<T>
+public class ReactiveSequenceNode<T> : INode<T>
 {
   private List<INode<T>> _children;
-
-  private int _nodePointer;
 
   public void Init(ref T contextRef)
   {
@@ -15,11 +13,9 @@ public class SequenceNode<T> : INode<T>
     {
       node.Init(ref contextRef);
     }
-
-    _nodePointer = 0;
   }
 
-  public SequenceNode(List<INode<T>> children)
+  public ReactiveSequenceNode(List<INode<T>> children)
   {
     _children = children;
   }
