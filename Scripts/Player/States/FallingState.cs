@@ -1,3 +1,4 @@
+using Centari.Navigation;
 using Centari.State;
 using Godot;
 
@@ -55,5 +56,41 @@ public partial class FallingState : AbstractPlayerState
     {
       _stateMachine.TransitionState("IdleState");
     }
+  }
+
+  /// <inheritdoc/>
+  public override void Process(double delta)
+  {
+    base.Process(delta);
+
+    if (_player.HeadRay.Item.GetCollider() is TileMap)
+    {
+      return;
+    }
+
+    if (_player.BodyRay.Item.GetCollider() is not TileMap tileMap)
+    {
+      return;
+    }
+
+    // There's what seems to be a bug when raycasting to the left against a tilemap. The pixel for
+    // detecting a given tile to the right seems to land in the tile, but raycasting to the left
+    // seems to pick the tile to the right of that tile when translating to map coords.
+
+    Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
+    collisionPoint.X += _player.HeadRay.IsFlipped
+      ? -1
+      : 1;
+
+    Vector2I tileMapPoint = tileMap.LocalToMap(collisionPoint);
+    TileData tileData = tileMap.GetCellTileData(0, tileMapPoint);
+    TileInfo tileInfo = new(tileData, tileMapPoint);
+
+    if (!tileInfo.IsPlatform)
+    {
+      return;
+    }
+
+    _stateMachine.TransitionState("MantleClimbState");
   }
 }
