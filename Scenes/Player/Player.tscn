@@ -500,7 +500,7 @@ script = ExtResource("10_0p5el")
 
 [node name="HeadRay" type="RayCast2D" parent="."]
 position = Vector2(0.5, -10)
-target_position = Vector2(12, 0)
+target_position = Vector2(15.5, 0)
 
 [node name="BodyRay" type="RayCast2D" parent="."]
 position = Vector2(0, 1)

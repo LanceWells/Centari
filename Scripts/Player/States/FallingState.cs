@@ -63,7 +63,7 @@ public partial class FallingState : AbstractPlayerState
   {
     base.Process(delta);
 
-    if (_player.HeadRay.Item.GetCollider() is TileMap)
+    if (_player.HeadRay.Item.GetCollider() is not null)
     {
       return;
     }

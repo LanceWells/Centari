@@ -36,15 +36,15 @@ public class SnailNavRules : AbstractNavRules
       }
 
       var lJumpVects = RectToVect(
-        new Rect2I(-1, -5, 2, 4)
+        new Rect2I(-1, -6, 2, 5)
       ).Concat(RectToVect(
-        new Rect2I(-2, -5, 1, 2)
+        new Rect2I(-2, -6, 1, 2)
       ));
 
       var rJumpVects = RectToVect(
-        new Rect2I(0, -5, 2, 4)
+        new Rect2I(0, -6, 2, 5)
       ).Concat(RectToVect(
-        new Rect2I(2, -5, 1, 2)
+        new Rect2I(2, -6, 1, 2)
       ));
 
       // Platformer logic
@@ -70,13 +70,13 @@ public class SnailNavRules : AbstractNavRules
         nav.ConnectPoints(up.Coords, upLeft.Coords);
       }
 
-      var leftLanding = nav.Neighbor(coords, new Vector2I(-2, -3));
+      var leftLanding = nav.Neighbor(coords, new Vector2I(-2, -4));
       if (leftJumpBoxV.TrueForAll((vect) => vect.IsPassable) && leftLanding.IsPlatform)
       {
         nav.ConnectPoints(up.Coords, leftLanding.Coords + new Vector2I(0, -1));
       }
 
-      var rightLanding = nav.Neighbor(coords, new Vector2I(2, -3));
+      var rightLanding = nav.Neighbor(coords, new Vector2I(2, -4));
       if (rightJumpBoxV.TrueForAll((vect) => vect.IsPassable) && rightLanding.IsPlatform)
       {
         nav.ConnectPoints(up.Coords, rightLanding.Coords + new Vector2I(0, -1));
