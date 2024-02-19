@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Centari.Monsters;
 using Centari.Navigation;
-using Centari.Navigation.Rules;
 using Godot;
 
 namespace Centari.Behaviors;
@@ -28,9 +27,4 @@ public interface INavContext
   {
     get;
   }
-
-  // public NavModes[] NavModes
-  // {
-  //   get;
-  // }
 }

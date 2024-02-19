@@ -3,7 +3,6 @@ using Centari.Behaviors.Common;
 using Centari.Behaviors.Leaves.Navigation;
 using Centari.Monsters;
 using Centari.Navigation;
-using Centari.Navigation.Rules;
 using Godot;
 
 namespace Centari.Behaviors.ExampleTrees;

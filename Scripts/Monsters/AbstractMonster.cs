@@ -1,4 +1,4 @@
-using Centari.Navigation.Rules;
+using Centari.Navigation;
 using Godot;
 
 namespace Centari.Monsters;
