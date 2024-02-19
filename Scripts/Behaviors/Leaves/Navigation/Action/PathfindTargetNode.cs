@@ -84,7 +84,7 @@ public class PathfindTargetNode : INode<INavContext>
     float walkSpeed = _context.ThisMonster.WalkSpeed;
 
     Vector2[] path = _context.Nav.GetPath(
-      _context.NavModes,
+      _context.ThisMonster.NavOptions,
       thisPos,
       targetPos
     );
@@ -95,7 +95,7 @@ public class PathfindTargetNode : INode<INavContext>
     if (path.Length == 0)
     {
       path = _context.Nav.GetPath(
-        _context.NavModes,
+        _context.ThisMonster.NavOptions,
         thisPos,
         _lastKnownTargetPoint
       );

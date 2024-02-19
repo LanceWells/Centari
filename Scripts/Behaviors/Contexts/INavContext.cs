@@ -29,8 +29,8 @@ public interface INavContext
     get;
   }
 
-  public NavModes[] NavModes
-  {
-    get;
-  }
+  // public NavModes[] NavModes
+  // {
+  //   get;
+  // }
 }

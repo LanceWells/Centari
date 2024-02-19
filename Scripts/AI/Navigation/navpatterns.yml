@@ -1,0 +1,49 @@
+# . -> Ignored
+# e -> End of path
+# s -> Start of path
+# = -> Platform
+# ^ -> Empty Space
+# y -> Raycast down to platform, end there
+
+cat:
+  paths:
+    - id: move_left
+      mirror: true
+      path: |
+        es
+        ==
+    - id: jump_left_1
+      mirror: true
+      path: |
+        e^
+        =s
+        .=
+    - id: jump_left_2
+      mirror: true
+      path: |
+        e^
+        =^
+        .s
+        .=
+    - id: jump_left_3
+      mirror: true
+      path: |
+        e^
+        =^
+        .^
+        .s
+        .=
+    - id: jump_left_4
+      mirror: true
+      path: |
+        e^
+        =^
+        .^
+        .^
+        .s
+        .=
+    - id: fall_left
+      mirror: true
+      path: |
+        ys
+        ^=

@@ -68,7 +68,7 @@ public class ExampleFollowTreeContext : INavContext
 
   private Node2D _trackedCreature;
 
-  private NavModes[] _navModes;
+  // private NavModes[] _navModes;
 
   private List<Node2D> _possibleTargets = new();
 
@@ -80,9 +80,9 @@ public class ExampleFollowTreeContext : INavContext
   {
     _nav = nav;
     _thisMonster = thisMonster;
-    // _trackedCreature = trackedCreature;
     _possibleTargets.Add(player);
-    _navModes = new NavModes[] { Navigation.Rules.NavModes.SNAIL };
+    // _navModes = new NavModes[] { Navigation.Rules.NavModes.SNAIL };
+    // _navModes = new NavModes[] { Navigation.Rules.NavModes.SNAIL };
   }
 
   public NavCoordinator Nav
@@ -101,10 +101,10 @@ public class ExampleFollowTreeContext : INavContext
     set => _trackedCreature = value;
   }
 
-  public NavModes[] NavModes
-  {
-    get => _navModes;
-  }
+  // public NavModes[] NavModes
+  // {
+  //   get => _navModes;
+  // }
 
   public List<Node2D> PossibleTargets
   {

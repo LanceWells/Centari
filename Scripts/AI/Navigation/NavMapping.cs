@@ -23,7 +23,7 @@ public class NavMapping
   )
   {
     long tileId = _nav.GetAvailablePointId();
-    TileInfo tileInfo = new TileInfo(tileData, mapPosition);
+    TileInfo tileInfo = new(tileData, mapPosition);
 
     _tileIdToCoord.Add(tileId, GetTileIndex(mapPosition));
     _coordToTileId.Add(GetTileIndex(mapPosition), tileId);

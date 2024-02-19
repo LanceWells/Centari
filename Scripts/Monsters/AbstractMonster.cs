@@ -1,3 +1,4 @@
+using Centari.Navigation.Rules;
 using Godot;
 
 namespace Centari.Monsters;
@@ -11,6 +12,11 @@ public abstract partial class AbstractMonster : CharacterBody2D, IMonster
   private float _meleeRange = 30;
 
   private float _projectileRange = -1;
+
+  private NavModes[] _navModes = new NavModes[]
+  {
+    NavModes.Cat,
+  };
 
   public float Gravity
   {
@@ -34,6 +40,11 @@ public abstract partial class AbstractMonster : CharacterBody2D, IMonster
   {
     get => _projectileRange;
     set => _projectileRange = value;
+  }
+
+  public NavModes[] NavOptions
+  {
+    get => _navModes;
   }
 
   // Called when the node enters the scene tree for the first time.
