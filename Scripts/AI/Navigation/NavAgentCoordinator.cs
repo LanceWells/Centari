@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Centari.Navigation.Rules;
 using Godot;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -12,7 +11,7 @@ namespace Centari.Navigation;
 
 public class NavCoordinator
 {
-  private Dictionary<NavModes, NavMapping> _navs;
+  private Dictionary<NavModes, NavAgent> _navs;
 
   public NavCoordinator(TileMap tiles)
   {
@@ -35,7 +34,7 @@ public class NavCoordinator
     {
       {
         NavModes.Cat,
-        NavMappingFactory.CreateNavMapping(tiles, GetPattern(navRules.cat))
+        NavAgentFactory.Create(tiles, GetPattern(navRules.cat))
       },
     };
   }

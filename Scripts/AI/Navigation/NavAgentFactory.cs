@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Centari.Navigation.Rules;
 using Godot;
 
 namespace Centari.Navigation;
 
-public static class NavMappingFactory
+public static class NavAgentFactory
 {
   private struct NavPatternGrid
   {
@@ -23,13 +22,13 @@ public static class NavMappingFactory
     public string id;
   }
 
-  public static NavMapping CreateNavMapping(
+  public static NavAgent Create(
     TileMap tiles,
     IEnumerable<NavPattern> patterns
   )
   {
     Rect2I rect = tiles.GetUsedRect();
-    NavMapping nav = new(rect);
+    NavAgent nav = new(rect);
 
     foreach (Vector2I mapCoords in TileIterator(rect))
     {

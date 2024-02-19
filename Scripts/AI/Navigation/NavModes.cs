@@ -1,4 +1,4 @@
-namespace Centari.Navigation.Rules;
+namespace Centari.Navigation;
 
 public enum NavModes
 {
