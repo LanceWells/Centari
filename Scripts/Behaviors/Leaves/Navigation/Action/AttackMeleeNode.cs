@@ -15,6 +15,7 @@ public class AttackMeleeNode : INode<INavContext>
   public NodeState Process(double delta)
   {
     Console.WriteLine("rawr");
+    _context.ThisMonster.SetAnimation(Monsters.MonsterAnimation.Idle, false);
     return NodeState.SUCCESS;
   }
 }

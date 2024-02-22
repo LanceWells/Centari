@@ -71,7 +71,10 @@ public class PathfindTargetNode : INode<INavContext>
       return NodeState.SUCCESS;
     }
 
+    bool moveLeft = _context.ThisMonster.Position > nextPos;
+
     _context.ThisMonster.Position = thisPos.MoveToward(nextPos, (float)delta * walkSpeed);
+    _context.ThisMonster.SetAnimation(Monsters.MonsterAnimation.Run, moveLeft);
 
     return NodeState.RUNNING;
   }

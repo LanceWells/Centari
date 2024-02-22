@@ -1,5 +1,14 @@
 using Godot;
 
+namespace Centari.Monsters;
+
+public enum MonsterAnimation
+{
+  Idle,
+  Walk,
+  Run,
+}
+
 public interface IMonster
 {
   [Export]
@@ -30,5 +39,8 @@ public interface IMonster
     set;
   }
 
+
   public Vector2 GetMovement(double delta);
+
+  public void SetAnimation(MonsterAnimation animation, bool isFlipped);
 }

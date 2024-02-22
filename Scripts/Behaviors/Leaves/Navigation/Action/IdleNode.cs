@@ -14,6 +14,7 @@ public class IdleNode : INode<INavContext>
 
   public NodeState Process(double delta)
   {
+    _context.ThisMonster.SetAnimation(Monsters.MonsterAnimation.Idle, false);
     return NodeState.RUNNING;
   }
 }
