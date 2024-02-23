@@ -787,7 +787,6 @@ metadata/_aseprite_wizard_config_ = {
 }
 
 [node name="ArmSprite" type="Sprite2D" parent="Sprites"]
-visible = false
 texture_filter = 1
 texture = ExtResource("3_q8yaq")
 hframes = 5
@@ -806,6 +805,7 @@ metadata/_aseprite_wizard_config_ = {
 }
 
 [node name="AimArm" parent="Sprites" instance=ExtResource("4_0ihbt")]
+visible = false
 position = Vector2(-4, -2)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -830,7 +830,7 @@ script = ExtResource("7_5xhd5")
 script = ExtResource("9_58pqx")
 
 [node name="CoyoteTimer" type="Timer" parent="StateMachine/FallingState"]
-wait_time = 0.1
+wait_time = 0.05
 one_shot = true
 
 [node name="JumpingState" type="Node" parent="StateMachine"]
