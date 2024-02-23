@@ -24,14 +24,12 @@ public partial class FallingState : AbstractPlayerState
   /// <inheritdoc/>
   protected override Vector2 GetWalking(Vector2 direction, double delta)
   {
-    PlayerInputs p = GetPlayerInputs();
-
     Vector2 walkDirection = Vector2.Zero;
-    if (p.MoveLeft)
+    if (_inputQueue.Dequeue(PlayerInput.MoveLeft))
     {
       walkDirection.X -= _player.MaxSpeed;
     }
-    if (p.MoveRight)
+    if (_inputQueue.Dequeue(PlayerInput.MoveRight))
     {
       walkDirection.X += _player.MaxSpeed;
     }
@@ -52,8 +50,7 @@ public partial class FallingState : AbstractPlayerState
   /// <inheritdoc/>
   protected override Vector2 GetJumping(Vector2 direction, double delta)
   {
-    PlayerInputs p = GetPlayerInputs();
-    if (!_canCoyote || !p.Jump)
+    if (!_canCoyote || !InputQueue.LivePeek(PlayerInput.Jump))
     {
       return direction;
     }
@@ -111,18 +108,18 @@ public partial class FallingState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
-    base.PhysicsProcess(delta);
-
-    PlayerInputs p = GetPlayerInputs();
+    bool pressJump = _inputQueue.Peek(PlayerInput.Jump);
 
     if (_player.IsOnFloor())
     {
       _stateMachine.TransitionState("IdleState");
     }
-    if (p.Jump && _canCoyote)
+    if (pressJump && _canCoyote)
     {
       _stateMachine.TransitionState("JumpingState");
     }
+
+    base.PhysicsProcess(delta);
   }
 
   /// <inheritdoc/>

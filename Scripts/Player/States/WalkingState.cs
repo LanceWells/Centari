@@ -41,11 +41,7 @@ public partial class WalkingState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
-    base.PhysicsProcess(delta);
-
-    PlayerInputs p = GetPlayerInputs();
-
-    if (p.Jump)
+    if (_inputQueue.Peek(PlayerInput.Jump))
     {
       _stateMachine.TransitionState("JumpingState");
     }
@@ -53,9 +49,11 @@ public partial class WalkingState : AbstractPlayerState
     {
       _stateMachine.TransitionState("FallingState");
     }
-    else if (!p.MoveLeft && !p.MoveRight)
+    else if (!_inputQueue.Peek(PlayerInput.MoveLeft) && !_inputQueue.Peek(PlayerInput.MoveRight))
     {
       _stateMachine.TransitionState("IdleState");
     }
+
+    base.PhysicsProcess(delta);
   }
 }

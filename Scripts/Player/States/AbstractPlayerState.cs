@@ -9,6 +9,8 @@ namespace Centari.Player;
 /// </summary>
 public abstract partial class AbstractPlayerState : AbstractState
 {
+  protected InputQueue _inputQueue;
+
   /// <summary>
   /// A reference to the player that this state refers to.
   /// </summary>
@@ -30,14 +32,12 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// <returns>The new vector, post-lerp.</returns>
   virtual protected Vector2 GetWalking(Vector2 direction, double delta)
   {
-    PlayerInputs p = GetPlayerInputs();
-
     Vector2 walkDirection = Vector2.Zero;
-    if (p.MoveLeft)
+    if (_inputQueue.Dequeue(PlayerInput.MoveLeft))
     {
       walkDirection.X -= _player.MaxSpeed;
     }
-    if (p.MoveRight)
+    if (_inputQueue.Dequeue(PlayerInput.MoveRight))
     {
       walkDirection.X += _player.MaxSpeed;
     }
@@ -61,10 +61,8 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// <returns>The new vector, post-lerp.</returns>
   virtual protected Vector2 GetJumping(Vector2 direction, double delta)
   {
-    PlayerInputs p = GetPlayerInputs();
-
     Vector2 jumpDirection = Vector2.Zero;
-    if (p.Jump)
+    if (_inputQueue.Dequeue(PlayerInput.Jump))
     {
       jumpDirection.Y -= _player.JumpStrength;
     }
@@ -136,15 +134,18 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// <returns>True if the player should be flipped from its original position.</returns>
   protected bool _shouldFlip()
   {
-    PlayerInputs p = GetPlayerInputs();
+    // PlayerInputs p = GetPlayerInputs();
+
+    bool moveLeft = _inputQueue.Peek(PlayerInput.MoveLeft);
+    bool moveRight = _inputQueue.Peek(PlayerInput.MoveRight);
 
     bool doFlip = _player.IsFlipped;
 
-    if (p.MoveLeft)
+    if (moveLeft)
     {
       doFlip = true;
     }
-    if (p.MoveRight)
+    if (moveRight)
     {
       doFlip = false;
     }
@@ -163,6 +164,7 @@ public abstract partial class AbstractPlayerState : AbstractState
   {
     base.Prepare(stateMachine, animationPlayer, owner);
     _player = (PlayerCharacter)owner;
+    _inputQueue = _player.InputQueue;
   }
 
   /// <inheritdoc/>
@@ -187,62 +189,25 @@ public abstract partial class AbstractPlayerState : AbstractState
   public override void PhysicsProcess(double delta)
   {
     base.PhysicsProcess(delta);
-    Vector2 inputDir = CalculateDirection(delta);
-    _player.Velocity = inputDir;
-    _player.MoveAndSlide();
 
     if (Capabilities.CanFlip)
     {
       _player.HandleFlip(_shouldFlip());
     }
-
     if (Capabilities.CanAttack)
     {
       _handleFireProjectile();
     }
+
+    Vector2 inputDir = CalculateDirection(delta);
+    _player.Velocity = inputDir;
+    _player.MoveAndSlide();
   }
 
   /// <inheritdoc/>
   public override void Process(double delta)
   {
     base.Process(delta);
-  }
-
-  /// <summary>
-  /// A structure used to represent the list of inputs that a player might provide for their
-  /// movement.
-  /// </summary>
-  public struct PlayerInputs
-  {
-    /// <summary>
-    /// If true, the player wants to move left.
-    /// </summary>
-    public bool MoveLeft;
-
-    /// <summary>
-    /// If true, the player wants to move right.
-    /// </summary>
-    public bool MoveRight;
-
-    /// <summary>
-    /// If true, the player wants to jump.
-    /// </summary>
-    public bool Jump;
-  }
-
-  /// <summary>
-  /// Gets the list of movement inputs that the player is currently pressing.
-  /// </summary>
-  /// <returns></returns>
-  protected static PlayerInputs GetPlayerInputs()
-  {
-    PlayerInputs p = new()
-    {
-      MoveLeft = Input.IsActionPressed("move_left"),
-      MoveRight = Input.IsActionPressed("move_right"),
-      Jump = Input.IsActionPressed("jump")
-    };
-
-    return p;
+    _inputQueue.Refresh(delta);
   }
 }

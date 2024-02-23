@@ -40,11 +40,11 @@ public partial class IdleState : AbstractPlayerState
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
-    base.PhysicsProcess(delta);
+    bool pressJump = _inputQueue.Peek(PlayerInput.Jump);
+    bool pressLeft = _inputQueue.Peek(PlayerInput.MoveLeft);
+    bool pressRight = _inputQueue.Peek(PlayerInput.MoveRight);
 
-    PlayerInputs p = GetPlayerInputs();
-
-    if (p.Jump)
+    if (pressJump)
     {
       _stateMachine.TransitionState("JumpingState");
     }
@@ -52,9 +52,11 @@ public partial class IdleState : AbstractPlayerState
     {
       _stateMachine.TransitionState("FallingState");
     }
-    else if (p.MoveLeft || p.MoveRight)
+    else if (pressLeft || pressRight)
     {
       _stateMachine.TransitionState("WalkingState");
     }
+
+    base.PhysicsProcess(delta);
   }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Centari.Common;
 using Godot;
 
@@ -29,6 +30,11 @@ public partial class PlayerCharacter : CharacterBody2D
   private Sprite2D _bodySprite;
 
   private FlippableSprite<Sprite2D> _sprites;
+
+  public InputQueue InputQueue = new InputQueue(new Dictionary<PlayerInput, double>()
+  {
+    { PlayerInput.Jump, 0.1 }
+  });
 
   public FlippableRayCast HeadRay;
 
@@ -141,8 +147,6 @@ public partial class PlayerCharacter : CharacterBody2D
     MantleCornerPoint = new FlippableNode<Node2D>(_mantleCornerPoint);
 
     AimArm = GetNode<AimArm>("Sprites/AimArm");
-
-
     AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
   }
 }

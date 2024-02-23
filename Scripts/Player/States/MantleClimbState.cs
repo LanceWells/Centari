@@ -43,8 +43,6 @@ public partial class MantleClimbState : AbstractPlayerState
     }
     else
     {
-      var p = GetPlayerInputs();
-
       Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
       collisionPoint.X += _player.HeadRay.IsFlipped
         ? -1
