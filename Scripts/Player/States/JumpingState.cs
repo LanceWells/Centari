@@ -117,8 +117,10 @@ public partial class JumpingState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Detransition()
+  public override void Detransition(string nextState)
   {
+    base.Detransition(nextState);
+
     JumpEnabledTimer.Timeout -= OnJumpEnabledTimeout;
     JumpCancelAfterTimer.Timeout -= OnJumpCancelAfterTimeout;
   }

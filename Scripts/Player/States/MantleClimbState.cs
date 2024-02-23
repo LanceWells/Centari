@@ -70,9 +70,9 @@ public partial class MantleClimbState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Detransition()
+  public override void Detransition(string nextState)
   {
-    base.Detransition();
+    base.Detransition(nextState);
 
     Vector2 playerMantlePoint = _player.MantleCornerPoint.Item.Position * _player.Scale;
     Vector2 newPos = new()

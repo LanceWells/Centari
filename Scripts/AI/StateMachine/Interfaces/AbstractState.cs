@@ -53,7 +53,7 @@ public abstract partial class AbstractState : Node, IState
   );
 
   /// <inheritdoc/>
-  public abstract void Detransition();
+  public abstract void Detransition(string nextState);
 
   /// <inheritdoc/>
   public virtual void Process(double delta)

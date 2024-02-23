@@ -177,7 +177,7 @@ public abstract partial class AbstractPlayerState : AbstractState
   }
 
   /// <inheritdoc/>
-  public override void Detransition()
+  public override void Detransition(string nextState)
   {
     _animationPlayer.Play("RESET");
     _animationPlayer.Stop();

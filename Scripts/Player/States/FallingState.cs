@@ -95,9 +95,16 @@ public partial class FallingState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Detransition()
+  public override void Detransition(string nextState)
   {
-    _player.Velocity = _player.Velocity.Lerp(Vector2.Zero, 0.85f);
+    base.Detransition(nextState);
+
+    // Only make a landing "stick" if we're not doing a coyote jump.
+    if (nextState != "JumpingState")
+    {
+      _player.Velocity = _player.Velocity.Lerp(Vector2.Zero, 0.85f);
+    }
+
     _coyoteTimer.Timeout -= OnCoyoteTimeout;
   }
 

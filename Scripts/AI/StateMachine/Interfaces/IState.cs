@@ -22,9 +22,9 @@ public class StateNode : IState
   }
 
   /// <inheritdoc/>
-  public void Detransition()
+  public void Detransition(string nextState)
   {
-    _node.Call("Detransition");
+    _node.Call("Detransition", nextState);
   }
 
   /// <inheritdoc/>
@@ -76,7 +76,7 @@ public interface IState
   /// <summary>
   /// Called when we are transitioning away from this node. Useful for cleanup processes.
   /// </summary>
-  public void Detransition();
+  public void Detransition(string nextState);
 
   /// <summary>
   /// Called for each logical processing.

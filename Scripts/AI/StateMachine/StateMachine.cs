@@ -67,7 +67,7 @@ public partial class StateMachine : Node
 	/// </param>
 	public void TransitionState(string stateName)
 	{
-		_activeState?.Detransition();
+		_activeState?.Detransition(stateName);
 
 		Node newStateNode = GetNodeOrNull(stateName);
 

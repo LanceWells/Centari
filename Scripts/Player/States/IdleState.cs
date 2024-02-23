@@ -30,8 +30,10 @@ public partial class IdleState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Detransition()
+  public override void Detransition(string nextState)
   {
+    base.Detransition(nextState);
+
     _animationPlayer.Stop();
   }
 
