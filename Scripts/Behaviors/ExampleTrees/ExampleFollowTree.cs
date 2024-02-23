@@ -25,6 +25,19 @@ public class ExampleFollowTree
       trackedCreature
     );
 
+    /*
+     * Some notes here:
+        - The critter keeps getting stuck on corners when jumping or falling. This could probably
+          be mitigated by raycasting vertically when moving up/down in order to find which side
+          is hung up on an edge.
+
+        - Some of these operations are running every frame, which is nuts. It would be nice if there
+          was not only a throttle, but a manager for tasks that enables them round-robin style. For
+          example, if there was a pathfind round-robin manager, it could cache the response for most
+          pathfinding each trip, only updating the "next" entry when it's time to update that
+          pathfinding. 
+     */
+
     _root = new ReactiveFallbackNode<INavContext>("RF_Root", new List<INode<INavContext>>() {
       new ReactiveSequenceNode<INavContext>("RS_KnownTarget", new List<INode<INavContext>>() {
         new IsKnownTargetNode(),

@@ -96,10 +96,13 @@ public partial class FallingState : AbstractPlayerState
   {
     base.Detransition(nextState);
 
+    bool playerMoving = InputQueue.LivePeek(PlayerInput.MoveLeft)
+      || InputQueue.LivePeek(PlayerInput.MoveRight);
+
     // Only make a landing "stick" if we're not doing a coyote jump.
-    if (nextState != "JumpingState")
+    if (nextState != "JumpingState" && !playerMoving)
     {
-      _player.Velocity = _player.Velocity.Lerp(Vector2.Zero, 0.85f);
+      _player.Velocity = _player.Velocity.Lerp(Vector2.Zero, 0.9f);
     }
 
     _coyoteTimer.Timeout -= OnCoyoteTimeout;
