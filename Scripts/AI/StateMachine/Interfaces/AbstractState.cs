@@ -22,6 +22,8 @@ public abstract partial class AbstractState : Node, IState
   /// </summary>
   protected Node _owner;
 
+  protected bool _isPrepared;
+
   /// <summary>
   /// When called, sets up some base variables. This is separated from a constructor method so that
   /// we are able to fully satisfy Godot node creation without managing their construction. Should
@@ -39,13 +41,15 @@ public abstract partial class AbstractState : Node, IState
     _stateMachine = stateMachine;
     _animationPlayer = animationPlayer;
     _owner = owner;
+    _isPrepared = true;
   }
 
   /// <inheritdoc/>
   public abstract void Transition(
     StateMachine stateMachine,
     AnimationPlayer animationPlayer,
-    Node owner
+    Node owner,
+    string previousState
   );
 
   /// <inheritdoc/>
@@ -83,5 +87,10 @@ public abstract partial class AbstractState : Node, IState
   public sealed override void _Process(double delta)
   {
     base._Process(delta);
+  }
+
+  public bool IsPrepared()
+  {
+    return _isPrepared;
   }
 }

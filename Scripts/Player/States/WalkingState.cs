@@ -20,12 +20,13 @@ public partial class WalkingState : AbstractPlayerState
 
   /// <inheritdoc/>
   public override void Transition(
-  StateMachine stateMachine,
-  AnimationPlayer animationPlayer,
-  Node owner
+    StateMachine stateMachine,
+    AnimationPlayer animationPlayer,
+    Node owner,
+    string previousState
   )
   {
-    base.Transition(stateMachine, animationPlayer, owner);
+    base.Transition(stateMachine, animationPlayer, owner, previousState);
     animationPlayer.Play("Run");
   }
 

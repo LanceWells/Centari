@@ -48,6 +48,15 @@ public partial class AimArm : Node2D
   [Signal]
   public delegate void OnAimTimerTimeoutEventHandler();
 
+  // public void HandleFlip(bool isFlipped)
+  // {
+  //   Vector2 scale = Scale;
+  //   Scale = new(
+  //     isFlipped ? -1 : 1,
+  //     scale.Y
+  //   );
+  // }
+
   /// <summary>
   /// Called when the arm is newly visible. This is the means by which to start "aiming".
   /// </summary>

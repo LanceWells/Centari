@@ -94,9 +94,14 @@ public partial class JumpingState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
+  public override void Transition(
+    StateMachine stateMachine,
+    AnimationPlayer animationPlayer,
+    Node owner,
+    string previousState
+  )
   {
-    base.Transition(stateMachine, animationPlayer, owner);
+    base.Transition(stateMachine, animationPlayer, owner, previousState);
 
     JumpEnabledTimer = GetNode<Timer>("JumpEnabledTimer");
     JumpEnabledTimer.Timeout += OnJumpEnabledTimeout;
@@ -107,6 +112,8 @@ public partial class JumpingState : AbstractPlayerState
     JumpCancelAfterTimer.Start();
 
     _canCancelJump = false;
+
+    _animationPlayer.Play("Jump Up");
   }
 
   /// <inheritdoc/>

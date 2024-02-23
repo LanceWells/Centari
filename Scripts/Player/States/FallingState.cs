@@ -9,7 +9,6 @@ public partial class FallingState : AbstractPlayerState
   protected override StateCapabilities Capabilities => new()
   {
     CanWalk = true,
-    CanJump = false,
     CanAttack = true,
     GravityAffected = true,
   };
@@ -38,9 +37,24 @@ public partial class FallingState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Transition(StateMachine stateMachine, AnimationPlayer animationPlayer, Node owner)
+  public override void Transition(
+    StateMachine stateMachine,
+    AnimationPlayer animationPlayer,
+    Node owner,
+    string previousState
+  )
   {
-    base.Transition(stateMachine, animationPlayer, owner);
+    base.Transition(stateMachine, animationPlayer, owner, previousState);
+
+    if (previousState == "JumpingState")
+    {
+      _animationPlayer.Play("Jump Max");
+      _animationPlayer.Queue("Jump Down");
+    }
+    else
+    {
+      _animationPlayer.Play("Jump Down");
+    }
   }
 
   /// <inheritdoc/>

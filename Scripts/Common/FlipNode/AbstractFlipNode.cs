@@ -8,7 +8,7 @@ public abstract class AbstractFlipNode<T> : IFlipNode<T>
 {
   protected T _item;
 
-  private bool _isFlipped;
+  protected bool _isFlipped;
 
   /// <inheritdoc/>
   public T Item => _item;
@@ -28,7 +28,6 @@ public abstract class AbstractFlipNode<T> : IFlipNode<T>
   /// <inheritdoc/>
   public void SetFlipped(bool isFlipped)
   {
-    _isFlipped = isFlipped;
     if (isFlipped)
     {
       HandleItemFlipped();
@@ -37,6 +36,8 @@ public abstract class AbstractFlipNode<T> : IFlipNode<T>
     {
       HandleItemNotFlipped();
     }
+
+    _isFlipped = isFlipped;
   }
 
   /// <summary>

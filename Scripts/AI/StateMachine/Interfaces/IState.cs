@@ -31,10 +31,11 @@ public class StateNode : IState
   public void Transition(
     StateMachine stateMachine,
     AnimationPlayer animationPlayer,
-    Node entity
+    Node entity,
+    string previousState
   )
   {
-    _node.Call("Transition", stateMachine, animationPlayer, entity);
+    _node.Call("Transition", stateMachine, animationPlayer, entity, previousState);
   }
 
   /// <inheritdoc/>
@@ -47,6 +48,11 @@ public class StateNode : IState
   public void PhysicsProcess(double delta)
   {
     _node.Call("PhysicsProcess", delta);
+  }
+
+  public bool IsPrepared()
+  {
+    return (bool)_node.Call("IsPrepared");
   }
 }
 
@@ -63,7 +69,8 @@ public interface IState
   public void Transition(
     StateMachine stateMachine,
     AnimationPlayer animationPlayer,
-    Node player
+    Node player,
+    string previousState
   );
 
   /// <summary>
@@ -86,4 +93,6 @@ public interface IState
   /// The number of frames that have passed since last calling this method.
   /// </param>
   public void PhysicsProcess(double delta);
+
+  public bool IsPrepared();
 }

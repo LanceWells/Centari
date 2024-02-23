@@ -16,6 +16,8 @@ public partial class StateMachine : Node
 
 	private StateNode _activeState = null;
 
+	private string _activeStateName;
+
 	private AnimationPlayer _animationPlayer;
 
 	private Node _owner;
@@ -29,7 +31,7 @@ public partial class StateMachine : Node
 		_owner = Owner;
 
 		_activeState = new StateNode(GetNode(DEFAULT_STATE));
-		_activeState.Transition(this, _animationPlayer, _owner);
+		_activeState.Transition(this, _animationPlayer, _owner, _activeStateName);
 	}
 
 	/// <summary>
@@ -38,7 +40,7 @@ public partial class StateMachine : Node
 	/// <param name="delta">The elapsed time since the previous frame.</param>
 	public override void _Process(double delta)
 	{
-		if (_activeState != null)
+		if (_activeState?.IsPrepared() ?? false)
 		{
 			_activeState.Process(delta);
 		}
@@ -50,7 +52,7 @@ public partial class StateMachine : Node
 	/// <param name="delta">The elapsed time since the previous frame.</param>
 	public override void _PhysicsProcess(double delta)
 	{
-		if (_activeState != null)
+		if (_activeState?.IsPrepared() ?? false)
 		{
 			_activeState.PhysicsProcess(delta);
 		}
@@ -71,9 +73,10 @@ public partial class StateMachine : Node
 
 		if (newStateNode != null)
 		{
-			StateNode newState = new StateNode(newStateNode);
-			newState.Transition(this, _animationPlayer, _owner);
+			StateNode newState = new(newStateNode);
+			newState.Transition(this, _animationPlayer, _owner, _activeStateName);
 			_activeState = newState;
+			_activeStateName = stateName;
 		}
 		else
 		{

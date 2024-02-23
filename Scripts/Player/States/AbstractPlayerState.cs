@@ -169,7 +169,8 @@ public abstract partial class AbstractPlayerState : AbstractState
   public override void Transition(
     StateMachine stateMachine,
     AnimationPlayer animationPlayer,
-    Node owner
+    Node owner,
+    string previousState
   )
   {
     Prepare(stateMachine, animationPlayer, owner);

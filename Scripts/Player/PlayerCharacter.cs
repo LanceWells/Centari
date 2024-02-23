@@ -18,9 +18,6 @@ public partial class PlayerCharacter : CharacterBody2D
   public float JumpStrength = 500.0f;
 
   [Export]
-  public int AimPartAnchorX = -4;
-
-  [Export]
   public float Gravity = 3000.0f;
 
   [Export]
@@ -31,13 +28,15 @@ public partial class PlayerCharacter : CharacterBody2D
   /// </summary>
   private Sprite2D _bodySprite;
 
+  private FlippableSprite<Sprite2D> _sprites;
+
   public FlippableRayCast HeadRay;
 
   public FlippableRayCast BodyRay;
 
   public FlippableRayCast FeetRay;
 
-  public FlippableNode MantleCornerPoint;
+  public FlippableNode<Node2D> MantleCornerPoint;
 
   public bool IsFlipped => _isFlipped;
 
@@ -101,22 +100,13 @@ public partial class PlayerCharacter : CharacterBody2D
   {
     _isFlipped = isFlipped;
 
-    ArmSprite.FlipH = isFlipped;
-    _bodySprite.FlipH = isFlipped;
 
     HeadRay.SetFlipped(IsFlipped);
     BodyRay.SetFlipped(IsFlipped);
     FeetRay.SetFlipped(IsFlipped);
     MantleCornerPoint.SetFlipped(isFlipped);
 
-    if (isFlipped)
-    {
-      AimArm.Position = new Vector2(-AimPartAnchorX, AimArm.Position.Y);
-    }
-    else
-    {
-      AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
-    }
+    _sprites.SetFlipped(isFlipped);
   }
 
   /// <summary>
@@ -132,8 +122,11 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <inheritdoc/>
   public override void _Ready()
   {
-    _bodySprite = GetNode<Sprite2D>("BodySprite");
-    ArmSprite = GetNode<Sprite2D>("ArmSprite");
+    _bodySprite = GetNode<Sprite2D>("Sprites/BodySprite");
+    ArmSprite = GetNode<Sprite2D>("Sprites/ArmSprite");
+
+    var sprites = GetNode<Sprite2D>("Sprites");
+    _sprites = new FlippableSprite<Sprite2D>(sprites);
 
     var _headRay = GetNode<RayCast2D>("HeadRay");
     var _bodyRay = GetNode<RayCast2D>("BodyRay");
@@ -145,11 +138,11 @@ public partial class PlayerCharacter : CharacterBody2D
 
     var _mantleCornerPoint = GetNode<Node2D>("MantleCornerPoint");
 
-    MantleCornerPoint = new FlippableNode(_mantleCornerPoint);
+    MantleCornerPoint = new FlippableNode<Node2D>(_mantleCornerPoint);
 
-    AimArm = GetNode<AimArm>("AimArm");
+    AimArm = GetNode<AimArm>("Sprites/AimArm");
+
+
     AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
-    AimArm.Position = new Vector2(AimPartAnchorX, AimArm.Position.Y);
-    // _initialMantlePosition = new Vector2(HeadRay.Position.X, HeadRay.Position.Y);
   }
 }
