@@ -829,6 +829,10 @@ script = ExtResource("7_5xhd5")
 [node name="FallingState" type="Node" parent="StateMachine"]
 script = ExtResource("9_58pqx")
 
+[node name="CoyoteTimer" type="Timer" parent="StateMachine/FallingState"]
+wait_time = 0.1
+one_shot = true
+
 [node name="JumpingState" type="Node" parent="StateMachine"]
 script = ExtResource("10_34f36")
 

@@ -1,3 +1,4 @@
+using System;
 using Centari.Navigation;
 using Centari.State;
 using Godot;
@@ -6,11 +7,18 @@ namespace Centari.Player.States;
 
 public partial class FallingState : AbstractPlayerState
 {
+  private Timer _coyoteTimer;
+
+  private bool _canCoyote = false;
+
   protected override StateCapabilities Capabilities => new()
   {
     CanWalk = true,
     CanAttack = true,
     GravityAffected = true,
+
+    // Coyote jump 🦅
+    CanJump = true,
   };
 
   /// <inheritdoc/>
@@ -36,15 +44,42 @@ public partial class FallingState : AbstractPlayerState
     return lerpedDir;
   }
 
+  public void OnCoyoteTimeout()
+  {
+    _canCoyote = false;
+  }
+
+  /// <inheritdoc/>
+  protected override Vector2 GetJumping(Vector2 direction, double delta)
+  {
+    PlayerInputs p = GetPlayerInputs();
+    if (!_canCoyote || !p.Jump)
+    {
+      return direction;
+    }
+
+    Vector2 notFallingVector = new(
+      direction.X,
+      Math.Min(direction.Y, 0)
+    );
+
+    Vector2 jumping = base.GetJumping(notFallingVector, delta);
+    return jumping;
+  }
+
   /// <inheritdoc/>
   public override void Transition(
-    StateMachine stateMachine,
-    AnimationPlayer animationPlayer,
-    Node owner,
-    string previousState
-  )
+  StateMachine stateMachine,
+  AnimationPlayer animationPlayer,
+  Node owner,
+  string previousState
+)
   {
     base.Transition(stateMachine, animationPlayer, owner, previousState);
+
+    _canCoyote = false;
+    _coyoteTimer = GetNode<Timer>("CoyoteTimer");
+    _coyoteTimer.Timeout += OnCoyoteTimeout;
 
     if (previousState == "JumpingState")
     {
@@ -54,6 +89,8 @@ public partial class FallingState : AbstractPlayerState
     else
     {
       _animationPlayer.Play("Jump Down");
+      _canCoyote = true;
+      _coyoteTimer.Start();
     }
   }
 
@@ -61,6 +98,7 @@ public partial class FallingState : AbstractPlayerState
   public override void Detransition()
   {
     _player.Velocity = _player.Velocity.Lerp(Vector2.Zero, 0.85f);
+    _coyoteTimer.Timeout -= OnCoyoteTimeout;
   }
 
   /// <inheritdoc/>
@@ -68,9 +106,15 @@ public partial class FallingState : AbstractPlayerState
   {
     base.PhysicsProcess(delta);
 
+    PlayerInputs p = GetPlayerInputs();
+
     if (_player.IsOnFloor())
     {
       _stateMachine.TransitionState("IdleState");
+    }
+    if (p.Jump && _canCoyote)
+    {
+      _stateMachine.TransitionState("JumpingState");
     }
   }
 

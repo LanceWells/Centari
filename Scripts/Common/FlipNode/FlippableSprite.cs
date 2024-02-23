@@ -8,8 +8,6 @@ namespace Centari.Common;
 public class FlippableSprite<T> : AbstractFlipNode<T>
 where T : Node2D
 {
-  private Vector2 _initialPos;
-
   private Vector2 _initialScale;
 
   /// <summary>
@@ -20,7 +18,6 @@ where T : Node2D
   : base(node)
   {
     _item = node;
-    _initialPos = node.Position;
     _initialScale = node.Scale;
   }
 
