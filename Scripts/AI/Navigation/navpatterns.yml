@@ -4,6 +4,7 @@
 # = -> Platform
 # ^ -> Empty Space
 # y -> Raycast down to platform, end there
+# x -> Connecting point
 
 cat:
   paths:

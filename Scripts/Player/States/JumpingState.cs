@@ -73,7 +73,7 @@ public partial class JumpingState : AbstractPlayerState
 
     Vector2 lerpedDir = direction.Lerp(
       walkDirection,
-      (float)delta * _player.Friction * 0.05f
+      (float)delta * _player.Friction * 0.2f
     );
 
     return lerpedDir;

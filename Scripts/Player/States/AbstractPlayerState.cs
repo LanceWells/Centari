@@ -138,7 +138,7 @@ public abstract partial class AbstractPlayerState : AbstractState
   {
     PlayerInputs p = GetPlayerInputs();
 
-    bool doFlip = _player.BodySprite.FlipH;
+    bool doFlip = _player.IsFlipped;
 
     if (p.MoveLeft)
     {

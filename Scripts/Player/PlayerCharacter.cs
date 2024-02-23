@@ -29,7 +29,7 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <summary>
   /// A reference to the BodySprite node for the player.
   /// </summary>
-  public Sprite2D BodySprite;
+  private Sprite2D _bodySprite;
 
   public FlippableRayCast HeadRay;
 
@@ -102,7 +102,7 @@ public partial class PlayerCharacter : CharacterBody2D
     _isFlipped = isFlipped;
 
     ArmSprite.FlipH = isFlipped;
-    BodySprite.FlipH = isFlipped;
+    _bodySprite.FlipH = isFlipped;
 
     HeadRay.SetFlipped(IsFlipped);
     BodyRay.SetFlipped(IsFlipped);
@@ -132,7 +132,7 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <inheritdoc/>
   public override void _Ready()
   {
-    BodySprite = GetNode<Sprite2D>("BodySprite");
+    _bodySprite = GetNode<Sprite2D>("BodySprite");
     ArmSprite = GetNode<Sprite2D>("ArmSprite");
 
     var _headRay = GetNode<RayCast2D>("HeadRay");

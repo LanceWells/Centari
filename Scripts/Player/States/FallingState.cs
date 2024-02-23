@@ -31,7 +31,7 @@ public partial class FallingState : AbstractPlayerState
 
     Vector2 lerpedDir = direction.Lerp(
       walkDirection,
-      (float)delta * _player.Friction * 0.05f
+      (float)delta * _player.Friction * 0.2f
     );
 
     return lerpedDir;
@@ -45,7 +45,9 @@ public partial class FallingState : AbstractPlayerState
 
   /// <inheritdoc/>
   public override void Detransition()
-  { }
+  {
+    _player.Velocity = _player.Velocity.Lerp(Vector2.Zero, 0.85f);
+  }
 
   /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
