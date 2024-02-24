@@ -302,18 +302,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [Vector2(-4, -2)]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hitbox:shape:radius")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [7.5]
-}
 
 [sub_resource type="Animation" id="Animation_ifq1k"]
 resource_name = "Run"
@@ -862,18 +850,6 @@ tracks/7/keys = {
 "update": 1,
 "values": [20]
 }
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("Hitbox:shape:radius")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [6.0]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_splvx"]
 _data = {
@@ -984,6 +960,10 @@ script = ExtResource("10_0p5el")
 
 [node name="WallSlideState" type="Node" parent="StateMachine"]
 script = ExtResource("11_dh2e3")
+
+[node name="DropTimer" type="Timer" parent="StateMachine/WallSlideState"]
+wait_time = 0.1
+one_shot = true
 
 [node name="HeadRay" type="RayCast2D" parent="."]
 position = Vector2(0.5, -10)

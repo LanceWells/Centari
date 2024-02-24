@@ -1,4 +1,3 @@
-using Centari.Navigation;
 using Centari.State;
 using Godot;
 
@@ -6,6 +5,8 @@ namespace Centari.Player.States;
 
 public partial class WallSlideState : AbstractPlayerState
 {
+  private Timer _dropTimer;
+
   protected override StateCapabilities Capabilities => new()
   {
     CanAttack = true,
@@ -19,6 +20,11 @@ public partial class WallSlideState : AbstractPlayerState
     return direction;
   }
 
+  public void OnDropTimeout()
+  {
+    _stateMachine.TransitionState("FallingState");
+  }
+
   public override void Transition(
     StateMachine stateMachine,
     AnimationPlayer animationPlayer,
@@ -30,6 +36,9 @@ public partial class WallSlideState : AbstractPlayerState
 
     _player.Velocity = Vector2.Zero;
     animationPlayer.Play("Wall Slide");
+
+    _dropTimer = GetNode<Timer>("DropTimer");
+    _dropTimer.Timeout += OnDropTimeout;
 
     if (_player.BodyRay.Item.GetCollider() is not TileMap tile)
     {
@@ -54,31 +63,33 @@ public partial class WallSlideState : AbstractPlayerState
         ? (float)(tileWidth / 2) + _player.GetLeftEdge()
         : -(float)(tileWidth / 2) + _player.GetRightEdge();
 
-      // float playerSlideXPos = tileCenter.X
-      //   + (float)(tileWidth / 2)
-      //   + (_player.IsFlipped
-      //     ? _player.GetLeftEdge()
-      //     : _player.GetRightEdge()
-      //   );
-
       _player.Position = new(playerSlidePosX, _player.Position.Y);
     }
   }
 
   public override void PhysicsProcess(double delta)
   {
-    if (_player.IsFlipped && !_inputQueue.Dequeue(PlayerInput.MoveLeft))
+    if (_player.IsOnFloor())
     {
-      _stateMachine.TransitionState("FallingState");
+      _stateMachine.TransitionState("IdleState");
+      return;
     }
-    else if (!_player.IsFlipped && !_inputQueue.Dequeue(PlayerInput.MoveRight))
+
+    bool moveL = _inputQueue.Dequeue(PlayerInput.MoveLeft);
+    bool moveR = _inputQueue.Dequeue(PlayerInput.MoveRight);
+    bool shouldDrop = (_player.IsFlipped && !moveL) || (!_player.IsFlipped && !moveR);
+
+    if (_dropTimer.IsStopped() && shouldDrop)
     {
-      _stateMachine.TransitionState("FallingState");
+      _dropTimer.Start();
     }
+    else if (!shouldDrop)
+    {
+      _dropTimer.Stop();
+    }
+
     if (InputQueue.LiveJustPressed(PlayerInput.Jump))
     {
-      _inputQueue.Dequeue(PlayerInput.Jump);
-
       Vector2 jumpDirection = new();
       jumpDirection.Y -= 1;
       jumpDirection.X += _player.IsFlipped ? 1 : -1;
@@ -95,6 +106,9 @@ public partial class WallSlideState : AbstractPlayerState
 
   public override void Detransition(string nextState)
   {
+    _inputQueue.Dequeue(PlayerInput.Jump);
+    _dropTimer.Timeout -= OnDropTimeout;
+
     base.Detransition(nextState);
   }
 }

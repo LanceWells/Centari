@@ -128,8 +128,11 @@ public partial class JumpingState : AbstractPlayerState
     {
       _stateMachine.TransitionState("IdleState");
     }
+    // Live peek here to cancel a jump early without worrying about the queue.
     else if (_canCancelJump && !InputQueue.LivePeek(PlayerInput.Jump))
     {
+      // However, if we were pushing it, ensure that it's not in the queue any longer.
+      _inputQueue.Dequeue(PlayerInput.Jump);
       _stateMachine.TransitionState("FallingState");
     }
 
