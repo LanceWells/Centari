@@ -9,36 +9,46 @@ namespace Centari.Player;
 /// </summary>
 public partial class PlayerCharacter : CharacterBody2D
 {
+  private Sprite2D _bodySprite;
+
+  private FlippableSprite<Sprite2D> _sprites;
+
   /// <summary>
   /// A configurable walking speed for the player.
   /// </summary>
   [Export]
   public float MaxSpeed = 400.0f;
 
+  /// <summary>
+  /// The strength of the player's jump.
+  /// </summary>
   [Export]
   public float JumpStrength = 500.0f;
 
+  /// <summary>
+  /// The strength of gravity on the player.
+  /// </summary>
   [Export]
   public float Gravity = 3000.0f;
 
+  /// <summary>
+  /// The effect of friction on the player.
+  /// </summary>
   [Export]
   public float Friction = 8.0f;
 
-  [Export]
-  public float SlideFriction = 8.0f;
-
   /// <summary>
-  /// A reference to the BodySprite node for the player.
+  /// The input queue to use with the player. Keeps track of intended player movements for use
+  /// primarily between states.
   /// </summary>
-  private Sprite2D _bodySprite;
-
-  private FlippableSprite<Sprite2D> _sprites;
-
-  public InputQueue InputQueue = new InputQueue(new Dictionary<PlayerInput, double>()
+  public InputQueue InputQueue = new(new Dictionary<PlayerInput, double>()
   {
     { PlayerInput.Jump, 0.1 }
   });
 
+  /// <summary>
+  /// A reference to the head ray on the player.
+  /// </summary>
   public FlippableRayCast HeadRay;
 
   public FlippableRayCast BodyRay;

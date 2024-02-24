@@ -1,3 +1,4 @@
+using Centari.Navigation;
 using Centari.State;
 using Godot;
 
@@ -69,6 +70,29 @@ public partial class WallSlideState : AbstractPlayerState
 
   public override void PhysicsProcess(double delta)
   {
+    if (_player.BodyRay.Item.GetCollider() is not TileMap tile)
+    {
+      _stateMachine.TransitionState("IdleState");
+      return;
+    }
+    else
+    {
+      Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
+      collisionPoint.X += _player.HeadRay.IsFlipped
+      ? -1
+      : 1;
+
+      Vector2I tileMapPoint = tile.LocalToMap(collisionPoint);
+      TileData tileData = tile.GetCellTileData(0, tileMapPoint);
+      TileInfo tileInfo = new(tileData, tileMapPoint);
+
+      if (!tileInfo.IsPlatform)
+      {
+        _stateMachine.TransitionState("IdleState");
+        return;
+      }
+    }
+
     if (_player.IsOnFloor())
     {
       _stateMachine.TransitionState("IdleState");

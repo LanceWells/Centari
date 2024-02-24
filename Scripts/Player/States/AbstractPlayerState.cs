@@ -9,6 +9,11 @@ namespace Centari.Player;
 /// </summary>
 public abstract partial class AbstractPlayerState : AbstractState
 {
+  /// <summary>
+  /// The input queue to be used for the player. Note that this is actually owned by the player, and
+  /// is only referenced by this base class for ease of use. We keep it on the player so that the
+  /// queue can cross states.
+  /// </summary>
   protected InputQueue _inputQueue;
 
   /// <summary>
