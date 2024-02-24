@@ -91,4 +91,15 @@ public class InputQueue
       _ => false
     };
   }
+
+  public static bool LiveJustPressed(PlayerInput input)
+  {
+    return input switch
+    {
+      PlayerInput.Jump => Input.IsActionJustPressed("jump"),
+      PlayerInput.MoveLeft => Input.IsActionJustPressed("move_left"),
+      PlayerInput.MoveRight => Input.IsActionJustPressed("move_right"),
+      _ => false
+    };
+  }
 }

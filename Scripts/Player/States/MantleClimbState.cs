@@ -36,7 +36,7 @@ public partial class MantleClimbState : AbstractPlayerState
     _animationPlayer.Play("MantleClimb");
     _animationPlayer.AnimationFinished += OnAnimationFinished;
 
-    if (_player.BodyRay.Item.GetCollider() is not TileMap tileMap)
+    if (_player.BodyRay.Item.GetCollider() is not TileMap tile)
     {
       // wat
       _stateMachine.TransitionState("IdleState");
@@ -48,9 +48,8 @@ public partial class MantleClimbState : AbstractPlayerState
         ? -1
         : 1;
 
-      Vector2I tileMapPoint = tileMap.LocalToMap(collisionPoint);
-      TileData tileData = tileMap.GetCellTileData(0, tileMapPoint);
-      Vector2 tileCenter = tileMap.MapToLocal(tileMapPoint);
+      Vector2I tileMapPoint = tile.LocalToMap(collisionPoint);
+      Vector2 tileCenter = tile.MapToLocal(tileMapPoint);
 
       Vector2 mantleCorner = new(
         tileCenter.X,
@@ -58,10 +57,10 @@ public partial class MantleClimbState : AbstractPlayerState
       );
 
       mantleCorner.X += _player.IsFlipped
-        ? +(tileMap.TileSet.TileSize.X / 2)
-        : -(tileMap.TileSet.TileSize.X / 2);
+        ? +(tile.TileSet.TileSize.X / 2)
+        : -(tile.TileSet.TileSize.X / 2);
 
-      mantleCorner.Y -= tileMap.TileSet.TileSize.Y / 2;
+      mantleCorner.Y -= tile.TileSet.TileSize.Y / 2;
 
       _mantleCorner = mantleCorner;
     }

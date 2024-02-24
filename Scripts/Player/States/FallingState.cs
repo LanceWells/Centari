@@ -130,12 +130,23 @@ public partial class FallingState : AbstractPlayerState
   {
     base.Process(delta);
 
-    if (_player.HeadRay.Item.GetCollider() is not null)
+    if (_player.IsFlipped && !InputQueue.LivePeek(PlayerInput.MoveLeft))
     {
       return;
     }
 
-    if (_player.BodyRay.Item.GetCollider() is not TileMap tileMap)
+    if (!_player.IsFlipped && !InputQueue.LivePeek(PlayerInput.MoveRight))
+    {
+      return;
+    }
+
+    if (_player.BodyRay.Item.GetCollider() is not TileMap tile)
+    {
+      return;
+    }
+
+    GodotObject headCollision = _player.HeadRay.Item.GetCollider();
+    if (headCollision is not null && headCollision is not TileMap)
     {
       return;
     }
@@ -149,8 +160,8 @@ public partial class FallingState : AbstractPlayerState
       ? -1
       : 1;
 
-    Vector2I tileMapPoint = tileMap.LocalToMap(collisionPoint);
-    TileData tileData = tileMap.GetCellTileData(0, tileMapPoint);
+    Vector2I tileMapPoint = tile.LocalToMap(collisionPoint);
+    TileData tileData = tile.GetCellTileData(0, tileMapPoint);
     TileInfo tileInfo = new(tileData, tileMapPoint);
 
     if (!tileInfo.IsPlatform)
@@ -158,6 +169,13 @@ public partial class FallingState : AbstractPlayerState
       return;
     }
 
-    _stateMachine.TransitionState("MantleClimbState");
+    if (headCollision is null)
+    {
+      _stateMachine.TransitionState("MantleClimbState");
+    }
+    else if (headCollision is TileMap)
+    {
+      _stateMachine.TransitionState("WallSlideState");
+    }
   }
 }

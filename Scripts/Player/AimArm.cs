@@ -12,17 +12,19 @@ public partial class AimArm : Node2D
   /// <summary>
   /// If true, we are currently aiming.
   /// </summary>
-  private bool IsAiming = false;
+  private bool _isAiming = false;
 
   /// <summary>
   /// A reference to the Arm sprite that we use instead of the regularly animated arm.
   /// </summary>
-  private Sprite2D ArmSprite;
+  private Sprite2D _armSprite;
+
+  private Node2D _projectileOrigin;
 
   /// <summary>
   /// A reference to the magic circle that is rendered at the end of the arm.
   /// </summary>
-  private AnimatedSprite2D MagicCircleSprite;
+  private AnimatedSprite2D _magicCircleSprite;
 
   /// <summary>
   /// A reference to the aiming timer. This is used to determine when the player is no longer
@@ -48,21 +50,12 @@ public partial class AimArm : Node2D
   [Signal]
   public delegate void OnAimTimerTimeoutEventHandler();
 
-  // public void HandleFlip(bool isFlipped)
-  // {
-  //   Vector2 scale = Scale;
-  //   Scale = new(
-  //     isFlipped ? -1 : 1,
-  //     scale.Y
-  //   );
-  // }
-
   /// <summary>
   /// Called when the arm is newly visible. This is the means by which to start "aiming".
   /// </summary>
   public void StartAimStance()
   {
-    IsAiming = true;
+    _isAiming = true;
 
     AimTimer.Stop();
     AimTimer.Start();
@@ -80,7 +73,7 @@ public partial class AimArm : Node2D
   /// <returns></returns>
   public Vector2 GetProjectileOrigin()
   {
-    return MagicCircleSprite.GlobalPosition;
+    return _projectileOrigin.GlobalPosition;
   }
 
   /// <summary>
@@ -96,15 +89,17 @@ public partial class AimArm : Node2D
   /// </summary>
   private void _onAimTimerTimeout()
   {
-    IsAiming = false;
+    _isAiming = false;
     EmitSignal(SignalName.OnAimTimerTimeout);
   }
 
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
-    ArmSprite = GetNode<Sprite2D>("ArmSprite");
-    MagicCircleSprite = GetNode<AnimatedSprite2D>("ArmSprite/MagicCircleSprite");
+    _armSprite = GetNode<Sprite2D>("ArmSprite");
+    _magicCircleSprite = GetNode<AnimatedSprite2D>("ArmSprite/MagicCircleSprite");
+    _projectileOrigin = GetNode<Node2D>("ArmSprite/ProjectileOrigin");
+
     Animation = GetNode<AnimationPlayer>("Animation");
 
     AimTimer = GetNode<Timer>("AimTimer");
@@ -116,10 +111,10 @@ public partial class AimArm : Node2D
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta)
   {
-    if (IsAiming)
+    if (_isAiming)
     {
       Vector2 mousePos = GetViewport().GetMousePosition();
-      ArmSprite.LookAt(mousePos);
+      _armSprite.LookAt(mousePos);
     }
   }
 }

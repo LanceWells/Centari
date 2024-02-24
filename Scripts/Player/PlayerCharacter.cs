@@ -24,6 +24,9 @@ public partial class PlayerCharacter : CharacterBody2D
   [Export]
   public float Friction = 8.0f;
 
+  [Export]
+  public float SlideFriction = 8.0f;
+
   /// <summary>
   /// A reference to the BodySprite node for the player.
   /// </summary>
@@ -41,6 +44,8 @@ public partial class PlayerCharacter : CharacterBody2D
   public FlippableRayCast BodyRay;
 
   public FlippableRayCast FeetRay;
+
+  private CollisionShape2D _hitBox;
 
   public FlippableNode<Node2D> MantleCornerPoint;
 
@@ -115,6 +120,16 @@ public partial class PlayerCharacter : CharacterBody2D
     _sprites.SetFlipped(isFlipped);
   }
 
+  public float GetLeftEdge()
+  {
+    return -((CapsuleShape2D)_hitBox.Shape).Radius / 2;
+  }
+
+  public float GetRightEdge()
+  {
+    return ((CapsuleShape2D)_hitBox.Shape).Radius / 2;
+  }
+
   /// <summary>
   /// This is called when the aim arm has "timed out". In this scenario, it means that the player is
   /// no longer aiming for any given reason. This should be largely a visual change.
@@ -148,5 +163,7 @@ public partial class PlayerCharacter : CharacterBody2D
 
     AimArm = GetNode<AimArm>("Sprites/AimArm");
     AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
+
+    _hitBox = GetNode<CollisionShape2D>("Hitbox");
   }
 }
