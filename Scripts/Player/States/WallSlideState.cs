@@ -1,3 +1,4 @@
+using System;
 using Centari.Navigation;
 using Centari.State;
 using Godot;
@@ -7,6 +8,8 @@ namespace Centari.Player.States;
 public partial class WallSlideState : AbstractPlayerState
 {
   private Timer _dropTimer;
+
+  private float _playerSlidePosX;
 
   protected override StateCapabilities Capabilities => new()
   {
@@ -45,26 +48,6 @@ public partial class WallSlideState : AbstractPlayerState
     {
       // wat
       _stateMachine.TransitionState("IdleState");
-    }
-    else
-    {
-      Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
-      collisionPoint.X += _player.HeadRay.IsFlipped
-        ? -1
-        : 1;
-
-      Vector2I tileMapPoint = tile.LocalToMap(collisionPoint);
-      Vector2 tileCenter = tile.MapToLocal(tileMapPoint);
-
-      double tileWidth = tile.TileSet.TileSize.X;
-
-      float playerSlidePosX = tileCenter.X;
-
-      playerSlidePosX += _player.IsFlipped
-        ? (float)(tileWidth / 2) + _player.GetLeftEdge()
-        : -(float)(tileWidth / 2) + _player.GetRightEdge();
-
-      _player.Position = new(playerSlidePosX, _player.Position.Y);
     }
   }
 

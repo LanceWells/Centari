@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bqukvhd7sbf0d"]
+[gd_scene load_steps=16 format=3 uid="uid://bqukvhd7sbf0d"]
 
 [ext_resource type="Script" path="res://Scripts/Common/Level.cs" id="1_k0tfw"]
 [ext_resource type="PackedScene" uid="uid://06ruk4bqpmsf" path="res://Scenes/Player/Player.tscn" id="2_61byj"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://djet605da2vnm" path="res://Assets/Terrain/Set1.png" id="3_bps6e"]
 [ext_resource type="Texture2D" uid="uid://d1h0j3uitt8st" path="res://Assets/Terrain/TestLevel.png" id="4_5n52q"]
 [ext_resource type="PackedScene" uid="uid://ycfb853quo2n" path="res://Scenes/Enemies/Ball.tscn" id="5_iixkv"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="7_5r1n5"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2D.gd" id="7_icdyw"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_oqw6w"]
 tile_data = PackedInt32Array(0, 131073, 0, 65536, 131073, 1)
@@ -451,3 +453,29 @@ position = Vector2(524, 593)
 
 [node name="Player" parent="." instance=ExtResource("2_61byj")]
 position = Vector2(79, 569)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(575, 341)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
+script = ExtResource("7_5r1n5")
+
+[node name="PhantomCamera2D" type="Node2D" parent="."]
+position = Vector2(575, 341)
+script = ExtResource("7_icdyw")
+priority_override = false
+priority = 0
+zoom = Vector2(1, 1)
+follow_mode = 0
+frame_preview = true
+pixel_perfect = false
+limit/draw_limits = true
+limit/left = -10000000
+limit/top = -10000000
+limit/right = 10000000
+limit/bottom = 10000000
+limit/limit_node_target = NodePath("")
+limit/smoothed = false
+tween_parameters = null
+tween_on_load = true
+inactive_update_mode = 0

@@ -31,14 +31,6 @@ public partial class WalkingState : AbstractPlayerState
   }
 
   /// <inheritdoc/>
-  public override void Detransition(string nextState)
-  {
-    base.Detransition(nextState);
-
-    _animationPlayer.Stop();
-  }
-
-  /// <inheritdoc/>
   public override void PhysicsProcess(double delta)
   {
     if (_inputQueue.Peek(PlayerInput.Jump))

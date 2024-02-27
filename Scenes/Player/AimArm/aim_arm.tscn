@@ -9,7 +9,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qgjvo"]
 shader = ExtResource("3_pybmk")
-shader_parameter/hue = null
+shader_parameter/hue = Color(1, 0, 0, 1)
 shader_parameter/mix_strength = null
 shader_parameter/opacity = 1.0
 
@@ -811,7 +811,7 @@ material = SubResource("ShaderMaterial_qgjvo")
 position = Vector2(10, -2)
 sprite_frames = SubResource("SpriteFrames_kimjs")
 autoplay = "default"
-frame_progress = 0.148529
+frame_progress = 0.708493
 metadata/_aseprite_wizard_config_ = {
 "layer": "",
 "o_ex_p": "",

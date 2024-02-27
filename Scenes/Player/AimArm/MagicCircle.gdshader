@@ -10,8 +10,8 @@ void fragment() {
 	// Called for every pixel the material is visible on.
 	COLOR = texture(TEXTURE, UV);
 	COLOR.r = mix(COLOR.r, hue.r, time_strength);
-	COLOR.g = mix(COLOR.r, hue.g, time_strength);
-	COLOR.b = mix(COLOR.r, hue.b, time_strength);
+	COLOR.g = mix(COLOR.g, hue.g, time_strength);
+	COLOR.b = mix(COLOR.b, hue.b, time_strength);
 	COLOR.a = COLOR.a * opacity;
 }
 
