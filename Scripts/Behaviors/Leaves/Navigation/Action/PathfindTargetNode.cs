@@ -11,11 +11,21 @@ public class PathfindTargetNode : INode<INavContext>
 
   private Vector2 _lastKnownTargetPoint;
 
-  private Vector2[] _lastKnownPath = Array.Empty<Vector2>();
+  private Vector2[] _knownPath = Array.Empty<Vector2>();
+
+  private NodeTempo _pathfindTempo;
+
+  private string _pathfindTempoKey;
 
   public void Init(ref INavContext contextRef)
   {
     _context = contextRef;
+  }
+
+  public PathfindTargetNode(ref NodeTempo pathfindTempo, string pathfindTempoKey)
+  {
+    _pathfindTempo = pathfindTempo;
+    _pathfindTempoKey = pathfindTempoKey;
   }
 
   public NodeState Process(double delta)
@@ -32,22 +42,25 @@ public class PathfindTargetNode : INode<INavContext>
     float walkSpeed = _context.ThisMonster.WalkSpeed;
     float gravity = _context.ThisMonster.Gravity;
 
-    Vector2[] path = _lastKnownPath;
     if (onFloor)
     {
-      path = GetPath(thisPos, targetPos);
+      Vector2[] path = GetPath(thisPos, targetPos);
       if (path.Length > 0)
       {
-        _lastKnownPath = path;
+        _knownPath = path;
       }
     }
 
-    if (path.Length == 0)
+    if (_knownPath.Length == 0)
     {
       return NodeState.SUCCESS;
     }
 
-    Vector2 nextPos = path[0];
+    Vector2 nextPos = _knownPath[0];
+    if (thisPos.DistanceTo(nextPos) < 32)
+    {
+      _knownPath = _knownPath.Skip(1).ToArray();
+    }
 
     if (thisPos.Y - nextPos.Y > 32)
     {

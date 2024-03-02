@@ -13,6 +13,8 @@ public class ExampleFollowTree
 
   INode<INavContext> _root;
 
+  private NodeTempo _pathfindTempo;
+
   public ExampleFollowTree(
     NavCoordinator nav,
     AbstractMonster thisMonster,
@@ -24,6 +26,12 @@ public class ExampleFollowTree
       thisMonster,
       trackedCreature
     );
+
+    NodeTempo pathfindTempo = new(50, 50);
+    string pathfindTempoKey = $"TestBall_{thisMonster.GetRid().Id}";
+    pathfindTempo.Register(pathfindTempoKey);
+
+    _pathfindTempo = pathfindTempo;
 
     /*
      * Some notes here:
@@ -53,10 +61,10 @@ public class ExampleFollowTree
                 new IsTargetInRangeNode(),
                 new AttackRangedNode(),
               }),
-              new PathfindTargetNode(),
+              new PathfindTargetNode(ref pathfindTempo, pathfindTempoKey),
             })
           }),
-          new PathfindTargetNode(),
+          new PathfindTargetNode(ref pathfindTempo, pathfindTempoKey),
         })
       }),
       new KnowVisibleTargetNode(),
@@ -68,6 +76,7 @@ public class ExampleFollowTree
 
   public void Process(double delta)
   {
+    _pathfindTempo.Update(delta);
     _root.Process(delta);
   }
 }
