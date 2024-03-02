@@ -27,4 +27,16 @@ public interface INavContext
   {
     get;
   }
+
+  public Vector2[] Path
+  {
+    get;
+    set;
+  }
+
+  public Vector2 LastKnownTargetPoint
+  {
+    get;
+    set;
+  }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Centari.Behaviors.Common;
 using Centari.Behaviors.Leaves.Navigation;
@@ -91,6 +92,10 @@ public class ExampleFollowTreeContext : INavContext
 
   private List<Node2D> _possibleTargets = new();
 
+  private Vector2[] _path = Array.Empty<Vector2>();
+
+  private Vector2 _lastKnownTargetPoint = new();
+
   public ExampleFollowTreeContext(
     NavCoordinator nav,
     AbstractMonster thisMonster,
@@ -121,5 +126,17 @@ public class ExampleFollowTreeContext : INavContext
   public List<Node2D> PossibleTargets
   {
     get => _possibleTargets;
+  }
+
+  public Vector2[] Path
+  {
+    get => _path;
+    set => _path = value;
+  }
+
+  public Vector2 LastKnownTargetPoint
+  {
+    get => _lastKnownTargetPoint;
+    set => _lastKnownTargetPoint = value;
   }
 }
