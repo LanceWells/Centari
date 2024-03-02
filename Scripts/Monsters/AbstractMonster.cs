@@ -51,6 +51,11 @@ public abstract partial class AbstractMonster : CharacterBody2D, IMonster
     get => _navModes;
   }
 
+  public abstract Rect2 HitBox
+  {
+    get;
+  }
+
   // Called when the node enters the scene tree for the first time.
   public override void _Ready()
   {
@@ -98,6 +103,24 @@ public abstract partial class AbstractMonster : CharacterBody2D, IMonster
     {
       _animationPlayer.Play(nextAnimation);
     }
+  }
+
+  protected static Rect2 CalcBoundingBox(CollisionShape2D collision)
+  {
+    Shape2D shape = collision.Shape;
+
+    if (shape is CapsuleShape2D capsule)
+    {
+      Vector2 p1 = new(-capsule.Radius, -capsule.Height / 2);
+      Vector2 p2 = new(capsule.Radius, capsule.Height / 2);
+
+      p1 = p1.Rotated(collision.Rotation);
+      p2 = p2.Rotated(collision.Rotation);
+
+      return new Rect2(p1, p2);
+    }
+
+    return new Rect2();
   }
 
   public override void _PhysicsProcess(double delta)

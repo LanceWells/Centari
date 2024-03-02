@@ -39,6 +39,12 @@ public interface IMonster
     set;
   }
 
+  public Rect2 HitBox
+  {
+    get;
+  }
+
+
 
   public Vector2 GetMovement(double delta);
 

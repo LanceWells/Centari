@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Centari.Behaviors.Common;
 using Centari.Behaviors.Leaves.Navigation;
@@ -24,6 +25,10 @@ public class ExampleFollowTree
       thisMonster,
       trackedCreature
     );
+
+    NodeTempo pathfindTempo = new(50, 50);
+    string pathfindTempoKey = $"TestBall_{thisMonster.GetRid().Id}";
+    pathfindTempo.Register(pathfindTempoKey);
 
     /*
      * Some notes here:
@@ -53,10 +58,12 @@ public class ExampleFollowTree
                 new IsTargetInRangeNode(),
                 new AttackRangedNode(),
               }),
-              new PathfindTargetNode(),
+              new PathfindTree(ref pathfindTempo, pathfindTempoKey)
+              // new PathfindTargetNode(),
             })
           }),
-          new PathfindTargetNode(),
+          new PathfindTree(ref pathfindTempo, pathfindTempoKey)
+          // new PathfindTargetNode(),
         })
       }),
       new KnowVisibleTargetNode(),
@@ -81,6 +88,8 @@ public class ExampleFollowTreeContext : INavContext
   private Node2D _trackedCreature;
 
   private List<Node2D> _possibleTargets = new();
+
+  private Vector2[] _path = Array.Empty<Vector2>();
 
   public ExampleFollowTreeContext(
     NavCoordinator nav,
@@ -112,5 +121,11 @@ public class ExampleFollowTreeContext : INavContext
   public List<Node2D> PossibleTargets
   {
     get => _possibleTargets;
+  }
+
+  public Vector2[] Path
+  {
+    get => _path;
+    set => _path = value;
   }
 }

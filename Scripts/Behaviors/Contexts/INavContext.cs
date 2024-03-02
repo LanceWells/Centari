@@ -27,4 +27,10 @@ public interface INavContext
   {
     get;
   }
+
+  public Vector2[] Path
+  {
+    get;
+    set;
+  }
 }
