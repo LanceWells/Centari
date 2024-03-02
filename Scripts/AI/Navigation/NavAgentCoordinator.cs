@@ -45,7 +45,7 @@ public class NavCoordinator
 
     foreach (NavModes mode in navModes)
     {
-      Vector2[] thisPath = System.Array.Empty<Vector2>();
+      Vector2[] thisPath = Array.Empty<Vector2>();
 
       if (!_navs.ContainsKey(mode))
       {

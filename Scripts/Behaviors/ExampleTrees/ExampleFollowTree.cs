@@ -61,10 +61,10 @@ public class ExampleFollowTree
                 new IsTargetInRangeNode(),
                 new AttackRangedNode(),
               }),
-              new PathfindTargetNode(ref pathfindTempo, pathfindTempoKey),
+              new PathfindTargetNodeV2(ref pathfindTempo, pathfindTempoKey),
             })
           }),
-          new PathfindTargetNode(ref pathfindTempo, pathfindTempoKey),
+          new PathfindTargetNodeV2(ref pathfindTempo, pathfindTempoKey),
         })
       }),
       new KnowVisibleTargetNode(),

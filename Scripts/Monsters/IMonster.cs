@@ -39,6 +39,11 @@ public interface IMonster
     set;
   }
 
+  public CollisionShape2D HitBox
+  {
+    get;
+  }
+
 
   public Vector2 GetMovement(double delta);
 

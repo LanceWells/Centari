@@ -12,9 +12,8 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/JumpingState.cs" id="10_34f36"]
 [ext_resource type="Script" path="res://Scripts/Player/States/WallSlideState.cs" id="11_dh2e3"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7igll"]
-radius = 7.5
-height = 28.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n2csh"]
+size = Vector2(15, 28)
 
 [sub_resource type="Animation" id="Animation_5juq2"]
 resource_name = "Idle"
@@ -867,6 +866,7 @@ _data = {
 scale = Vector2(2, 2)
 collision_layer = 2
 script = ExtResource("1_jn4aw")
+FloorOffset = null
 
 [node name="Sprites" type="Sprite2D" parent="."]
 
@@ -875,7 +875,6 @@ texture_filter = 1
 texture = ExtResource("2_w4w4p")
 hframes = 5
 vframes = 5
-frame = 20
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
@@ -894,7 +893,6 @@ texture_filter = 1
 texture = ExtResource("3_q8yaq")
 hframes = 5
 vframes = 5
-frame = 20
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
@@ -916,8 +914,8 @@ position = Vector2(-4, -2)
 position = Vector2(6, 0)
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1)
-shape = SubResource("CapsuleShape2D_7igll")
+position = Vector2(0, 1.5)
+shape = SubResource("RectangleShape2D_n2csh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

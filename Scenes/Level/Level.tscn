@@ -75,7 +75,7 @@ texture_region_size = Vector2i(32, 32)
 1:1/0/terrain_set = 0
 1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 1:1/0/physics_layer_0/angular_velocity = 0.0
-1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -10.75, -11.75, -16, 16, -16, 16, 16, -16, 16)
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:1/0/custom_data_1 = true
 2:1/0 = 0
 2:1/0/terrain_set = 0
@@ -99,7 +99,7 @@ texture_region_size = Vector2i(32, 32)
 5:1/0/terrain_set = 0
 5:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 5:1/0/physics_layer_0/angular_velocity = 0.0
-5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -16, 16, 16, 16, 16, -11.75, 12.75, -16)
+5:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, -16, 16, 16, 16, 16, -16)
 5:1/0/custom_data_1 = true
 6:1/0 = 0
 6:1/0/terrain_set = 0
@@ -439,6 +439,7 @@ pattern_1 = SubResource("TileMapPattern_5ckhk")
 pattern_2 = SubResource("TileMapPattern_wtjvh")
 
 [node name="Level" type="Node2D"]
+position = Vector2(0, -1)
 script = ExtResource("1_k0tfw")
 
 [node name="TileMap" type="TileMap" parent="." groups=["Surfaces"]]
@@ -452,23 +453,30 @@ position = Vector2(524, 593)
 [node name="ProjectileManager" parent="." instance=ExtResource("3_5rcgh")]
 
 [node name="Player" parent="." instance=ExtResource("2_61byj")]
-position = Vector2(79, 569)
+position = Vector2(107, 499)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(575, 341)
+position = Vector2(107, 499)
 
 [node name="PhantomCameraHost" type="Node" parent="Camera2D"]
 script = ExtResource("7_5r1n5")
 
 [node name="PhantomCamera2D" type="Node2D" parent="."]
-position = Vector2(575, 341)
+position = Vector2(107, 499)
 script = ExtResource("7_icdyw")
 priority_override = false
 priority = 0
 zoom = Vector2(1, 1)
-follow_mode = 0
+follow_mode = 5
+follow_target = NodePath("../Player")
+follow_parameters/target_offset = Vector2(0, 0)
+follow_parameters/damping = true
+follow_parameters/damping_value = 10.0
+follow_parameters/dead_zone_horizontal = 0.0
+follow_parameters/dead_zone_vertical = 0.0
+follow_parameters/viewfinder_in_play = false
 frame_preview = true
-pixel_perfect = false
+pixel_perfect = true
 limit/draw_limits = true
 limit/left = -10000000
 limit/top = -10000000

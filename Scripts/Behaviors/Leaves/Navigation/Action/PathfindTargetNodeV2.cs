@@ -3,14 +3,9 @@ using System.Linq;
 using Centari.Behaviors.Common;
 using Godot;
 
-namespace Centari.Behaviors.Leaves.Navigation;
+namespace Centari.Behaviors;
 
-// First, see if there is a path to our target.
-// If there is, identify the next point to walk towards.
-// Perhaps, if instead of walking to the point, we determine if it means "walk left" or
-// "walk right".
-
-public class PathfindTargetNode : INode<INavContext>
+public class PathfindTargetNodeV2 : INode<INavContext>
 {
   INavContext _context;
 
@@ -27,7 +22,7 @@ public class PathfindTargetNode : INode<INavContext>
     _context = contextRef;
   }
 
-  public PathfindTargetNode(ref NodeTempo pathfindTempo, string pathfindTempoKey)
+  public PathfindTargetNodeV2(ref NodeTempo pathfindTempo, string pathfindTempoKey)
   {
     _pathfindTempo = pathfindTempo;
     _pathfindTempoKey = pathfindTempoKey;
@@ -40,24 +35,12 @@ public class PathfindTargetNode : INode<INavContext>
       return NodeState.SUCCESS;
     }
 
+    bool onFloor = _context.ThisMonster.IsOnFloor();
+    float gravity = _context.ThisMonster.Gravity;
     Vector2 thisPos = _context.ThisMonster.Position;
     Vector2 targetPos = _context.TrackedCreature.Position;
 
-    bool onFloor = _context.ThisMonster.IsOnFloor();
-    float walkSpeed = _context.ThisMonster.WalkSpeed;
-    float gravity = _context.ThisMonster.Gravity;
-
     _knownPath = GetPath(thisPos, targetPos);
-
-    if (_knownPath.Length > 0)
-    {
-      AlignVertical(thisPos, _knownPath[0]);
-
-      if (thisPos.DistanceTo(_knownPath[0]) < 32)
-      {
-        _knownPath = _knownPath.Skip(1).ToArray();
-      }
-    }
 
     if (_knownPath.Length == 0)
     {
@@ -68,9 +51,15 @@ public class PathfindTargetNode : INode<INavContext>
 
     if (thisPos.Y - nextPos.Y > 32)
     {
-      // This nested check is important. If we don't ask if we're on the floor, the horizontal
-      // movement can happen too early, and the monster will run into the wall on the way up.
-      if (onFloor)
+      // Next position is up. Ensure the vertical is aligned.
+      //
+      // If we're under something, prepend another point that should get us out from under it, and
+      // keep going.
+      //
+      // If not, and if we're on the ground, jump and return running.
+
+      Vector2? verticalPos = AlignVertical(thisPos, nextPos);
+      if (verticalPos == null && onFloor)
       {
         // Factor in our gravity. The multiplier here is because there's no 1:1 relationship between
         // gravity and how much we should jump. It's an estimated amount that looks natural.
@@ -78,20 +67,33 @@ public class PathfindTargetNode : INode<INavContext>
         Vector2 targetVel = new(0, jumpStrength);
         _context.ThisMonster.Velocity = targetVel;
       }
-
-      return NodeState.RUNNING;
+      else
+      {
+        MoveTo(verticalPos.Value, delta);
+        return NodeState.RUNNING;
+      }
     }
-    else if (Math.Abs(thisPos.X - nextPos.X) < 0.1)
+
+    if (thisPos.X > _knownPath[0].X)
     {
-      return NodeState.SUCCESS;
+      // We're to the right, move left.
+      MoveTo(new(thisPos.X - 32, thisPos.Y), delta);
     }
-
-    bool moveLeft = _context.ThisMonster.Position > nextPos;
-
-    _context.ThisMonster.Position = thisPos.MoveToward(nextPos, (float)delta * walkSpeed);
-    _context.ThisMonster.SetAnimation(Monsters.MonsterAnimation.Run, moveLeft);
+    else
+    {
+      MoveTo(new(thisPos.X + 32, thisPos.Y), delta);
+    }
 
     return NodeState.RUNNING;
+  }
+
+  private void MoveTo(Vector2 nextPos, double delta)
+  {
+    float walkSpeed = _context.ThisMonster.WalkSpeed;
+    Vector2 thisPos = _context.ThisMonster.Position;
+
+    _context.ThisMonster.Position = thisPos.MoveToward(nextPos, (float)delta * walkSpeed);
+    _context.ThisMonster.SetAnimation(Monsters.MonsterAnimation.Run, true);
   }
 
   private Vector2[] GetPath(
@@ -110,8 +112,6 @@ public class PathfindTargetNode : INode<INavContext>
     {
       return _knownPath;
     }
-
-    float walkSpeed = _context.ThisMonster.WalkSpeed;
 
     Vector2[] path = _context.Nav.GetPath(
       _context.ThisMonster.NavOptions,
@@ -143,20 +143,19 @@ public class PathfindTargetNode : INode<INavContext>
     return path;
   }
 
-  private void AlignVertical(Vector2 thisPos, Vector2 nextPos)
+  private Vector2? AlignVertical(Vector2 thisPos, Vector2 nextPos)
   {
     bool onFloor = _context.ThisMonster.IsOnFloor();
     if (!onFloor)
     {
-      return;
+      return null;
     }
 
     if (Math.Abs(thisPos.Y - nextPos.Y) <= 32)
     {
-      return;
+      return null;
     }
 
-    // double monsterHitboxWidth = _context.ThisMonster.HitBox.Size.X;
     CollisionShape2D shape = _context.ThisMonster.HitBox;
     Rect2 shapeRect = shape.Shape.GetRect();
     float walkSpeed = _context.ThisMonster.WalkSpeed;
@@ -200,25 +199,25 @@ public class PathfindTargetNode : INode<INavContext>
     {
       Console.WriteLine($"Left collision at ${leftResult}");
 
-      Vector2[] nextPoint = new Vector2[1];
-      nextPoint[0] = new Vector2(
+      Vector2 nextPoint = new(
         thisPos.X + 32,
         thisPos.Y
       );
 
-      _knownPath = nextPoint.Concat(_knownPath).ToArray();
+      return nextPoint;
     }
     else if (rightResult.ContainsKey("position"))
     {
       Console.WriteLine($"Left collision at ${rightResult}");
 
-      Vector2[] nextPoint = new Vector2[1];
-      nextPoint[0] = new Vector2(
+      Vector2 nextPoint = new(
         thisPos.X - 32,
         thisPos.Y
       );
 
-      _knownPath = nextPoint.Concat(_knownPath).ToArray();
+      return nextPoint;
     }
+
+    return null;
   }
 }

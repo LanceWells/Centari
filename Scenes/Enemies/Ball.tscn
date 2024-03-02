@@ -3,9 +3,8 @@
 [ext_resource type="Script" path="res://Scripts/Monsters/TestBall/TestBall.cs" id="1_jxifo"]
 [ext_resource type="Texture2D" uid="uid://dtt6rfxb624dw" path="res://Scenes/Enemies/Run.png" id="2_uaag1"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n48la"]
-radius = 9.0
-height = 24.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_00r7s"]
+size = Vector2(26, 17)
 
 [sub_resource type="Animation" id="Animation_flk3o"]
 length = 0.1
@@ -13,7 +12,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("Sprites/Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = false
 tracks/0/keys = {
@@ -25,7 +24,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/path = NodePath("Sprites/Sprite2D:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = false
 tracks/1/keys = {
@@ -37,7 +36,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/path = NodePath("Sprites/Sprite2D:vframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = false
 tracks/2/keys = {
@@ -49,7 +48,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/path = NodePath("Sprites/Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = false
 tracks/3/keys = {
@@ -65,7 +64,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("Sprites/Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = false
 tracks/0/keys = {
@@ -77,7 +76,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/path = NodePath("Sprites/Sprite2D:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = false
 tracks/1/keys = {
@@ -89,7 +88,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/path = NodePath("Sprites/Sprite2D:vframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = false
 tracks/2/keys = {
@@ -101,7 +100,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/path = NodePath("Sprites/Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = false
 tracks/3/keys = {
@@ -117,7 +116,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/path = NodePath("Sprites/Sprite2D:texture")
 tracks/0/interp = 1
 tracks/0/loop_wrap = false
 tracks/0/keys = {
@@ -129,7 +128,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/path = NodePath("Sprites/Sprite2D:hframes")
 tracks/1/interp = 1
 tracks/1/loop_wrap = false
 tracks/1/keys = {
@@ -141,7 +140,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:vframes")
+tracks/2/path = NodePath("Sprites/Sprite2D:vframes")
 tracks/2/interp = 1
 tracks/2/loop_wrap = false
 tracks/2/keys = {
@@ -153,7 +152,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/path = NodePath("Sprites/Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = false
 tracks/3/keys = {
@@ -171,19 +170,19 @@ _data = {
 }
 
 [node name="Ball" type="CharacterBody2D"]
+scale = Vector2(2, 2)
 collision_layer = 4
 collision_mask = 9
 script = ExtResource("1_jxifo")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1)
-rotation = 1.5708
-scale = Vector2(2, 2)
-shape = SubResource("CapsuleShape2D_n48la")
+[node name="HitBox" type="CollisionShape2D" parent="."]
+position = Vector2(2.5, 1)
+shape = SubResource("RectangleShape2D_00r7s")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprites" type="Sprite2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Sprites"]
 texture_filter = 1
-scale = Vector2(2, 2)
 texture = ExtResource("2_uaag1")
 hframes = 4
 vframes = 4

@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Centari.Navigation;
 
@@ -134,10 +135,18 @@ public class NavAgent
   /// <returns>The connection, if any.</returns>
   public Vector2[] GetPointConnection(Vector2 from, Vector2 to)
   {
-    long fromId = _nav.GetClosestPoint(from);
+    var closestPosInSegment = _nav.GetClosestPositionInSegment(from);
+
+    long fromId = _nav.GetClosestPoint(closestPosInSegment);
     long toId = _nav.GetClosestPoint(to);
 
     Vector2[] steps = _nav.GetPointPath(fromId, toId);
+
+    if (steps.Length > 0 && steps[0].DistanceTo(closestPosInSegment) < 32)
+    {
+      steps = steps.Skip(1).ToArray();
+    }
+
     return steps;
   }
 

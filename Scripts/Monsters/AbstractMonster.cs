@@ -11,7 +11,7 @@ public abstract partial class AbstractMonster : CharacterBody2D, IMonster
 
   private float _meleeRange = 30;
 
-  private float _projectileRange = 100;
+  private float _projectileRange = -1;
 
   private AnimationPlayer _animationPlayer;
 
@@ -49,6 +49,11 @@ public abstract partial class AbstractMonster : CharacterBody2D, IMonster
   public NavModes[] NavOptions
   {
     get => _navModes;
+  }
+
+  public abstract CollisionShape2D HitBox
+  {
+    get;
   }
 
   // Called when the node enters the scene tree for the first time.
