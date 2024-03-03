@@ -13,7 +13,7 @@ public class IsOnFloorNode : INode<INavContext>
 
   public NodeState Process(double delta)
   {
-    return _context.TrackedCreature != null
+    return _context.ThisMonster.IsOnFloor()
       ? NodeState.SUCCESS
       : NodeState.FAILURE;
   }

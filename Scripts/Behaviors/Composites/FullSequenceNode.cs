@@ -33,12 +33,13 @@ public class FullSequenceNode<T> : INode<T>
       switch (child.Process(delta))
       {
         case NodeState.SUCCESS:
+          _nodePointer++;
           break;
         case NodeState.FAILURE:
           // Console.WriteLine($"Failure at {_nodeName} child {i}");
+          _nodePointer = 0;
           return NodeState.FAILURE;
         case NodeState.RUNNING:
-          _nodePointer++;
           return NodeState.RUNNING;
         default:
           break;

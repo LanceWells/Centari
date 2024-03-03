@@ -163,7 +163,7 @@ public static class NavAgentFactory
           );
 
           nav.ConnectPoints(startTile.Coords, raycastPoint.Coords);
-          nav.ConnectPoints(raycastPoint.Coords, landingTileCoordsSpace);
+          nav.ConnectPoints(raycastPoint.Coords, landingTileCoords);
         }
       }
     }

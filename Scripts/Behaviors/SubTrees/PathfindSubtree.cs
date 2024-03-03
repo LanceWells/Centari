@@ -21,22 +21,19 @@ public class PathfindSubTree : INode<INavContext>
     string pathfindTempoKey
   )
   {
-    _root = new ReactiveFallbackNode<INavContext>("Fb_SubtreeRoot", new List<INode<INavContext>>() {
-      new ReactiveSequenceNode<INavContext>("Follow_Sq", new List<INode<INavContext>>() {
-        new IsKnownTargetNode(),
-        new SetPathNode(ref pathfindTempo, pathfindTempoKey),
-        new FullFallbackNode<INavContext>("Move_FFb", new List<INode<INavContext>>() {
-          new ReactiveSequenceNode<INavContext>("Jump_Sq", new List<INode<INavContext>>() {
-            new IsOnFloorNode(),
-            new IsTargetAboveNode(),
-            new JumpNode(),
-          }),
-          new ReactiveSequenceNode<INavContext>("Fall_Sq", new List<INode<INavContext>>() {
-            new IsTargetBelowNode(),
-            new FallNode(),
-          }),
-          new WalkNode(),
-        })
+    _root = new FullSequenceNode<INavContext>("Follow_Sq", new List<INode<INavContext>>() {
+      new IsKnownTargetNode(),
+      new SetPathNode(ref pathfindTempo, pathfindTempoKey),
+      new FullFallbackNode<INavContext>("Move_FFb", new List<INode<INavContext>>() {
+        new ReactiveSequenceNode<INavContext>("Jump_Sq", new List<INode<INavContext>>() {
+          new IsNextPointAboveNode(),
+          new JumpNode(),
+        }),
+        new ReactiveSequenceNode<INavContext>("Fall_Sq", new List<INode<INavContext>>() {
+          new IsNextPointBelowNode(),
+          new FallNode(),
+        }),
+        new WalkNode(),
       })
     });
   }

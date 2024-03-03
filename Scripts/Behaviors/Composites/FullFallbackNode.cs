@@ -34,6 +34,7 @@ public class FullFallbackNode<T> : INode<T>
       switch (child.Process(delta))
       {
         case NodeState.SUCCESS:
+          _nodePointer = 0;
           return NodeState.SUCCESS;
         case NodeState.FAILURE:
           _nodePointer++;
@@ -45,8 +46,6 @@ public class FullFallbackNode<T> : INode<T>
           break;
       }
     }
-
-    _nodePointer = 0;
 
     return NodeState.FAILURE;
   }

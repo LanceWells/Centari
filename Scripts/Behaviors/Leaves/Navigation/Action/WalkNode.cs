@@ -1,16 +1,27 @@
 using Centari.Behaviors.Common;
+using Godot;
 
 namespace Centari.Behaviors;
 
-public class WalkNode : INode<INavContext>
+public class WalkNode : AbstractMoveNode
 {
-  public void Init(ref INavContext contextRef)
+  public override NodeState Process(double delta)
   {
-    throw new System.NotImplementedException();
-  }
+    if (_ctx.Path.Length == 0)
+    {
+      return NodeState.SUCCESS;
+    }
 
-  public NodeState Process(double delta)
-  {
-    throw new System.NotImplementedException();
+    Vector2 thisPos = _ctx.ThisMonster.Position;
+    Vector2 nextPos = _ctx.Path[0];
+
+
+    MoveTo(nextPos, delta);
+
+    if (thisPos.DistanceTo(nextPos) < 32)
+    {
+      return NodeState.SUCCESS;
+    }
+    return NodeState.RUNNING;
   }
 }
