@@ -34,6 +34,7 @@ public class FallbackNode<T> : INode<T>
       switch (child.Process(delta))
       {
         case NodeState.SUCCESS:
+          _nodePointer = 0;
           return NodeState.SUCCESS;
         case NodeState.FAILURE:
           _nodePointer++;
