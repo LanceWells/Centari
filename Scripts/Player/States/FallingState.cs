@@ -140,12 +140,12 @@ public partial class FallingState : AbstractPlayerState
       return;
     }
 
-    if (_player.BodyRay.Item.GetCollider() is not TileMap tile)
+    if (_player.BodyRay.GetCollider() is not TileMap tile)
     {
       return;
     }
 
-    GodotObject headCollision = _player.HeadRay.Item.GetCollider();
+    GodotObject headCollision = _player.HeadRay.GetCollider();
     if (headCollision is not null && headCollision is not TileMap)
     {
       return;
@@ -155,8 +155,8 @@ public partial class FallingState : AbstractPlayerState
     // detecting a given tile to the right seems to land in the tile, but raycasting to the left
     // seems to pick the tile to the right of that tile when translating to map coords.
 
-    Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
-    collisionPoint.X += _player.HeadRay.IsFlipped
+    Vector2 collisionPoint = _player.BodyRay.GetCollisionPoint();
+    collisionPoint.X += _player.IsFlipped
       ? -1
       : 1;
 

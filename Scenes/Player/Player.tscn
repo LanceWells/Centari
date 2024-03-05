@@ -1,8 +1,8 @@
 [gd_scene load_steps=22 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scripts/Player/PlayerCharacter.cs" id="1_jn4aw"]
-[ext_resource type="Texture2D" uid="uid://qr8tq7gt5wp4" path="res://Assets/Player/Player.png" id="2_w4w4p"]
-[ext_resource type="Texture2D" uid="uid://c3dlf5orl82p3" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
+[ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
+[ext_resource type="Texture2D" uid="uid://b4jtcf36kkaia" path="res://Assets/Player/FA-Idle.png" id="3_q8yaq"]
 [ext_resource type="PackedScene" uid="uid://c6q6nnxeomf7i" path="res://Scenes/Player/AimArm/aim_arm.tscn" id="4_0ihbt"]
 [ext_resource type="Script" path="res://Scripts/AI/StateMachine/StateMachine.cs" id="5_aygjl"]
 [ext_resource type="Script" path="res://Scripts/Player/States/IdleState.cs" id="6_eg8fx"]
@@ -493,7 +493,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("MantleCornerPoint:position")
+tracks/2/path = NodePath("Sprites/MantleCornerPoint:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -616,7 +616,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("MantleCornerPoint:position")
+tracks/1/path = NodePath("Sprites/MantleCornerPoint:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -866,6 +866,7 @@ _data = {
 scale = Vector2(2, 2)
 collision_layer = 2
 script = ExtResource("1_jn4aw")
+FloorOffset = null
 
 [node name="Sprites" type="Sprite2D" parent="."]
 
@@ -911,6 +912,21 @@ position = Vector2(-4, -2)
 
 [node name="WallPoint" type="Node2D" parent="Sprites"]
 position = Vector2(6, 0)
+
+[node name="HeadRay" type="RayCast2D" parent="Sprites"]
+position = Vector2(0.5, -10)
+target_position = Vector2(12, 0)
+
+[node name="BodyRay" type="RayCast2D" parent="Sprites"]
+position = Vector2(0, 1)
+target_position = Vector2(9, 0)
+
+[node name="FeetRay" type="RayCast2D" parent="Sprites"]
+position = Vector2(0, 11.5)
+target_position = Vector2(12, 0)
+
+[node name="MantleCornerPoint" type="Node2D" parent="Sprites"]
+position = Vector2(0, 15.5)
 
 [node name="Hitbox" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1.5)
@@ -961,18 +977,3 @@ script = ExtResource("11_dh2e3")
 [node name="DropTimer" type="Timer" parent="StateMachine/WallSlideState"]
 wait_time = 0.1
 one_shot = true
-
-[node name="HeadRay" type="RayCast2D" parent="."]
-position = Vector2(0.5, -10)
-target_position = Vector2(12, 0)
-
-[node name="BodyRay" type="RayCast2D" parent="."]
-position = Vector2(0, 1)
-target_position = Vector2(9, 0)
-
-[node name="FeetRay" type="RayCast2D" parent="."]
-position = Vector2(0, 11.5)
-target_position = Vector2(12, 0)
-
-[node name="MantleCornerPoint" type="Node2D" parent="."]
-position = Vector2(0, 15.5)

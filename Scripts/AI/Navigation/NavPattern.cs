@@ -1,5 +1,10 @@
 namespace Centari.Navigation;
 
+public enum NavModes
+{
+  Cat,
+}
+
 public enum NavPathItem
 {
   Ignore,

@@ -44,7 +44,7 @@ public partial class WallSlideState : AbstractPlayerState
     _dropTimer = GetNode<Timer>("DropTimer");
     _dropTimer.Timeout += OnDropTimeout;
 
-    if (_player.BodyRay.Item.GetCollider() is not TileMap tile)
+    if (_player.BodyRay.GetCollider() is not TileMap tile)
     {
       // wat
       _stateMachine.TransitionState("IdleState");
@@ -53,15 +53,15 @@ public partial class WallSlideState : AbstractPlayerState
 
   public override void PhysicsProcess(double delta)
   {
-    if (_player.BodyRay.Item.GetCollider() is not TileMap tile)
+    if (_player.BodyRay.GetCollider() is not TileMap tile)
     {
       _stateMachine.TransitionState("IdleState");
       return;
     }
     else
     {
-      Vector2 collisionPoint = _player.BodyRay.Item.GetCollisionPoint();
-      collisionPoint.X += _player.HeadRay.IsFlipped
+      Vector2 collisionPoint = _player.BodyRay.GetCollisionPoint();
+      collisionPoint.X += _player.IsFlipped
       ? -1
       : 1;
 

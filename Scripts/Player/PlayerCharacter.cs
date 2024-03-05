@@ -45,15 +45,16 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <summary>
   /// A reference to the head ray on the player.
   /// </summary>
-  public FlippableRayCast HeadRay;
+  public RayCast2D HeadRay;
 
-  public FlippableRayCast BodyRay;
+  public RayCast2D BodyRay;
 
-  public FlippableRayCast FeetRay;
+  public RayCast2D FeetRay;
 
   private CollisionShape2D _hitBox;
 
-  public FlippableNode<Node2D> MantleCornerPoint;
+  // public FlippableNode<Node2D> MantleCornerPoint;
+  public Node2D MantleCornerPoint;
 
   public bool IsFlipped => _isFlipped;
 
@@ -117,12 +118,6 @@ public partial class PlayerCharacter : CharacterBody2D
   {
     _isFlipped = isFlipped;
 
-
-    HeadRay.SetFlipped(IsFlipped);
-    BodyRay.SetFlipped(IsFlipped);
-    FeetRay.SetFlipped(IsFlipped);
-    MantleCornerPoint.SetFlipped(isFlipped);
-
     _sprites.SetFlipped(isFlipped);
   }
 
@@ -155,17 +150,11 @@ public partial class PlayerCharacter : CharacterBody2D
     var sprites = GetNode<Sprite2D>("Sprites");
     _sprites = new FlippableSprite<Sprite2D>(sprites);
 
-    var _headRay = GetNode<RayCast2D>("HeadRay");
-    var _bodyRay = GetNode<RayCast2D>("BodyRay");
-    var _feetRay = GetNode<RayCast2D>("FeetRay");
+    HeadRay = GetNode<RayCast2D>("Sprites/HeadRay");
+    BodyRay = GetNode<RayCast2D>("Sprites/BodyRay");
+    FeetRay = GetNode<RayCast2D>("Sprites/FeetRay");
 
-    HeadRay = new FlippableRayCast(_headRay);
-    BodyRay = new FlippableRayCast(_bodyRay);
-    FeetRay = new FlippableRayCast(_feetRay);
-
-    var _mantleCornerPoint = GetNode<Node2D>("MantleCornerPoint");
-
-    MantleCornerPoint = new FlippableNode<Node2D>(_mantleCornerPoint);
+    MantleCornerPoint = GetNode<Node2D>("Sprites/MantleCornerPoint");
 
     AimArm = GetNode<AimArm>("Sprites/AimArm");
     AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;

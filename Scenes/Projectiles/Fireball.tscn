@@ -1,8 +1,8 @@
 [gd_scene load_steps=68 format=3 uid="uid://413iceuajbn3"]
 
 [ext_resource type="Script" path="res://Scripts/Projectiles/Fireball.cs" id="1_oxqp1"]
-[ext_resource type="Texture2D" uid="uid://dtucl2ojeoo5q" path="res://Assets/Projectiles/energyfade_12x11.png" id="2_8y4e2"]
-[ext_resource type="Texture2D" uid="uid://djywvdfrn18n8" path="res://Scenes/Projectiles/energy_smol_12x12.png" id="2_n6ptn"]
+[ext_resource type="Texture2D" uid="uid://bfh2ewnllo7p0" path="res://Assets/Projectiles/energyfade_12x11.png" id="2_8y4e2"]
+[ext_resource type="Texture2D" uid="uid://db2qtuo1pqcka" path="res://Scenes/Projectiles/energy_smol_12x12.png" id="2_n6ptn"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_svumt"]
 particles_animation = true

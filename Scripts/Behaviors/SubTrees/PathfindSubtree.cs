@@ -21,10 +21,10 @@ public class PathfindSubTree : INode<INavContext>
     string pathfindTempoKey
   )
   {
-    _root = new FullSequenceNode<INavContext>("Follow_Sq", new List<INode<INavContext>>() {
+    _root = new SequenceNode<INavContext>("Follow_Sq", new List<INode<INavContext>>() {
       new IsKnownTargetNode(),
       new SetPathNode(ref pathfindTempo, pathfindTempoKey),
-      new FullFallbackNode<INavContext>("Move_FFb", new List<INode<INavContext>>() {
+      new FallbackNode<INavContext>("Move_FFb", new List<INode<INavContext>>() {
         new ReactiveSequenceNode<INavContext>("Jump_Sq", new List<INode<INavContext>>() {
           new IsNextPointAboveNode(),
           new JumpNode(),
