@@ -111,10 +111,10 @@ public partial class AimArm : Node2D
   // Called every frame. 'delta' is the elapsed time since the previous frame.
   public override void _Process(double delta)
   {
-    if (_isAiming)
-    {
-      Vector2 mousePos = GetViewport().GetMousePosition();
-      _armSprite.LookAt(mousePos);
-    }
+    // if (_isAiming)
+    // {
+    //   Vector2 mousePos = GetViewport().GetMousePosition();
+    //   _armSprite.LookAt(mousePos);
+    // }
   }
 }

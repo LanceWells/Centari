@@ -96,14 +96,17 @@ public partial class PlayerCharacter : CharacterBody2D
     ArmSprite.Visible = false;
     AimArm.StartAimStance();
 
-    Vector2 mouse = GetViewport().GetMousePosition();
     Vector2 projectileOrigin = AimArm.GetProjectileOrigin();
 
     EmitSignal(
       SignalName.FireProjectile,
       projectile,
       projectileOrigin,
-      mouse
+      projectileOrigin + (
+        _isFlipped
+          ? new Vector2(-1, 0)
+          : new Vector2(+1, 0)
+        )
     );
   }
 

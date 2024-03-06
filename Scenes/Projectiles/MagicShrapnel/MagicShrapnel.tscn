@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdvsj0lcn5w70"]
+
+[ext_resource type="Texture2D" uid="uid://bfh2ewnllo7p0" path="res://Assets/Projectiles/energyfade_12x11.png" id="1_ivrsk"]
+[ext_resource type="Script" path="res://Scripts/Projectiles/MagicShrapnel.cs" id="1_ubchi"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_whqb3"]
+rough = true
+absorbent = true
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_4phkf"]
+particles_animation = true
+particles_anim_h_frames = 60
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u0bxf"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 20.0
+gravity = Vector3(0, -100, 0)
+tangential_accel_min = 12.09
+tangential_accel_max = 63.16
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+anim_offset_max = 0.1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_35yfi"]
+size = Vector2(6, 6)
+
+[node name="MagicShrapnel" type="RigidBody2D"]
+collision_layer = 0
+physics_material_override = SubResource("PhysicsMaterial_whqb3")
+script = ExtResource("1_ubchi")
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_4phkf")
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_u0bxf")
+texture = ExtResource("1_ivrsk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_35yfi")
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+autostart = true
+
+[node name="SmolderTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true

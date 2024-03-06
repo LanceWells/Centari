@@ -23,10 +23,7 @@ public class Pool<T> where T : Node
     if (_resources.Count > _limit)
     {
       T oldResource = _resources.Dequeue();
-      if (oldResource != null)
-      {
-        oldResource.QueueFree();
-      }
+      oldResource?.CallDeferred(Node.MethodName.QueueFree);
     }
   }
 }
