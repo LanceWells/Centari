@@ -20,10 +20,10 @@ public class Pool<T> where T : Node
   public void AddResource(T resource)
   {
     _resources.Enqueue(resource);
-    if (_resources.Count > _limit)
-    {
-      T oldResource = _resources.Dequeue();
-      oldResource?.CallDeferred(Node.MethodName.QueueFree);
-    }
+    // if (_resources.Count > _limit)
+    // {
+    //   T oldResource = _resources.Dequeue();
+    //   oldResource?.CallDeferred(Node.MethodName.QueueFree);
+    // }
   }
 }

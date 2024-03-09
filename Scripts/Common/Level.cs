@@ -2,6 +2,7 @@ using System;
 using Centari.Monsters;
 using Centari.Navigation;
 using Centari.Player;
+using Centari.Projectiles;
 using Godot;
 
 namespace Centari.Common;
@@ -41,14 +42,24 @@ public partial class Level : Node2D
     didSetNav = NavState.NOT_STARTED;
   }
 
-  private void OnPlayerFireProjectile(PackedScene projectile, Vector2 origin, Vector2 target)
+  private void OnPlayerFireProjectile(PackedScene projectile, Vector2 origin, bool isFlipped)
   {
     Fireball projectileInstance = projectile.Instantiate<Fireball>();
     AddChild(projectileInstance);
 
+    Sprite2D sprites = projectileInstance.GetNodeOrNull<Sprite2D>("Sprites");
+    if (isFlipped)
+    {
+      sprites.Scale = new(-1, 1);
+    }
+
     projectileInstance.Position = origin;
-    projectileInstance.Velocity = projectileInstance.Velocity.Normalized() * projectileInstance.Speed;
-    projectileInstance.Velocity = projectileInstance.Velocity.Rotated(origin.AngleToPoint(target));
+    projectileInstance.Velocity =
+      projectileInstance.Velocity.Normalized()
+      * projectileInstance.Speed
+      * (isFlipped ? -1 : 1);
+
+    // projectileInstance.Velocity = projectileInstance.Velocity.Rotated(origin.AngleToPoint(target));
 
     _projectileManager.ManageProjectile(projectileInstance);
   }

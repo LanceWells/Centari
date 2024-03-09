@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ycfb853quo2n" path="res://Scenes/Enemies/Ball.tscn" id="5_iixkv"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="7_5r1n5"]
 [ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2D.gd" id="7_icdyw"]
-[ext_resource type="PackedScene" uid="uid://bdvsj0lcn5w70" path="res://Scenes/Projectiles/MagicShrapnel/MagicShrapnel.tscn" id="9_nookf"]
+[ext_resource type="PackedScene" uid="uid://413iceuajbn3" path="res://Scenes/Projectiles/Fireball.tscn" id="9_rg4gi"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_oqw6w"]
 tile_data = PackedInt32Array(0, 131073, 0, 65536, 131073, 1)
@@ -503,6 +503,7 @@ position = Vector2(524, 593)
 
 [node name="Player" parent="." instance=ExtResource("2_61byj")]
 position = Vector2(107, 499)
+FloorOffset = null
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(107, 499)
@@ -537,5 +538,5 @@ tween_parameters = null
 tween_on_load = true
 inactive_update_mode = 0
 
-[node name="MagicShrapnel" parent="." instance=ExtResource("9_nookf")]
-position = Vector2(244, 503)
+[node name="Fireball" parent="." instance=ExtResource("9_rg4gi")]
+position = Vector2(144, 483)

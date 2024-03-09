@@ -82,7 +82,7 @@ public partial class PlayerCharacter : CharacterBody2D
   public delegate void FireProjectileEventHandler(
     PackedScene projectile,
     Vector2 origin,
-    Vector2 target
+    bool isFlipped
   );
 
   /// <summary>
@@ -102,12 +102,19 @@ public partial class PlayerCharacter : CharacterBody2D
       SignalName.FireProjectile,
       projectile,
       projectileOrigin,
-      projectileOrigin + (
-        _isFlipped
-          ? new Vector2(-1, 0)
-          : new Vector2(+1, 0)
-        )
+      _isFlipped
     );
+
+    // EmitSignal(
+    //   SignalName.FireProjectile,
+    //   projectile,
+    //   projectileOrigin,
+    //   projectileOrigin + (
+    //     _isFlipped
+    //       ? new Vector2(-1, 0)
+    //       : new Vector2(+1, 0)
+    //     )
+    // );
   }
 
   /// <summary>

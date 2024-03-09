@@ -9,6 +9,8 @@ public abstract partial class AbstractProjectile : Area2D, IProjectile
 
   public abstract float Speed { get; set; }
 
+  public abstract Color MagicColor { get; set; }
+
   public Vector2 Velocity { get; set; } = Vector2.Right;
 
   protected float? BendRotation = null;

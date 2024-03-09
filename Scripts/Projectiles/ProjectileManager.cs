@@ -44,24 +44,27 @@ public partial class ProjectileManager : Node
       Vector2 collisionPosition = projectile.Position;
       Vector2 colliderVelocity = projectile.Velocity;
 
-      RigidBody2D shrapnel = projectile.GetNodeOrNull<RigidBody2D>("Shrapnel");
-      PackedScene shrapnelScene = GD.Load<PackedScene>(shrapnel.SceneFilePath);
-
       Random r = new();
 
-      List<Node> shrapnelNodes = new();
+      RigidBody2D shrapnel = projectile.GetNodeOrNull<RigidBody2D>("Shrapnel");
 
-      for (int i = 0; i < r.Next(2, 3); i++)
+      if (shrapnel != null)
       {
-        RigidBody2D n = shrapnelScene.Instantiate<RigidBody2D>();
-        n.Position = collisionPosition;
-        n.LinearVelocity = new(
-          -velocityOnContact.X * 15,
-          r.NextInt64(-500, -150)
-        );
+        PackedScene shrapnelScene = GD.Load<PackedScene>(shrapnel.SceneFilePath);
+        List<Node> shrapnelNodes = new();
 
-        shrapnelNodes.Add(n);
-        AddChild(n);
+        for (int i = 0; i < r.Next(10, 25); i++)
+        {
+          RigidBody2D n = shrapnelScene.Instantiate<RigidBody2D>();
+          n.Position = collisionPosition;
+          n.LinearVelocity = new(
+            -velocityOnContact.X * 15 * (r.NextSingle() * 3),
+            r.Next(-500, 500)
+          );
+
+          shrapnelNodes.Add(n);
+          AddChild(n);
+        }
       }
 
       projectile.Collide -= OnCollide;
@@ -69,34 +72,44 @@ public partial class ProjectileManager : Node
       // If the projectile had any particles, ensure that they finish particle-ing before we delete
       // them. If we get rid of them outright, it makes any particle trains disappear in a jarring
       // fashion.
-      GpuParticles2D particles = projectile.GetNodeOrNull<GpuParticles2D>("GPUParticles2D");
-      GpuParticles2D particleBurst = projectile.GetNodeOrNull<GpuParticles2D>("ParticleBurst");
+      GpuParticles2D particleBurst = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/ParticleBurst");
+      GpuParticles2D blobEdge = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/BlobEdge");
+      GpuParticles2D blobCenter = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/BlobCenter");
+      GpuParticles2D blobCenter2 = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/BlobCenter2");
+
+      if (blobEdge != null)
+      {
+        blobEdge.Emitting = false;
+      }
+
+      if (blobCenter != null)
+      {
+        blobCenter.Emitting = false;
+      }
+
+      if (blobCenter2 != null)
+      {
+        blobCenter2.Emitting = false;
+      }
 
       if (particleBurst != null)
       {
         particleBurst.Emitting = true;
       }
 
-      if (particles != null)
+      // There are a few issues with the "Finished" signal for GPU particles. Instead, perform a
+      // cleanup some time after we've moved the particles to the level's tree.
+      Timer t = new();
+      AddChild(t);
+      t.OneShot = true;
+      t.Timeout += () =>
       {
-        particles.OneShot = true;
-        particles.Emitting = false;
+        RemoveChild(t);
+        t.CallDeferred(Node.MethodName.QueueFree);
+        projectile.CallDeferred(Node.MethodName.QueueFree);
+      };
 
-        // There are a few issues with the "Finished" signal for GPU particles. Instead, perform a
-        // cleanup some time after we've moved the particles to the level's tree.
-        Timer t = new();
-        AddChild(t);
-        t.OneShot = true;
-        t.Timeout += () =>
-        {
-          RemoveChild(t);
-          t.CallDeferred(Node.MethodName.QueueFree);
-          projectile.CallDeferred(Node.MethodName.QueueFree);
-        };
-
-        t.Start(0.5);
-      }
-
+      t.Start(1);
     }
   }
 
