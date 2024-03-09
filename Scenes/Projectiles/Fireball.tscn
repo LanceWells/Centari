@@ -1,8 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://413iceuajbn3"]
+[gd_scene load_steps=16 format=3 uid="uid://413iceuajbn3"]
 
 [ext_resource type="Script" path="res://Scripts/Projectiles/Fireball.cs" id="1_oxqp1"]
+[ext_resource type="Texture2D" uid="uid://b6jygyou25a7w" path="res://Assets/Projectiles/teenyboll_27x27.png" id="4_holcy"]
 [ext_resource type="PackedScene" uid="uid://bdvsj0lcn5w70" path="res://Scenes/Projectiles/MagicShrapnel/MagicShrapnel.tscn" id="4_yjc0i"]
-[ext_resource type="Texture2D" uid="uid://byvblkul750ps" path="res://Assets/Projectiles/teenyboll_17x17.png" id="6_5fki2"]
 [ext_resource type="Shader" path="res://Scenes/Projectiles/NativePixels.gdshader" id="6_k5skm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_es2u5"]
@@ -15,7 +15,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprites:frame")
+tracks/0/path = NodePath("Sprites/Fireball:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -30,7 +30,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprites:frame")
+tracks/0/path = NodePath("Sprites/Fireball:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -46,9 +46,32 @@ _data = {
 "RESET": SubResource("Animation_uy2f2")
 }
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r305k"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mjfck"]
 shader = ExtResource("6_k5skm")
-shader_parameter/tint_color = Color(0, 0.870588, 0.901961, 0.635294)
+shader_parameter/tint_color = Color(0, 1, 1, 1)
+
+[sub_resource type="Curve" id="Curve_6lnf1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.813333, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rly64"]
+curve = SubResource("Curve_6lnf1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r8qmw"]
+lifetime_randomness = 0.8
+particle_flag_disable_z = true
+angle_min = -180.0
+angle_max = 180.0
+spread = 180.0
+initial_velocity_min = 35.0
+initial_velocity_max = 85.0
+gravity = Vector3(0, 0, 0)
+scale_min = 2.0
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_rly64")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 1.0
 
 [sub_resource type="Curve" id="Curve_ugsa0"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.751938, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -59,12 +82,13 @@ curve = SubResource("Curve_ugsa0")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_27nl8"]
 particle_flag_disable_z = true
+emission_shape_scale = Vector3(2, 2, 1)
 emission_shape = 1
 emission_sphere_radius = 5.0
 angle_max = 90.0
 spread = 180.0
-initial_velocity_min = 15.0
-initial_velocity_max = 20.0
+initial_velocity_min = 25.0
+initial_velocity_max = 30.0
 angular_velocity_min = -180.0
 angular_velocity_max = 180.0
 gravity = Vector3(0, 0, 0)
@@ -81,7 +105,6 @@ collision_mask = 5
 script = ExtResource("1_oxqp1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CircleShape2D_es2u5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -97,13 +120,28 @@ use_parent_material = false
 sleeping = true
 
 [node name="Sprites" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_r305k")
-texture = ExtResource("6_5fki2")
+material = SubResource("ShaderMaterial_mjfck")
+position = Vector2(1, 1)
+
+[node name="Fireball" type="Sprite2D" parent="Sprites"]
+use_parent_material = true
+texture = ExtResource("4_holcy")
 hframes = 60
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="Sprites"]
+[node name="ExplosionParticles" type="GPUParticles2D" parent="Sprites"]
+use_parent_material = true
+position = Vector2(-1, -1)
+emitting = false
+amount = 256
+process_material = SubResource("ParticleProcessMaterial_r8qmw")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+
+[node name="TrailParticles" type="GPUParticles2D" parent="Sprites"]
 z_index = -1
 use_parent_material = true
+position = Vector2(-1, -1)
 amount = 64
 process_material = SubResource("ParticleProcessMaterial_27nl8")
 lifetime = 0.5

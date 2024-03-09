@@ -20,12 +20,19 @@ public partial class MagicShrapnel : RigidBody2D
 	public float SmolderTime = 1.0f;
 
 	[Export]
-	public float TimeVariability = 0.5f;
+	public float TimeVariability = 1.5f;
 
 	public Color MagicColor
 	{
 		get => _magicColor;
-		set => _magicColor = value;
+		set
+		{
+			_magicColor = value;
+			if (_particles.Material is ShaderMaterial shader)
+			{
+				shader.SetShaderParameter("tint_color", value);
+			}
+		}
 	}
 
 	public void OnDeathTimeout()
@@ -61,8 +68,6 @@ public partial class MagicShrapnel : RigidBody2D
 
 		if (_particles.Material is ShaderMaterial shader)
 		{
-			Variant f = shader.GetShaderParameter("tint_color");
-
 			Variant tintColor = new Color(0, 1, 1, 0.5f);
 			shader.SetShaderParameter("tint_color", tintColor);
 		}

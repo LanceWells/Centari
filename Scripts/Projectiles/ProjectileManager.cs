@@ -35,14 +35,7 @@ public partial class ProjectileManager : Node
       CollisionShape2D hitbox = projectile.GetNodeOrNull<CollisionShape2D>("CollisionShape2D");
       hitbox?.SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
 
-      AnimatedSprite2D sprite = projectile.GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D");
-      if (sprite != null)
-      {
-        sprite.Visible = false;
-      }
-
       Vector2 collisionPosition = projectile.Position;
-      Vector2 colliderVelocity = projectile.Velocity;
 
       Random r = new();
 
@@ -72,29 +65,23 @@ public partial class ProjectileManager : Node
       // If the projectile had any particles, ensure that they finish particle-ing before we delete
       // them. If we get rid of them outright, it makes any particle trains disappear in a jarring
       // fashion.
-      GpuParticles2D particleBurst = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/ParticleBurst");
-      GpuParticles2D blobEdge = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/BlobEdge");
-      GpuParticles2D blobCenter = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/BlobCenter");
-      GpuParticles2D blobCenter2 = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/BlobCenter2");
+      GpuParticles2D particleBurst = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/ExplosionParticles");
+      GpuParticles2D trailParticles = projectile.GetNodeOrNull<GpuParticles2D>("Sprites/TrailParticles");
+      Sprite2D fireballSprite = projectile.GetNodeOrNull<Sprite2D>("Sprites/Fireball");
 
-      if (blobEdge != null)
+      if (trailParticles != null)
       {
-        blobEdge.Emitting = false;
-      }
-
-      if (blobCenter != null)
-      {
-        blobCenter.Emitting = false;
-      }
-
-      if (blobCenter2 != null)
-      {
-        blobCenter2.Emitting = false;
+        trailParticles.Emitting = false;
       }
 
       if (particleBurst != null)
       {
         particleBurst.Emitting = true;
+      }
+
+      if (fireballSprite != null)
+      {
+        fireballSprite.Visible = false;
       }
 
       // There are a few issues with the "Finished" signal for GPU particles. Instead, perform a

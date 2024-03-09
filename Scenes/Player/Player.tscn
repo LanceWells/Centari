@@ -866,6 +866,7 @@ _data = {
 scale = Vector2(2, 2)
 collision_layer = 2
 script = ExtResource("1_jn4aw")
+FloorOffset = null
 
 [node name="Sprites" type="Sprite2D" parent="."]
 
