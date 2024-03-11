@@ -550,7 +550,6 @@ texture_filter = 1
 texture = ExtResource("2_w4w4p")
 hframes = 5
 vframes = 4
-frame = 5
 metadata/_aseprite_wizard_config_ = {
 "i_mode": -1,
 "keep_anim_length": false,
@@ -563,9 +562,6 @@ metadata/_aseprite_wizard_config_ = {
 "player": "AnimationPlayer",
 "source": "res://Assets/Player/Player.aseprite"
 }
-
-[node name="WallPoint" type="Node2D" parent="Sprites"]
-position = Vector2(6, 0)
 
 [node name="HeadRay" type="RayCast2D" parent="Sprites"]
 position = Vector2(0.5, -10)

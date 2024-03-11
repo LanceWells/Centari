@@ -16,7 +16,7 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <summary>
   /// A configurable walking speed for the player.
   /// </summary>
-  public float MaxSpeed = 400.0f;
+  public float MaxSpeed = 350.0f;
 
   /// <summary>
   /// The strength of the player's jump.
@@ -65,10 +65,10 @@ public partial class PlayerCharacter : CharacterBody2D
   /// </summary>
   private Sprite2D ArmSprite;
 
-  /// <summary>
-  /// A reference to the <see cref="AimArm" /> node for the player.
-  /// </summary>
-  private AimArm AimArm;
+  // /// <summary>
+  // /// A reference to the <see cref="AimArm" /> node for the player.
+  // /// </summary>
+  // private AimArm AimArm;
 
   /// <summary>
   /// A signal used to indicate that the player wants to fire a projectile. This informs the
@@ -92,11 +92,13 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <param name="projectile">The projectile to fire.</param>
   public void HandleFireProjectile(PackedScene projectile)
   {
-    AimArm.Visible = true;
-    ArmSprite.Visible = false;
-    AimArm.StartAimStance();
+    // AimArm.Visible = true;
+    // ArmSprite.Visible = false;
+    // AimArm.StartAimStance();
 
-    Vector2 projectileOrigin = AimArm.GetProjectileOrigin();
+    // Vector2 projectileOrigin = AimArm.GetProjectileOrigin();
+
+    Vector2 projectileOrigin = Position;
 
     EmitSignal(
       SignalName.FireProjectile,
@@ -141,15 +143,15 @@ public partial class PlayerCharacter : CharacterBody2D
     return ((CapsuleShape2D)_hitBox.Shape).Radius / 2;
   }
 
-  /// <summary>
-  /// This is called when the aim arm has "timed out". In this scenario, it means that the player is
-  /// no longer aiming for any given reason. This should be largely a visual change.
-  /// </summary>
-  public void OnAimArmTimerTimeout()
-  {
-    AimArm.Visible = false;
-    ArmSprite.Visible = true;
-  }
+  // /// <summary>
+  // /// This is called when the aim arm has "timed out". In this scenario, it means that the player is
+  // /// no longer aiming for any given reason. This should be largely a visual change.
+  // /// </summary>
+  // public void OnAimArmTimerTimeout()
+  // {
+  //   AimArm.Visible = false;
+  //   ArmSprite.Visible = true;
+  // }
 
   /// <inheritdoc/>
   public override void _Ready()
@@ -166,8 +168,8 @@ public partial class PlayerCharacter : CharacterBody2D
 
     MantleCornerPoint = GetNode<Node2D>("Sprites/MantleCornerPoint");
 
-    AimArm = GetNode<AimArm>("Sprites/AimArm");
-    AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
+    // AimArm = GetNode<AimArm>("Sprites/AimArm");
+    // AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
 
     _hitBox = GetNode<CollisionShape2D>("Hitbox");
   }
