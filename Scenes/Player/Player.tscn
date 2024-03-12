@@ -542,6 +542,7 @@ _data = {
 scale = Vector2(2, 2)
 collision_layer = 2
 script = ExtResource("1_jn4aw")
+FloorOffset = null
 
 [node name="Sprites" type="Sprite2D" parent="."]
 
@@ -565,11 +566,11 @@ metadata/_aseprite_wizard_config_ = {
 
 [node name="HeadRay" type="RayCast2D" parent="Sprites"]
 position = Vector2(0.5, -10)
-target_position = Vector2(12, 0)
+target_position = Vector2(16, 0)
 
 [node name="BodyRay" type="RayCast2D" parent="Sprites"]
 position = Vector2(0, 1)
-target_position = Vector2(9, 0)
+target_position = Vector2(14, 0)
 
 [node name="FeetRay" type="RayCast2D" parent="Sprites"]
 position = Vector2(0, 11.5)

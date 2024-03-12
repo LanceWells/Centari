@@ -37,6 +37,9 @@ use_parent_material = true
 collision_layer = 0
 physics_material_override = SubResource("PhysicsMaterial_whqb3")
 script = ExtResource("1_ubchi")
+DeathTime = null
+SmolderTime = null
+TimeVariability = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_35yfi")

@@ -118,6 +118,9 @@ speed_scale = 2.0
 visible = false
 use_parent_material = false
 sleeping = true
+DeathTime = null
+SmolderTime = null
+TimeVariability = null
 
 [node name="Sprites" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_mjfck")

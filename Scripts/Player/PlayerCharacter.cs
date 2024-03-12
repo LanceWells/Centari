@@ -16,7 +16,7 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <summary>
   /// A configurable walking speed for the player.
   /// </summary>
-  public float MaxSpeed = 350.0f;
+  public float MaxSpeed = 300.0f;
 
   /// <summary>
   /// The strength of the player's jump.
