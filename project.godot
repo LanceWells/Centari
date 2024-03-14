@@ -14,6 +14,11 @@ config/name="Centari"
 run/main_scene="res://Scenes/main.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 
+[display]
+
+window/size/resizable=false
+window/stretch/scale=3.0
+
 [dotnet]
 
 project/assembly_name="Centari"

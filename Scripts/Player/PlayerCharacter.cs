@@ -16,16 +16,19 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <summary>
   /// A configurable walking speed for the player.
   /// </summary>
+  [Export]
   public float MaxSpeed = 300.0f;
 
   /// <summary>
   /// The strength of the player's jump.
   /// </summary>
+  [Export]
   public float JumpStrength = 500.0f;
 
   /// <summary>
   /// The strength of gravity on the player.
   /// </summary>
+  [Export]
   public float Gravity = 3000.0f;
 
   /// <summary>
