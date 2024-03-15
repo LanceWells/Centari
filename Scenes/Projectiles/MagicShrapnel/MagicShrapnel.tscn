@@ -34,6 +34,7 @@ scale_curve = SubResource("CurveTexture_ane83")
 
 [node name="MagicShrapnel" type="RigidBody2D"]
 use_parent_material = true
+scale = Vector2(3, 3)
 collision_layer = 0
 physics_material_override = SubResource("PhysicsMaterial_whqb3")
 script = ExtResource("1_ubchi")

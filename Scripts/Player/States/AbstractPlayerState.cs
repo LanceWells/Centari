@@ -88,6 +88,7 @@ public abstract partial class AbstractPlayerState : AbstractState
   {
     Vector2 gravity = new(0, _player.Gravity);
     direction = direction.Lerp(gravity, (float)delta);
+    direction = direction.Clamp(new(direction.X, -300), new(direction.X, 300));
     return direction;
   }
 

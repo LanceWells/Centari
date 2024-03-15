@@ -27,7 +27,16 @@ public partial class WalkingState : AbstractPlayerState
   )
   {
     base.Transition(stateMachine, animationPlayer, owner, previousState);
-    animationPlayer.Play("Run");
+
+    if (previousState == "IdleState")
+    {
+      animationPlayer.Play("IdleToRun");
+      animationPlayer.Queue("Run");
+    }
+    else
+    {
+      animationPlayer.Play("Run");
+    }
   }
 
   /// <inheritdoc/>
