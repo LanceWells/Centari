@@ -92,6 +92,16 @@ public abstract partial class AbstractPlayerState : AbstractState
     return direction;
   }
 
+  virtual protected Vector2 GetMomentum(Vector2 direction, double delta)
+  {
+    Vector2 momentum = new(_player.Momentum, 0);
+    momentum *= _player.IsFlipped ? -1 : 1;
+    direction += momentum;
+
+    _player.Momentum = 0;
+    return direction;
+  }
+
   /// <summary>
   /// Calculates the direction that the player should head in, given all of their inputs and
   /// external physics forces.
@@ -117,6 +127,8 @@ public abstract partial class AbstractPlayerState : AbstractState
       direction = GetJumping(direction, delta);
     }
 
+    direction = GetMomentum(direction, delta);
+
     return direction;
   }
 
@@ -126,11 +138,8 @@ public abstract partial class AbstractPlayerState : AbstractState
   /// </summary>
   protected void _handleFireProjectile()
   {
-    if (Capabilities.CanAttack && Input.IsActionJustPressed("fire_projectile"))
-    {
-      PackedScene projectile = GD.Load<PackedScene>("res://Scenes/Projectiles/Fireball.tscn");
-      _player.HandleFireProjectile(projectile);
-    }
+    PackedScene projectile = GD.Load<PackedScene>("res://Scenes/Projectiles/Fireball.tscn");
+    _player.HandleFireProjectile(projectile);
   }
 
   /// <summary>
@@ -200,10 +209,10 @@ public abstract partial class AbstractPlayerState : AbstractState
     {
       _player.HandleFlip(_shouldFlip());
     }
-    if (Capabilities.CanAttack)
-    {
-      _handleFireProjectile();
-    }
+    // if (Capabilities.CanAttack)
+    // {
+    //   _handleFireProjectile();
+    // }
 
     Vector2 inputDir = CalculateDirection(delta);
     _player.Velocity = inputDir;

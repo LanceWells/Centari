@@ -22,7 +22,9 @@ public enum PlayerInput
   /// <summary>
   /// The player intends to jump.
   /// </summary>
-  Jump
+  Jump,
+
+  Attack
 }
 
 /// <summary>
@@ -144,6 +146,7 @@ public class InputQueue
       PlayerInput.Jump => Input.IsActionPressed("jump"),
       PlayerInput.MoveLeft => Input.IsActionPressed("move_left"),
       PlayerInput.MoveRight => Input.IsActionPressed("move_right"),
+      PlayerInput.Attack => Input.IsActionPressed("fire_projectile"),
       _ => false
     };
   }
@@ -160,6 +163,7 @@ public class InputQueue
       PlayerInput.Jump => Input.IsActionJustPressed("jump"),
       PlayerInput.MoveLeft => Input.IsActionJustPressed("move_left"),
       PlayerInput.MoveRight => Input.IsActionJustPressed("move_right"),
+      PlayerInput.Attack => Input.IsActionJustPressed("fire_projectile"),
       _ => false
     };
   }

@@ -31,6 +31,12 @@ public partial class PlayerCharacter : CharacterBody2D
   [Export]
   public float Gravity = 3000.0f;
 
+  [Export]
+  public float Momentum = 0.0f;
+
+  [Export]
+  public bool ProjectileThrown = false;
+
   /// <summary>
   /// The effect of friction on the player.
   /// </summary>
@@ -42,7 +48,8 @@ public partial class PlayerCharacter : CharacterBody2D
   /// </summary>
   public InputQueue InputQueue = new(new Dictionary<PlayerInput, double>()
   {
-    { PlayerInput.Jump, 0.1 }
+    { PlayerInput.Jump, 0.1 },
+    { PlayerInput.Attack, 0.2 },
   });
 
   /// <summary>
@@ -56,8 +63,9 @@ public partial class PlayerCharacter : CharacterBody2D
 
   private CollisionShape2D _hitBox;
 
-  // public FlippableNode<Node2D> MantleCornerPoint;
   public Node2D MantleCornerPoint;
+
+  public Node2D ProjectileOriginPoint;
 
   public bool IsFlipped => _isFlipped;
 
@@ -95,13 +103,7 @@ public partial class PlayerCharacter : CharacterBody2D
   /// <param name="projectile">The projectile to fire.</param>
   public void HandleFireProjectile(PackedScene projectile)
   {
-    // AimArm.Visible = true;
-    // ArmSprite.Visible = false;
-    // AimArm.StartAimStance();
-
-    // Vector2 projectileOrigin = AimArm.GetProjectileOrigin();
-
-    Vector2 projectileOrigin = Position;
+    Vector2 projectileOrigin = ProjectileOriginPoint.Position + Position;
 
     EmitSignal(
       SignalName.FireProjectile,
@@ -109,17 +111,6 @@ public partial class PlayerCharacter : CharacterBody2D
       projectileOrigin,
       _isFlipped
     );
-
-    // EmitSignal(
-    //   SignalName.FireProjectile,
-    //   projectile,
-    //   projectileOrigin,
-    //   projectileOrigin + (
-    //     _isFlipped
-    //       ? new Vector2(-1, 0)
-    //       : new Vector2(+1, 0)
-    //     )
-    // );
   }
 
   /// <summary>
@@ -146,16 +137,6 @@ public partial class PlayerCharacter : CharacterBody2D
     return ((CapsuleShape2D)_hitBox.Shape).Radius / 2;
   }
 
-  // /// <summary>
-  // /// This is called when the aim arm has "timed out". In this scenario, it means that the player is
-  // /// no longer aiming for any given reason. This should be largely a visual change.
-  // /// </summary>
-  // public void OnAimArmTimerTimeout()
-  // {
-  //   AimArm.Visible = false;
-  //   ArmSprite.Visible = true;
-  // }
-
   /// <inheritdoc/>
   public override void _Ready()
   {
@@ -170,9 +151,7 @@ public partial class PlayerCharacter : CharacterBody2D
     FeetRay = GetNode<RayCast2D>("Sprites/FeetRay");
 
     MantleCornerPoint = GetNode<Node2D>("Sprites/MantleCornerPoint");
-
-    // AimArm = GetNode<AimArm>("Sprites/AimArm");
-    // AimArm.OnAimTimerTimeout += OnAimArmTimerTimeout;
+    ProjectileOriginPoint = GetNode<Node2D>("Sprites/ProjectileOriginPoint");
 
     _hitBox = GetNode<CollisionShape2D>("Hitbox");
   }

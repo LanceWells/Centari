@@ -52,8 +52,13 @@ public partial class IdleState : AbstractPlayerState
     bool pressJump = _inputQueue.Peek(PlayerInput.Jump);
     bool pressLeft = _inputQueue.Peek(PlayerInput.MoveLeft);
     bool pressRight = _inputQueue.Peek(PlayerInput.MoveRight);
+    bool pressAttack = _inputQueue.Dequeue(PlayerInput.Attack);
 
-    if (pressJump)
+    if (pressAttack)
+    {
+      _stateMachine.TransitionState("ThrowingState");
+    }
+    else if (pressJump)
     {
       _stateMachine.TransitionState("JumpingState");
     }
