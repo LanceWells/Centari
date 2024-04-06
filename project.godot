@@ -11,7 +11,6 @@ config_version=5
 [application]
 
 config/name="Centari"
-run/main_scene="res://Scenes/Level/Level.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 
 [dotnet]
@@ -20,7 +19,7 @@ project/assembly_name="Centari"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/nklbdev.importality/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg")
 
 [input]
 
