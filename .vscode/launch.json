@@ -8,8 +8,10 @@
       "name": "Debug",
       "type": "coreclr",
       "request": "launch",
-      "program": "/usr/lib/Godot/Godot",
+      "program": "/usr/lib/Godot/Godot_v4.2.1-stable_mono_linux.x86_64",
       "args": [
+        "--rendering-driver",
+        "opengl3",
         "--path",
         "${workspaceFolder}",
       ],
