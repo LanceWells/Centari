@@ -502,21 +502,21 @@ position = Vector2(2207, 1379)
 [node name="ProjectileManager" parent="." instance=ExtResource("3_5rcgh")]
 
 [node name="Player" parent="." instance=ExtResource("2_61byj")]
-position = Vector2(107, 499)
+position = Vector2(510, 974)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(107, 499)
-zoom = Vector2(0.5, 0.5)
+position = Vector2(510, 974)
+zoom = Vector2(0.25, 0.25)
 
 [node name="PhantomCameraHost" type="Node" parent="Camera2D"]
 script = ExtResource("7_5r1n5")
 
 [node name="PhantomCamera2D" type="Node2D" parent="."]
-position = Vector2(107, 499)
+position = Vector2(510, 974)
 script = ExtResource("7_icdyw")
 priority_override = false
 priority = 0
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.25, 0.25)
 follow_mode = 5
 follow_target = NodePath("../Player")
 follow_parameters/target_offset = Vector2(0, 0)
