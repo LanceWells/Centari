@@ -4,19 +4,21 @@ using Godot;
 
 public partial class ShapingInterface : Node2D
 {
-  private Area2D _forgeArea;
+  private Node2D _topLeft;
 
-  private CollisionShape2D _forgeAreaShape;
+  private Node2D _botRight;
 
   private TileMap _metalTileMap;
 
-  private bool MousePressed = false;
+  private bool _mousePressed = false;
+
+  private bool _mouseInArea = false;
 
   public override void _Ready()
   {
-    _forgeArea = GetNode<Area2D>("ForgeArea");
     _metalTileMap = GetNode<TileMap>("MetalTileMap");
-    _forgeAreaShape = GetNode<CollisionShape2D>("ForgeArea/ForgeAreaShape");
+    _topLeft = GetNode<Node2D>("Area/TopLeft");
+    _botRight = GetNode<Node2D>("Area/BotRight");
 
     base._Ready();
   }
@@ -25,7 +27,13 @@ public partial class ShapingInterface : Node2D
   {
     if (@event is InputEventMouseMotion mouseMotionEvent)
     {
-      if (!MousePressed)
+      Vector2 localCoords = ViewportToLocal(mouseMotionEvent.Position);
+      if (!IsInArea(localCoords))
+      {
+        return;
+      }
+
+      if (!_mousePressed)
       {
         return;
       }
@@ -36,20 +44,34 @@ public partial class ShapingInterface : Node2D
     {
       if (mouseEvent.Pressed)
       {
-        MousePressed = true;
+        _mousePressed = true;
         DrawPixel(mouseEvent.Position);
       }
       else
       {
-        MousePressed = false;
+        _mousePressed = false;
       }
     }
   }
 
-  void DrawPixel(Vector2 vpMousePosition)
+  bool IsInArea(Vector2 localPosition)
+  {
+    Rect2 area = new(_topLeft.Position, _botRight.Position);
+    bool isInArea = area.HasPoint(localPosition);
+    return isInArea;
+  }
+
+  Vector2 ViewportToLocal(Vector2 viewportPosition)
   {
     Transform2D vpToCanvas = GetGlobalTransformWithCanvas().AffineInverse();
-    Vector2 localMousePosition = vpToCanvas * vpMousePosition;
+    Vector2 localMousePosition = vpToCanvas * viewportPosition;
+
+    return localMousePosition;
+  }
+
+  void DrawPixel(Vector2 vpMousePosition)
+  {
+    Vector2 localMousePosition = ViewportToLocal(vpMousePosition);
 
     Vector2I mapMousePosition = _metalTileMap.LocalToMap(localMousePosition);
     _metalTileMap.SetCell(0, mapMousePosition, 2, new(0, 0));
