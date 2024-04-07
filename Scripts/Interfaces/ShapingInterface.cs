@@ -1,6 +1,6 @@
 using System;
-using System.Net;
 using Godot;
+using Interfaces.Tiles;
 
 public partial class ShapingInterface : Node2D
 {
@@ -33,19 +33,21 @@ public partial class ShapingInterface : Node2D
         return;
       }
 
+      Rec
+
       if (!_mousePressed)
       {
         return;
       }
 
-      DrawPixel(mouseMotionEvent.Position);
+      DrawPixel(mouseMotionEvent.Position, MetalTile.TileDetails);
     }
     if (@event is InputEventMouseButton mouseEvent)
     {
       if (mouseEvent.Pressed)
       {
         _mousePressed = true;
-        DrawPixel(mouseEvent.Position);
+        DrawPixel(mouseEvent.Position, MetalTile.TileDetails);
       }
       else
       {
@@ -69,12 +71,15 @@ public partial class ShapingInterface : Node2D
     return localMousePosition;
   }
 
-  void DrawPixel(Vector2 vpMousePosition)
+  void DrawPixel(Vector2 vpMousePosition, TileDrawingDetails drawingDetails)
   {
     Vector2 localMousePosition = ViewportToLocal(vpMousePosition);
-
     Vector2I mapMousePosition = _metalTileMap.LocalToMap(localMousePosition);
-    _metalTileMap.SetCell(0, mapMousePosition, 2, new(0, 0));
-    Console.WriteLine($"Drawing cell at {mapMousePosition}");
+    _metalTileMap.SetCell(
+      drawingDetails.Layer,
+      mapMousePosition,
+      drawingDetails.SourceAtlas,
+      drawingDetails.TileIndex
+    );
   }
 }

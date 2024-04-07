@@ -1,7 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://q03kldwihwmh"]
+[gd_scene load_steps=7 format=3 uid="uid://q03kldwihwmh"]
 
 [ext_resource type="Script" path="res://Scripts/Interfaces/ShapingInterface.cs" id="1_6jwfq"]
 [ext_resource type="Texture2D" uid="uid://c1aykerauu8ly" path="res://Assets/Interfaces/MetalsTiles.png" id="1_gx23b"]
+[ext_resource type="Texture2D" uid="uid://bh5yc32njqv28" path="res://Assets/Interfaces/InterfaceTiles.png" id="2_k2ked"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i713f"]
+texture = ExtResource("2_k2ked")
+texture_region_size = Vector2i(1, 1)
+0:0/0 = 0
+1:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gsbhs"]
 texture = ExtResource("1_gx23b")
@@ -13,6 +20,7 @@ texture_region_size = Vector2i(1, 1)
 [sub_resource type="TileSet" id="TileSet_upocy"]
 tile_size = Vector2i(1, 1)
 sources/2 = SubResource("TileSetAtlasSource_gsbhs")
+sources/0 = SubResource("TileSetAtlasSource_i713f")
 
 [node name="ShapingInterface" type="Node2D"]
 scale = Vector2(3, 3)
@@ -21,11 +29,16 @@ script = ExtResource("1_6jwfq")
 [node name="Background" type="ColorRect" parent="."]
 offset_right = 64.0
 offset_bottom = 64.0
+color = Color(0.0627451, 0.0627451, 0.0627451, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="MetalTileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_upocy")
 format = 2
+layer_0/name = "Item"
+layer_1/name = "Highlights"
+layer_1/navigation_enabled = false
+layer_1/tile_data = PackedInt32Array()
 
 [node name="Area" type="Node2D" parent="."]
 
