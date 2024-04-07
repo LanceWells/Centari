@@ -1,7 +1,7 @@
 [gd_scene load_steps=25 format=3 uid="uid://06ruk4bqpmsf"]
 
 [ext_resource type="Script" path="res://Scripts/Player/PlayerCharacter.cs" id="1_jn4aw"]
-[ext_resource type="Texture2D" uid="uid://631lb6br1hv5" path="res://Assets/Player/Player.png" id="2_w4w4p"]
+[ext_resource type="Texture2D" uid="uid://qr8tq7gt5wp4" path="res://Assets/Player/Player.png" id="2_w4w4p"]
 [ext_resource type="Script" path="res://Scripts/AI/StateMachine/StateMachine.cs" id="5_aygjl"]
 [ext_resource type="Script" path="res://Scripts/Player/States/IdleState.cs" id="6_eg8fx"]
 [ext_resource type="Script" path="res://Scripts/Player/States/WalkingState.cs" id="7_5xhd5"]
@@ -847,7 +847,6 @@ _data = {
 scale = Vector2(3, 3)
 collision_layer = 2
 script = ExtResource("1_jn4aw")
-MaxSpeed = 200.0
 
 [node name="Sprites" type="Sprite2D" parent="."]
 

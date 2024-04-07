@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://413iceuajbn3"]
 
 [ext_resource type="Script" path="res://Scripts/Projectiles/Fireball.cs" id="1_oxqp1"]
-[ext_resource type="Texture2D" uid="uid://b6jygyou25a7w" path="res://Assets/Projectiles/teenyboll_27x27.png" id="4_holcy"]
+[ext_resource type="Texture2D" uid="uid://dr7yxpq2b45yi" path="res://Assets/Projectiles/teenyboll_27x27.png" id="4_holcy"]
 [ext_resource type="PackedScene" uid="uid://bdvsj0lcn5w70" path="res://Scenes/Projectiles/MagicShrapnel/MagicShrapnel.tscn" id="4_yjc0i"]
 [ext_resource type="Shader" path="res://Scenes/Projectiles/NativePixels.gdshader" id="6_k5skm"]
 
