@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using Interfaces.Tiles;
 
@@ -33,7 +32,7 @@ public partial class ShapingInterface : Node2D
         return;
       }
 
-      Rec
+      CircleMidpoint(mouseMotionEvent.Position.X, mouseMotionEvent.Position.Y, 10);
 
       if (!_mousePressed)
       {
@@ -81,5 +80,65 @@ public partial class ShapingInterface : Node2D
       drawingDetails.SourceAtlas,
       drawingDetails.TileIndex
     );
+  }
+
+  private void CirclePoints(float cx, float cy, int x, int y)
+  {
+    if (x == 0)
+    {
+      DrawPixel(new(cx, cy + y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx, cy - y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx + y, cy), InterfaceTile.TileDetails);
+      DrawPixel(new(cx - y, cy), InterfaceTile.TileDetails);
+    }
+    if (x == y)
+    {
+      DrawPixel(new(cx + x, cy + y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx - x, cy + y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx + x, cy - y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx - x, cy - y), InterfaceTile.TileDetails);
+    }
+    if (x < y)
+    {
+      DrawPixel(new(cx + x, cy + y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx - x, cy + y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx + x, cy - y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx - x, cy - y), InterfaceTile.TileDetails);
+      DrawPixel(new(cx + y, cy + x), InterfaceTile.TileDetails);
+      DrawPixel(new(cx - y, cy + x), InterfaceTile.TileDetails);
+      DrawPixel(new(cx + y, cy - x), InterfaceTile.TileDetails);
+      DrawPixel(new(cx - y, cy - x), InterfaceTile.TileDetails);
+    }
+  }
+
+  /// <summary>
+  /// 
+  /// </summary>
+  /// <param name="xCenter"></param>
+  /// <param name="yCenter"></param>
+  /// <param name="radius"></param>
+  /// https://groups.csail.mit.edu/graphics/classes/6.837/F98/Lecture6/circle.html
+  private void CircleMidpoint(float xCenter, float yCenter, int radius)
+  {
+    _metalTileMap.ClearLayer(InterfaceTile.TileDetails.Layer);
+
+    int x = 0;
+    int y = radius;
+    int p = (5 - radius * 4) / 4;
+
+    CirclePoints(xCenter, yCenter, x, y);
+    while (x++ < y)
+    {
+      if (p < 0)
+      {
+        p += 2 * x + 1;
+      }
+      else
+      {
+        y--;
+        p += 2 * (x - y) + 1;
+      }
+      CirclePoints(xCenter, yCenter, x, y);
+    }
   }
 }
