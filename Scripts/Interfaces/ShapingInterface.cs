@@ -32,7 +32,9 @@ public partial class ShapingInterface : Node2D
         return;
       }
 
-      CircleMidpoint(mouseMotionEvent.Position.X, mouseMotionEvent.Position.Y, 10);
+      Vector2 localMousePosition = ViewportToLocal(mouseMotionEvent.Position);
+      Vector2I mapMousePosition = _metalTileMap.LocalToMap(localMousePosition);
+      CircleMidpoint(mapMousePosition.X, mapMousePosition.Y, 10);
 
       if (!_mousePressed)
       {
@@ -74,6 +76,10 @@ public partial class ShapingInterface : Node2D
   {
     Vector2 localMousePosition = ViewportToLocal(vpMousePosition);
     Vector2I mapMousePosition = _metalTileMap.LocalToMap(localMousePosition);
+    DrawPixelMapCoords(mapMousePosition, drawingDetails);
+  }
+  void DrawPixelMapCoords(Vector2I mapMousePosition, TileDrawingDetails drawingDetails)
+  {
     _metalTileMap.SetCell(
       drawingDetails.Layer,
       mapMousePosition,
@@ -82,32 +88,32 @@ public partial class ShapingInterface : Node2D
     );
   }
 
-  private void CirclePoints(float cx, float cy, int x, int y)
+  private void CirclePoints(int cx, int cy, int x, int y)
   {
     if (x == 0)
     {
-      DrawPixel(new(cx, cy + y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx, cy - y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx + y, cy), InterfaceTile.TileDetails);
-      DrawPixel(new(cx - y, cy), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx, cy + y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx, cy - y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx + y, cy), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx - y, cy), InterfaceTile.TileDetails);
     }
     if (x == y)
     {
-      DrawPixel(new(cx + x, cy + y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx - x, cy + y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx + x, cy - y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx - x, cy - y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx + x, cy + y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx - x, cy + y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx + x, cy - y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx - x, cy - y), InterfaceTile.TileDetails);
     }
     if (x < y)
     {
-      DrawPixel(new(cx + x, cy + y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx - x, cy + y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx + x, cy - y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx - x, cy - y), InterfaceTile.TileDetails);
-      DrawPixel(new(cx + y, cy + x), InterfaceTile.TileDetails);
-      DrawPixel(new(cx - y, cy + x), InterfaceTile.TileDetails);
-      DrawPixel(new(cx + y, cy - x), InterfaceTile.TileDetails);
-      DrawPixel(new(cx - y, cy - x), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx + x, cy + y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx - x, cy + y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx + x, cy - y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx - x, cy - y), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx + y, cy + x), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx - y, cy + x), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx + y, cy - x), InterfaceTile.TileDetails);
+      DrawPixelMapCoords(new(cx - y, cy - x), InterfaceTile.TileDetails);
     }
   }
 
@@ -118,7 +124,7 @@ public partial class ShapingInterface : Node2D
   /// <param name="yCenter"></param>
   /// <param name="radius"></param>
   /// https://groups.csail.mit.edu/graphics/classes/6.837/F98/Lecture6/circle.html
-  private void CircleMidpoint(float xCenter, float yCenter, int radius)
+  private void CircleMidpoint(int xCenter, int yCenter, int radius)
   {
     _metalTileMap.ClearLayer(InterfaceTile.TileDetails.Layer);
 
